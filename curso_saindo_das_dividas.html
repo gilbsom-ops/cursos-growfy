@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Mapa da Liberdade — Saindo das Dívidas do Zero</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#faf9f7; --bg2:#ffffff; --bg3:#f3f1ee; --bg4:#e8e4de;
+  --green:#1a7a4a; --green2:#22a05c; --green3:#4ade80;
+  --green-bg:#f0fdf4; --green-border:#bbf7d0;
+  --red:#c0392b; --red-bg:#fef2f2; --red-border:#fecaca;
+  --amber:#b45309; --amber-bg:#fffbeb; --amber-border:#fde68a;
+  --blue:#1d4ed8; --blue-bg:#eff6ff; --blue-border:#bfdbfe;
+  --purple:#6d28d9; --purple-bg:#f5f3ff; --purple-border:#ddd6fe;
+  --dark:#1a1a1a; --dark2:#2d2d2d; --dark3:#444;
+  --text:#1a1a1a; --text2:#555; --text3:#888;
+  --border:#e2ddd8; --border2:#ccc8c2;
+  --radius:14px; --radius-sm:8px;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.7}
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:268px;background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-top{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-emoji{font-size:28px;margin-bottom:10px}
+.sb-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:#fff;line-height:1.3}
+.sb-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;font-family:var(--font-mono)}
+
+.prog-area{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:7px}
+.prog-lbl{font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase}
+.prog-val{font-size:11px;font-family:var(--font-mono);color:var(--green3)}
+.prog-track{background:rgba(255,255,255,0.08);border-radius:99px;height:3px}
+.prog-fill{height:3px;border-radius:99px;background:linear-gradient(90deg,var(--green2),var(--green3));transition:width .5s ease}
+
+.nav-sec{padding:8px 0}
+.nav-sec-lbl{padding:5px 20px;font-size:9px;font-family:var(--font-mono);color:rgba(255,255,255,0.22);letter-spacing:2px;text-transform:uppercase}
+.nitem{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;transition:background .15s;border-left:2px solid transparent}
+.nitem:hover{background:rgba(255,255,255,0.04)}
+.nitem.active{background:rgba(26,122,74,0.18);border-left-color:var(--green3)}
+.nitem.active .nlabel{color:#fff}
+.nitem.done .nnum{background:var(--green2);color:#fff;border-color:var(--green2)}
+.nnum{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.35);flex-shrink:0;transition:all .2s}
+.nlabel{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.3;flex:1}
+.ncheck{font-size:11px;color:var(--green3);opacity:0;transition:opacity .2s;margin-left:auto}
+.nitem.done .ncheck{opacity:1}
+
+/* MAIN */
+.main{margin-left:268px;flex:1}
+.screen{display:none;min-height:100vh;padding:40px 48px;max-width:900px}
+.screen.active{display:block}
+
+/* HERO */
+.hero{min-height:100vh;padding:48px;max-width:900px;display:flex;flex-direction:column;justify-content:center}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:99px;padding:5px 14px;margin-bottom:22px;font-size:12px;color:var(--amber);font-weight:500}
+.hero h1{font-family:var(--font-head);font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.08;letter-spacing:-1.5px;color:var(--dark);margin-bottom:16px}
+.hero h1 em{color:var(--green);font-style:normal}
+.hero-lead{font-size:17px;color:var(--text2);max-width:540px;line-height:1.75;margin-bottom:12px}
+.hero-stat-row{display:flex;gap:0;margin:24px 0 32px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg2);box-shadow:var(--shadow)}
+.hstat{flex:1;padding:16px 20px;border-right:1px solid var(--border)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--dark)}
+.hstat-l{font-size:11px;color:var(--text3);margin-top:2px}
+.btn-go{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-family:var(--font-head);font-size:14px;font-weight:700;padding:14px 28px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;box-shadow:0 3px 12px rgba(26,122,74,0.3)}
+.btn-go:hover{background:var(--green2);transform:translateY(-1px)}
+.hero-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:36px}
+.hcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.hcard-icon{font-size:20px;margin-bottom:8px}
+.hcard-t{font-size:12px;font-weight:600;color:var(--dark);line-height:1.35}
+.hcard-s{font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--font-mono)}
+
+/* MODULE */
+.mod-hdr{margin-bottom:32px;padding-bottom:22px;border-bottom:2px solid var(--border)}
+.mod-eye{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.mod-chip{font-size:11px;padding:4px 12px;border-radius:6px;font-family:var(--font-mono);font-weight:500}
+.chip-num{background:var(--dark);color:#fff}
+.chip-ini{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.chip-int{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.chip-adv{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.mod-title{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--dark);line-height:1.15;letter-spacing:-0.5px;margin-bottom:10px}
+.mod-meta{display:flex;gap:8px;flex-wrap:wrap}
+.meta-tag{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);font-family:var(--font-mono)}
+
+/* LESSON */
+.lesson{margin-bottom:36px}
+.les-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.lesson h2{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--dark);margin-bottom:14px;letter-spacing:-0.3px}
+.lesson p{color:var(--text2);margin-bottom:12px;line-height:1.8}
+.lesson p strong{color:var(--text);font-weight:600}
+
+/* CALLOUT */
+.callout{border-radius:var(--radius-sm);padding:14px 18px;margin:14px 0;font-size:14px;line-height:1.65;border-left:3px solid}
+.callout.green{background:var(--green-bg);border-color:var(--green);color:#14532d}
+.callout.red{background:var(--red-bg);border-color:var(--red);color:#7f1d1d}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);color:#78350f}
+.callout.blue{background:var(--blue-bg);border-color:var(--blue);color:#1e3a8a}
+.callout.purple{background:var(--purple-bg);border-color:var(--purple);color:#4c1d95}
+.callout strong{font-weight:600}
+
+/* TABLE */
+.tbl{overflow-x:auto;margin:14px 0;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--dark);color:#fff;font-family:var(--font-head);font-size:12px;font-weight:600;padding:10px 14px;text-align:left}
+td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--bg3)}
+
+/* INTERACTIVE */
+.ibox{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:22px;margin:20px 0;box-shadow:var(--shadow-md)}
+.ibox-title{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ibox-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* SIMULADOR DE DÍVIDAS */
+.debt-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.debt-label{font-size:13px;color:var(--text2);min-width:130px;flex-shrink:0}
+.debt-input{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-family:var(--font-mono);font-size:13px;color:var(--text);width:150px;outline:none;transition:border-color .2s}
+.debt-input:focus{border-color:var(--green)}
+.debt-result{background:var(--dark);border-radius:var(--radius-sm);padding:16px 20px;margin-top:10px}
+.dr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dr-item .dr-lbl{font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.4);margin-bottom:4px;text-transform:uppercase}
+.dr-item .dr-val{font-family:var(--font-head);font-size:22px;font-weight:800;color:#fff}
+.dr-item .dr-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;font-family:var(--font-mono)}
+
+/* ESTRATÉGIA VISUAL */
+.strategy-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+@media(max-width:640px){.strategy-cards{grid-template-columns:1fr}}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.sc.avalanche{border-top:3px solid var(--blue)}
+.sc.boldeneve{border-top:3px solid var(--green)}
+.sc-tag{font-size:10px;font-family:var(--font-mono);font-weight:600;margin-bottom:10px}
+.sc-tag.av{color:var(--blue)} .sc-tag.bn{color:var(--green)}
+.sc-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.sc-body{font-size:13px;color:var(--text2);line-height:1.6}
+.sc-pros{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.sc-pro{display:flex;gap:6px;font-size:12px;color:var(--text2);margin-bottom:4px}
+.sc-pro::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.sc-con{display:flex;gap:6px;font-size:12px;color:var(--text2);margin-bottom:4px}
+.sc-con::before{content:'−';color:var(--text3);flex-shrink:0}
+
+/* SIMULADOR BOLA DE NEVE */
+.snow-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.snow-item{display:flex;gap:8px;align-items:center}
+.snow-item input{flex:1;min-width:0}
+.snow-result-list{margin-top:10px}
+.snow-result-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);background:var(--bg3);border:1px solid var(--border);margin-bottom:6px;font-size:13px}
+.snow-rank{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;flex-shrink:0;color:#fff}
+.r1{background:var(--red)} .r2{background:var(--amber)} .r3{background:var(--green)} .r4{background:var(--blue)} .r5{background:var(--purple)}
+
+/* EXERCISE */
+.ex-sec{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;margin-top:32px;box-shadow:var(--shadow-md)}
+.ex-hdr{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.ex-ico{width:40px;height:40px;background:var(--dark);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ex-ttl{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--dark)}
+.ex-sub{font-size:12px;color:var(--text3);font-family:var(--font-mono);margin-top:2px}
+.question{margin-bottom:24px}
+.q-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.q-text{font-size:15px;color:var(--text);margin-bottom:14px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:flex-start;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;cursor:pointer;transition:all .2s}
+.option:hover:not(.disabled){border-color:var(--green2);background:var(--green-bg)}
+.option.selected{border-color:var(--green);background:var(--green-bg)}
+.option.correct{border-color:var(--green);background:var(--green-bg)}
+.option.wrong{border-color:var(--red);background:var(--red-bg)}
+.option.disabled{cursor:default}
+.opt-l{width:26px;height:26px;border-radius:7px;background:var(--bg2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--text3);flex-shrink:0;transition:all .2s}
+.option.selected .opt-l{background:var(--green);border-color:var(--green);color:#fff}
+.option.correct .opt-l{background:var(--green);border-color:var(--green);color:#fff}
+.option.wrong .opt-l{background:var(--red);border-color:var(--red);color:#fff}
+.opt-t{font-size:14px;color:var(--text2);line-height:1.5}
+.feedback{margin-top:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;display:none;line-height:1.6}
+.feedback.show{display:block}
+.feedback.ok{background:var(--green-bg);border:1px solid var(--green-border);color:#14532d}
+.feedback.fail{background:var(--red-bg);border:1px solid var(--red-border);color:#7f1d1d}
+.btn-chk{background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-chk:hover{background:var(--green2)} .btn-chk:disabled{opacity:.35;cursor:default}
+.btn-next{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--green);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-next:hover{background:var(--green-bg)}
+.ex-score{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 18px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--text2)}
+.ex-score-n{font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--green)}
+
+/* EXAM */
+.exam-hdr{text-align:center;padding:48px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.exam-tag{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.exam-hdr h2{font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--dark);margin-bottom:10px;letter-spacing:-0.5px}
+.exam-hdr p{color:var(--text2);max-width:440px;margin:0 auto}
+.exam-stats{display:flex;justify-content:center;gap:32px;margin-top:22px}
+.est-n{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--dark)}
+.est-l{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.exam-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.edot{width:8px;height:8px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);transition:all .2s}
+.edot.answered{border-color:var(--green)}
+.edot.correct{background:var(--green);border-color:var(--green)}
+.edot.wrong{background:var(--red);border-color:var(--red)}
+
+/* RESULT */
+.result-wrap{padding:48px 0;text-align:center}
+.res-circle{width:150px;height:150px;border-radius:50%;margin:0 auto 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:4px solid}
+.res-circle.pass{border-color:var(--green);background:var(--green-bg)}
+.res-circle.fail{border-color:var(--red);background:var(--red-bg)}
+.res-pct{font-family:var(--font-head);font-size:42px;font-weight:800}
+.res-circle.pass .res-pct{color:var(--green)}
+.res-circle.fail .res-pct{color:var(--red)}
+.res-sub-lbl{font-size:11px;font-family:var(--font-mono);color:var(--text3)}
+.res-title{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--dark);margin-bottom:10px}
+.res-sub{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto 28px;line-height:1.7}
+.res-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:24px 0 32px;text-align:left}
+.rb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.rb-mod{font-size:10px;font-family:var(--font-mono);color:var(--text3);margin-bottom:6px;text-transform:uppercase}
+.rb-score{font-family:var(--font-head);font-size:22px;font-weight:800}
+.rb-score.full{color:var(--green)} .rb-score.partial{color:var(--amber)} .rb-score.low{color:var(--red)}
+.rb-pct{font-size:11px;color:var(--text3);font-family:var(--font-mono);margin-top:2px}
+.btn-retry{background:transparent;color:var(--green);border:1px solid var(--green-border);border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin:6px}
+.btn-retry:hover{background:var(--green-bg)}
+.btn-cert{background:var(--dark);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin:6px}
+.btn-cert:hover{background:var(--dark2)}
+
+/* CERT */
+.cert-wrap{padding:40px 0}
+.cert-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:48px;text-align:center;max-width:680px;margin:0 auto;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.cert-bar{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--dark),var(--green),var(--green3))}
+.cert-mark{font-size:48px;margin-bottom:16px}
+.cert-sm{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:3px;margin-bottom:14px}
+.cert-course{font-family:var(--font-head);font-size:26px;font-weight:800;color:var(--dark);margin-bottom:6px}
+.cert-sub{font-size:13px;color:var(--text3);margin-bottom:24px}
+.cert-score-box{background:var(--dark);border-radius:var(--radius-sm);padding:16px 28px;display:inline-block;margin-bottom:24px}
+.csb-lbl{font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.4);margin-bottom:4px;text-transform:uppercase}
+.csb-val{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--green3)}
+.cert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.cert-grid span{display:block;font-size:14px;font-weight:600;color:var(--text);margin-top:4px}
+.cert-date{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.screen,.hero{padding:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-emoji">🗺️</div>
+    <div class="sb-title">O Mapa da<br>Liberdade</div>
+    <div class="sb-sub">Saindo das Dívidas do Zero</div>
+  </div>
+  <div class="prog-area">
+    <div class="prog-row"><span class="prog-lbl">Progresso</span><span class="prog-val" id="ppct">0%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
+  </div>
+  <nav class="nav-sec">
+    <div class="nav-sec-lbl">Módulos</div>
+    <div class="nitem active" onclick="go('home')"><div class="nnum">⌂</div><div class="nlabel">Início</div></div>
+    <div class="nitem" id="nav-m1" onclick="go('m1')"><div class="nnum">1</div><div class="nlabel">Diagnóstico Real da sua Dívida</div><div class="ncheck">✓</div></div>
+    <div class="nitem" id="nav-m2" onclick="go('m2')"><div class="nnum">2</div><div class="nlabel">Por Que as Dívidas Crescem</div><div class="ncheck">✓</div></div>
+    <div class="nitem" id="nav-m3" onclick="go('m3')"><div class="nnum">3</div><div class="nlabel">Estratégias de Quitação</div><div class="ncheck">✓</div></div>
+    <div class="nitem" id="nav-m4" onclick="go('m4')"><div class="nnum">4</div><div class="nlabel">Como Negociar com Credores</div><div class="ncheck">✓</div></div>
+    <div class="nitem" id="nav-m5" onclick="go('m5')"><div class="nnum">5</div><div class="nlabel">Fôlego Financeiro</div><div class="ncheck">✓</div></div>
+    <div class="nitem" id="nav-m6" onclick="go('m6')"><div class="nnum">6</div><div class="nlabel">Nunca Mais se Endividar</div><div class="ncheck">✓</div></div>
+  </nav>
+  <nav class="nav-sec" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
+    <div class="nav-sec-lbl">Avaliação</div>
+    <div class="nitem" id="nav-exam" onclick="go('exam')"><div class="nnum">★</div><div class="nlabel">Exame Final de Proficiência</div></div>
+  </nav>
+</aside>
+
+<main class="main">
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+<div class="hero">
+  <div class="hero-pill">🇧🇷 72 milhões de brasileiros estão endividados — Serasa 2026</div>
+  <h1>Você não está<br>sozinho. Mas precisa<br>de um <em>plano real.</em></h1>
+  <p class="hero-lead">Este curso não é sobre culpa. É sobre estratégia. Você vai aprender a entender sua dívida, negociar com credores, escolher o método certo de quitação e — o mais importante — nunca mais voltar ao ponto zero.</p>
+  <div class="hero-stat-row">
+    <div class="hstat"><div class="hstat-n">6</div><div class="hstat-l">Módulos</div></div>
+    <div class="hstat"><div class="hstat-n">30</div><div class="hstat-l">Questões</div></div>
+    <div class="hstat"><div class="hstat-n">70%</div><div class="hstat-l">Nota de corte</div></div>
+    <div class="hstat"><div class="hstat-n">~6h</div><div class="hstat-l">Duração</div></div>
+  </div>
+  <button class="btn-go" onclick="go('m1')">Começar minha jornada →</button>
+  <div class="hero-cards">
+    <div class="hcard"><div class="hcard-icon">🔍</div><div class="hcard-t">Diagnóstico Real</div><div class="hcard-s">Módulo 1 · Iniciante</div></div>
+    <div class="hcard"><div class="hcard-icon">📈</div><div class="hcard-t">Por que crescem</div><div class="hcard-s">Módulo 2 · Iniciante</div></div>
+    <div class="hcard"><div class="hcard-icon">⚡</div><div class="hcard-t">Estratégias</div><div class="hcard-s">Módulo 3 · Intermediário</div></div>
+    <div class="hcard"><div class="hcard-icon">🤝</div><div class="hcard-t">Negociação</div><div class="hcard-s">Módulo 4 · Intermediário</div></div>
+    <div class="hcard"><div class="hcard-icon">🌬️</div><div class="hcard-t">Fôlego Financeiro</div><div class="hcard-s">Módulo 5 · Intermediário</div></div>
+    <div class="hcard"><div class="hcard-icon">🛡️</div><div class="hcard-t">Nunca Mais</div><div class="hcard-s">Módulo 6 · Avançado</div></div>
+  </div>
+</div>
+</div>
+
+<!-- M1: DIAGNÓSTICO -->
+<div id="screen-m1" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 01</span><span class="mod-chip chip-ini">Iniciante</span></div>
+  <div class="mod-title">🔍 Diagnóstico Real da sua Dívida</div>
+  <div class="mod-meta"><span class="meta-tag">4 lições</span><span class="meta-tag">~1h</span><span class="meta-tag">O ponto de partida é a verdade</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 1.1</div>
+  <h2>Por que a maioria das pessoas evita olhar para a dívida</h2>
+  <p>Existe um fenômeno psicológico chamado <strong>evitação financeira</strong>: quanto mais a situação piora, mais difícil fica de olhar para ela. O extrato bancário vira um inimigo. A conta de luz uma ameaça. Isso não é falta de responsabilidade — é um mecanismo de defesa do cérebro contra o estresse.</p>
+  <p>O problema é que ignorar uma dívida não a faz desaparecer. Ela cresce. <strong>Juros sobre juros, multas, negativação no CPF</strong>. O primeiro passo — e o mais difícil — é olhar de frente para o tamanho real do problema.</p>
+  <div class="callout amber"><strong>Importante:</strong> Você não chegou aqui por ser irresponsável. Desemprego, doença, separação, aumento de juros, choque econômico — são as principais causas do endividamento no Brasil. O importante agora é o que você vai fazer a partir de hoje.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 1.2</div>
+  <h2>O mapa completo: listando tudo</h2>
+  <p>Você não pode combater um inimigo que não conhece. O primeiro exercício é listar <strong>absolutamente todas</strong> as suas dívidas em um lugar só. Sem exceção.</p>
+  <div class="tbl"><table>
+    <tr><th>O que anotar</th><th>Por que importa</th><th>Onde encontrar</th></tr>
+    <tr><td><strong>Credor</strong> (quem você deve)</td><td>Saber com quem negociar</td><td>Boletos, extrato, Serasa</td></tr>
+    <tr><td><strong>Valor total</strong> (não a parcela)</td><td>Enxergar o tamanho real</td><td>Portal do credor ou Serasa</td></tr>
+    <tr><td><strong>Taxa de juros</strong> (% ao mês)</td><td>Priorizar o que cresce mais rápido</td><td>Contrato ou portal</td></tr>
+    <tr><td><strong>Parcela mínima</strong></td><td>Calcular quanto você paga hoje</td><td>Fatura ou boleto atual</td></tr>
+    <tr><td><strong>Status</strong> (em dia / atrasado / negativado)</td><td>Definir urgência</td><td>Serasa, SPC, extrato</td></tr>
+  </table></div>
+  <div class="callout green"><strong>Como consultar suas dívidas:</strong> Acesse serasa.com.br gratuitamente com seu CPF e veja todas as dívidas registradas. O SCR do BACEN também mostra dívidas com bancos. Não se assuste — o diagnóstico é necessário.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 1.3</div>
+  <h2>Calculadora de Diagnóstico Financeiro</h2>
+  <div class="ibox">
+    <div class="ibox-title">Simulador — Quanto você deve no total?</div>
+    <div class="debt-row"><span class="debt-label">Cartão de crédito (R$)</span><input class="debt-input" type="number" id="d1" value="3500" oninput="calcDiag()"></div>
+    <div class="debt-row"><span class="debt-label">Cheque especial (R$)</span><input class="debt-input" type="number" id="d2" value="1200" oninput="calcDiag()"></div>
+    <div class="debt-row"><span class="debt-label">Empréstimo pessoal (R$)</span><input class="debt-input" type="number" id="d3" value="8000" oninput="calcDiag()"></div>
+    <div class="debt-row"><span class="debt-label">Financiamento (R$)</span><input class="debt-input" type="number" id="d4" value="15000" oninput="calcDiag()"></div>
+    <div class="debt-row"><span class="debt-label">Outras dívidas (R$)</span><input class="debt-input" type="number" id="d5" value="2300" oninput="calcDiag()"></div>
+    <div class="debt-result">
+      <div class="dr-grid">
+        <div class="dr-item"><div class="dr-lbl">Total de dívidas</div><div class="dr-val" id="d-total">R$ 0</div><div class="dr-sub">soma de tudo</div></div>
+        <div class="dr-item"><div class="dr-lbl">Situação</div><div class="dr-val" id="d-status">-</div><div class="dr-sub">pelo total</div></div>
+        <div class="dr-item"><div class="dr-lbl">Próximo passo</div><div class="dr-val" style="font-size:14px;line-height:1.3" id="d-next">-</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 1.4</div>
+  <h2>Receita vs. Dívida: qual é o seu índice de comprometimento</h2>
+  <p>O <strong>índice de comprometimento de renda</strong> mostra quanto da sua renda já está comprometido com dívidas. Bancos consideram saudável até 30%. Acima de 50% é zona de perigo.</p>
+  <div class="callout blue"><strong>Fórmula:</strong> (Soma das parcelas mensais ÷ Renda líquida mensal) × 100 = % comprometido<br><br>Exemplo: R$ 1.500 em parcelas ÷ R$ 3.500 de renda = 43% comprometido. Zona de atenção.</div>
+  <p>Se o seu índice está acima de 50%, a prioridade absoluta é <strong>negociar e reduzir as parcelas</strong> antes de qualquer outra estratégia. Veremos como no Módulo 4.</p>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 1</div><div class="ex-sub">4 questões · Diagnóstico Financeiro</div></div></div>
+  <div id="ex-m1-q"></div>
+  <div class="ex-score" id="ex-m1-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m1-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m2')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M2: POR QUE AS DÍVIDAS CRESCEM -->
+<div id="screen-m2" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 02</span><span class="mod-chip chip-ini">Iniciante</span></div>
+  <div class="mod-title">📈 Por Que as Dívidas Crescem</div>
+  <div class="mod-meta"><span class="meta-tag">4 lições</span><span class="meta-tag">~1h</span><span class="meta-tag">Entender para combater</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 2.1</div>
+  <h2>Juros compostos: o inimigo silencioso</h2>
+  <p>Juros compostos são a razão pela qual uma dívida de R$ 5.000 no cartão pode virar R$ 30.000 em 2 anos se você pagar só o mínimo. Eles incidem <strong>sobre o saldo devedor acumulado</strong> — juros sobre juros.</p>
+  <div class="tbl"><table>
+    <tr><th>Tipo de dívida</th><th>Taxa média mensal</th><th>Taxa anual equivalente</th><th>Risco</th></tr>
+    <tr><td><strong>Rotativo do cartão</strong></td><td>~15% a.m.</td><td>~435% a.a.</td><td>🔴 Crítico</td></tr>
+    <tr><td><strong>Cheque especial</strong></td><td>~8% a.m.</td><td>~152% a.a.</td><td>🔴 Crítico</td></tr>
+    <tr><td><strong>Empréstimo pessoal</strong></td><td>~3-5% a.m.</td><td>~42-80% a.a.</td><td>🟡 Alto</td></tr>
+    <tr><td><strong>Financiamento veículos</strong></td><td>~1.5-2% a.m.</td><td>~20-27% a.a.</td><td>🟡 Médio</td></tr>
+    <tr><td><strong>Consignado INSS</strong></td><td>~1.6% a.m.</td><td>~21% a.a.</td><td>🟢 Baixo</td></tr>
+  </table></div>
+  <div class="callout red"><strong>Regra de ouro:</strong> Nunca pague só o mínimo do cartão de crédito. O rotativo do cartão é a maior armadilha financeira do Brasil — com juros de até 435% ao ano, uma dívida dobra em menos de 5 meses.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 2.2</div>
+  <h2>O efeito bola de neve negativo</h2>
+  <p>Quando você tem múltiplas dívidas e paga só os mínimos, cada mês o saldo devedor cresce. Eventualmente, <strong>o valor dos juros supera sua capacidade de pagamento</strong> — é o superendividamento. Nesse ponto, sem negociação, a situação se torna matematicamente insustentável.</p>
+  <div class="callout amber"><strong>Exemplo real:</strong> Saldo devedor no cartão: R$ 5.000. Taxa: 15% a.m. Mínimo pago: R$ 150. Juros do mês: R$ 750. Resultado: sua dívida CRESCEU R$ 600 mesmo pagando. Isso é a armadilha.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 2.3</div>
+  <h2>Gatilhos psicológicos do endividamento</h2>
+  <p>Entender por que você se endividou é crucial para não repetir. Os principais gatilhos no Brasil:</p>
+  <div class="tbl"><table>
+    <tr><th>Gatilho</th><th>Como age</th><th>Sinal de alerta</th></tr>
+    <tr><td>Compras por ansiedade</td><td>Alívio imediato, remorso depois</td><td>Comprar quando estressado ou triste</td></tr>
+    <tr><td>Comparação social</td><td>"Todo mundo tem, eu também mereço"</td><td>Compras para impressionar outros</td></tr>
+    <tr><td>Crença de merecimento</td><td>Compras como recompensa</td><td>"Trabalhei tanto, mereço isso"</td></tr>
+    <tr><td>Falta de planejamento</td><td>Surpresas financeiras viram dívidas</td><td>IPVA, matrícula, festas sem reserva</td></tr>
+    <tr><td>Armadilhas do crédito</td><td>Parcelamento sem juros ilude</td><td>Parcelas que cabem no bolso, mas somam</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 2.4</div>
+  <h2>Score de crédito e negativação: o que muda na sua vida</h2>
+  <p>Estar negativado ou com score baixo afeta muito mais do que a capacidade de crédito:</p>
+  <div class="callout red"><strong>Consequências práticas da negativação:</strong><br>
+  • Dificuldade de alugar imóvel — muitos proprietários consultam o Serasa<br>
+  • Bloqueio em processos seletivos de algumas empresas<br>
+  • Acesso negado a cartões, financiamentos e empréstimos<br>
+  • Taxas de juros maiores mesmo quando aprovado<br>
+  • Impossibilidade de ser sócio em empresas (CNPJ vinculado ao CPF)</div>
+  <p>A boa notícia: <strong>após a quitação ou acordo, a negativação é removida em até 5 dias úteis</strong>. O score começa a subir em semanas. A recuperação é real e rápida.</p>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 2</div><div class="ex-sub">5 questões · Juros e Endividamento</div></div></div>
+  <div id="ex-m2-q"></div>
+  <div class="ex-score" id="ex-m2-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m2-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m3')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M3: ESTRATÉGIAS -->
+<div id="screen-m3" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 03</span><span class="mod-chip chip-int">Intermediário</span></div>
+  <div class="mod-title">⚡ Estratégias de Quitação</div>
+  <div class="mod-meta"><span class="meta-tag">5 lições</span><span class="meta-tag">~1h30</span><span class="meta-tag">Avalanche · Bola de Neve · Híbrido</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 3.1</div>
+  <h2>Os dois métodos mais eficazes do mundo</h2>
+  <p>Existem dezenas de estratégias para quitar dívidas, mas duas são comprovadamente as mais eficazes: <strong>Avalanche</strong> (matemática) e <strong>Bola de Neve</strong> (psicologia). A escolha certa depende do seu perfil.</p>
+  <div class="strategy-cards">
+    <div class="sc avalanche">
+      <div class="sc-tag av">MÉTODO AVALANCHE</div>
+      <div class="sc-title">Priorize os maiores juros</div>
+      <div class="sc-body">Ordene suas dívidas da maior para a menor taxa de juros. Pague o mínimo em todas e coloque todo o dinheiro extra na dívida mais cara. Quando ela acabar, passe para a próxima.</div>
+      <div class="sc-pros">
+        <div class="sc-pro">Economiza mais dinheiro no total</div>
+        <div class="sc-pro">Matematicamente superior</div>
+        <div class="sc-pro">Ideal para perfil disciplinado</div>
+        <div class="sc-con">Resultados demoram mais a aparecer</div>
+        <div class="sc-con">Exige disciplina sem vitórias rápidas</div>
+      </div>
+    </div>
+    <div class="sc boldeneve">
+      <div class="sc-tag bn">MÉTODO BOLA DE NEVE</div>
+      <div class="sc-title">Priorize as menores dívidas</div>
+      <div class="sc-body">Ordene do menor para o maior valor total. Quite a menor primeiro para ter uma vitória rápida. Use a motivação gerada para atacar a próxima. Dave Ramsey popularizou esse método.</div>
+      <div class="sc-pros">
+        <div class="sc-pro">Vitórias rápidas = mais motivação</div>
+        <div class="sc-pro">Melhor para perfil emocional</div>
+        <div class="sc-pro">Mais fácil de manter a longo prazo</div>
+        <div class="sc-con">Paga mais juros no total</div>
+        <div class="sc-con">Pode ignorar dívidas caras por mais tempo</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout purple"><strong>Método Híbrido (recomendado para o Brasil):</strong> Se você tem cartão de crédito ou cheque especial — quite esses PRIMEIRO (avalanche), independente do valor. Os juros são tão absurdos que ignorá-los arruína qualquer outra estratégia. Depois aplique a bola de neve no restante.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 3.2</div>
+  <h2>Simulador — Escolha sua estratégia</h2>
+  <div class="ibox">
+    <div class="ibox-title">Ordene suas dívidas pelos dois métodos</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Insira nome, valor e taxa de juros de até 5 dívidas:</div>
+    <div class="snow-list" id="snow-inputs"></div>
+    <button class="btn-chk" onclick="calcSnow()" style="margin-bottom:14px">Calcular ordem →</button>
+    <div id="snow-result" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--blue);margin-bottom:8px;font-weight:600">📊 AVALANCHE (maiores juros primeiro)</div>
+          <div id="snow-av"></div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--green);margin-bottom:8px;font-weight:600">❄️ BOLA DE NEVE (menores valores primeiro)</div>
+          <div id="snow-bn"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 3.3</div>
+  <h2>Consolidação de dívidas: trocar caro por barato</h2>
+  <p>Se você tem acesso a uma linha de crédito com taxa menor que suas dívidas atuais, pode valer a pena <strong>unificar tudo em uma dívida só</strong> com juros menores. Exemplos:</p>
+  <div class="tbl"><table>
+    <tr><th>Estratégia</th><th>Quando usar</th><th>Cuidado</th></tr>
+    <tr><td>Empréstimo pessoal para quitar cartão</td><td>Taxa do empréstimo menor que rotativo do cartão</td><td>Não usar o cartão novamente</td></tr>
+    <tr><td>Crédito consignado (servidor/aposentado)</td><td>Tem margem disponível na folha</td><td>Cuidado com o comprometimento da margem</td></tr>
+    <tr><td>Refinanciamento com garantia de imóvel</td><td>Tem imóvel quitado ou parcialmente pago</td><td>Risco de perder o imóvel se não pagar</td></tr>
+    <tr><td>FGTS aniversário como garantia</td><td>Tem saldo no FGTS</td><td>Limita o saque em caso de demissão</td></tr>
+  </table></div>
+  <div class="callout red"><strong>Atenção crítica:</strong> Consolidação ZERO o débito, mas cria uma nova dívida. Você precisa de disciplina para não acumular novas dívidas enquanto paga a consolidada. Quem troca e continua gastando cria duas dívidas.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 3.4</div>
+  <h2>Uso estratégico do 13º salário e extras</h2>
+  <p>O 13º salário, FGTS por demissão, restituição do IR, herança ou qualquer dinheiro extra é uma <strong>oportunidade de ouro</strong> para quitação com desconto.</p>
+  <div class="callout green"><strong>Estratégia do dinheiro extra:</strong> Quando receber um valor inesperado, destine 70% para a dívida de maior juros. Use os outros 30% para pequena reserva de emergência. Nunca gaste o extra — é seu atalho para a liberdade.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 3.5</div>
+  <h2>Dívidas prescritas: quando o tempo é seu aliado</h2>
+  <p>No Brasil, dívidas prescrevem em <strong>5 anos</strong> (Código Civil). Após a prescrição, o credor não pode mais cobrar judicialmente — mas pode continuar a negativação por até 5 anos.</p>
+  <div class="callout amber"><strong>Atenção:</strong> Verificar se uma dívida está próxima de prescrever pode ser vantajoso em negociações. Se a dívida já prescreveu, você não é obrigado a pagar — mas pagar limpa seu nome. Consulte um advogado em casos de dúvida sobre prescrição.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 3</div><div class="ex-sub">5 questões · Estratégias de Quitação</div></div></div>
+  <div id="ex-m3-q"></div>
+  <div class="ex-score" id="ex-m3-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m3-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m4')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M4: NEGOCIAÇÃO -->
+<div id="screen-m4" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 04</span><span class="mod-chip chip-int">Intermediário</span></div>
+  <div class="mod-title">🤝 Como Negociar com Credores</div>
+  <div class="mod-meta"><span class="meta-tag">4 lições</span><span class="meta-tag">~1h</span><span class="meta-tag">Serasa · Feirão · Scripts de negociação</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 4.1</div>
+  <h2>A mentalidade certa para negociar</h2>
+  <p>Muitas pessoas evitam ligar para o credor por vergonha ou medo. Mas saiba: <strong>o credor QUER receber</strong>. Uma dívida inadimplente é um ativo deteriorando. Quanto mais tempo passa, menor a chance de recebimento — então o banco tem todo interesse em negociar.</p>
+  <div class="callout green"><strong>Você tem mais poder do que imagina.</strong> O credor sabe que se não negociar com você, pode não receber nada. Isso te dá alavancagem. Entre na negociação com calma, com os números na mão e com uma proposta real que você consiga pagar.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 4.2</div>
+  <h2>Canais de negociação disponíveis</h2>
+  <div class="tbl"><table>
+    <tr><th>Canal</th><th>Vantagem</th><th>Desconto típico</th></tr>
+    <tr><td><strong>Serasa Limpa Nome</strong> (serasa.com.br)</td><td>100% digital, sem fila, múltiplos credores</td><td>Até 99% em alguns casos</td></tr>
+    <tr><td><strong>Portal do próprio banco</strong></td><td>Negociação direta com o credor real</td><td>30-70% dependendo do tempo</td></tr>
+    <tr><td><strong>Feirão de Negociação BACEN</strong></td><td>Evento periódico com condições especiais</td><td>Varia por credor</td></tr>
+    <tr><td><strong>Telefone (SAC) do banco</strong></td><td>Possibilidade de negociação personalizada</td><td>20-50%</td></tr>
+    <tr><td><strong>Escritório de cobranças</strong></td><td>Dívidas antigas — mais flexíveis</td><td>50-80%</td></tr>
+    <tr><td><strong>Acordo Certo / Acordo Já</strong></td><td>Plataformas digitais de negociação</td><td>Variável</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 4.3</div>
+  <h2>Script de negociação: o que dizer</h2>
+  <p>Use este roteiro como base. Adapte para sua realidade, mas mantenha a estrutura:</p>
+  <div class="callout blue">
+    <strong>📞 Script para ligação com o banco:</strong><br><br>
+    "Bom dia, meu nome é [seu nome], CPF [seu CPF]. Tenho uma dívida com vocês de [valor] referente a [produto]. Estou buscando uma solução definitiva para quitar esse débito, mas preciso de condições que caibam na minha renda atual de [valor].<br><br>
+    Posso oferecer uma entrada de [valor] agora e parcelas de até [valor] por mês. Qual é o melhor acordo que vocês conseguem me oferecer? E me confirme por escrito depois, por favor."
+  </div>
+  <div class="callout amber"><strong>Regras de ouro na negociação:</strong><br>
+  1. Nunca aceite o primeiro valor proposto — sempre contra-proposta<br>
+  2. Peça sempre o acordo por escrito (e-mail ou carta) ANTES de pagar<br>
+  3. Proponha um valor que realmente caiba no seu orçamento — não prometa o que não pode pagar<br>
+  4. Pergunte sobre isenção de multa e juros — muitos credores aceitam<br>
+  5. Negocie só com quem tem autoridade para dar descontos</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 4.4</div>
+  <h2>O que fazer após o acordo</h2>
+  <p>Após fechar o acordo:</p>
+  <p><strong>1.</strong> Guarde o comprovante de pagamento por pelo menos 5 anos — é sua prova em caso de cobrança indevida futura.</p>
+  <p><strong>2.</strong> Acompanhe a remoção da negativação — o credor tem até 5 dias úteis após o pagamento para retirar seu nome.</p>
+  <p><strong>3.</strong> Se não retirar no prazo, você pode acionar o credor e até pedir indenização por dano moral.</p>
+  <div class="callout green"><strong>Cadastro Positivo:</strong> Após limpar o nome, seus pagamentos em dia passam a ser registrados positivamente no Serasa. Bom pagador tem score maior e acesso a crédito mais barato — o ciclo virtuoso começa aqui.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 4</div><div class="ex-sub">5 questões · Negociação com Credores</div></div></div>
+  <div id="ex-m4-q"></div>
+  <div class="ex-score" id="ex-m4-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m4-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m5')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M5: FÔLEGO FINANCEIRO -->
+<div id="screen-m5" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 05</span><span class="mod-chip chip-int">Intermediário</span></div>
+  <div class="mod-title">🌬️ Criando Fôlego Financeiro</div>
+  <div class="mod-meta"><span class="meta-tag">4 lições</span><span class="meta-tag">~1h</span><span class="meta-tag">Orçamento · Corte de gastos · Renda extra</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 5.1</div>
+  <h2>O orçamento de emergência: sobreviver pagando dívidas</h2>
+  <p>Enquanto está quitando dívidas, você precisa de um orçamento enxuto — não perfeito, mas funcional. O objetivo é garantir que as necessidades básicas estejam cobertas E as dívidas prioritárias estejam sendo pagas.</p>
+  <div class="tbl"><table>
+    <tr><th>Categoria</th><th>% recomendado em crise</th><th>O que inclui</th></tr>
+    <tr><td><strong>Sobrevivência</strong></td><td>60-65%</td><td>Moradia, alimentação, transporte essencial, água, luz, saúde</td></tr>
+    <tr><td><strong>Dívidas</strong></td><td>25-30%</td><td>Parcelas negociadas, dívidas prioritárias</td></tr>
+    <tr><td><strong>Reserva mínima</strong></td><td>5-10%</td><td>Pequena reserva para imprevistos (para não criar nova dívida)</td></tr>
+    <tr><td><strong>Lazer/Extras</strong></td><td>0-5%</td><td>Temporariamente cortado ou muito reduzido</td></tr>
+  </table></div>
+  <div class="callout amber"><strong>Esse orçamento é temporário.</strong> É o orçamento de crise — para sair da situação atual. Depois que as dívidas estiverem quitadas, você vai para o orçamento 50/30/20 de forma sustentável.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 5.2</div>
+  <h2>Corte de gastos: o que cortar primeiro</h2>
+  <p>Cortar gastos não significa miseravelidade — significa prioridade. Existem cortes que doem pouco e liberam muito dinheiro:</p>
+  <div class="callout green"><strong>Cortes de alto impacto e baixa dor:</strong><br>
+  • Streaming: cancelar os que usa menos (R$ 20-60/mês cada)<br>
+  • Academias sem frequência: R$ 80-200/mês<br>
+  • Aplicativos de delivery: cozinhar em casa economiza 60-70%<br>
+  • Assinaturas esquecidas: revisar o extrato bancário linha a linha<br>
+  • Plano de celular: checar se usa tudo que paga<br>
+  • Seguro de vida/carro: comparar com concorrentes anualmente</div>
+  <div class="callout red"><strong>Não corte o seguro de saúde ou remédios.</strong> Uma emergência médica sem cobertura cria uma dívida muito maior do que qualquer economia no plano.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 5.3</div>
+  <h2>Renda extra: acelerando a quitação</h2>
+  <p>Qualquer renda extra vai diretamente para a dívida de maior juros — não para o consumo. Isso pode reduzir o tempo de quitação pela metade.</p>
+  <div class="tbl"><table>
+    <tr><th>Fonte de renda extra</th><th>Potencial mensal</th><th>Facilidade</th></tr>
+    <tr><td>Venda de itens sem uso (OLX, Enjoei)</td><td>R$ 200-2.000 pontual</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>Freelas na área de trabalho</td><td>R$ 300-3.000/mês</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>Apps de entrega (iFood, Rappi, Uber)</td><td>R$ 800-2.500/mês</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>Aulas particulares (matéria que domina)</td><td>R$ 500-2.000/mês</td><td>⭐⭐⭐</td></tr>
+    <tr><td>Artesanato / doces / marmitas</td><td>R$ 300-1.500/mês</td><td>⭐⭐⭐</td></tr>
+    <tr><td>Revenda de produtos</td><td>R$ 300-1.000/mês</td><td>⭐⭐⭐</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 5.4</div>
+  <h2>A reserva de emergência mínima: R$ 1.000 para começar</h2>
+  <p>Parece contradição guardar dinheiro enquanto tem dívida. Mas <strong>sem uma reserva mínima, qualquer imprevisto vira nova dívida</strong>. O pneu furou? Nova parcela. A criança ficou doente? Mais uma dívida.</p>
+  <p>A meta inicial não é 6 meses de gastos — é ter <strong>R$ 1.000 em uma conta separada</strong>, intocável, para imprevistos. Com isso, você quebra o ciclo de criar novas dívidas enquanto quita as antigas.</p>
+  <div class="callout blue"><strong>Onde guardar:</strong> Conta poupança separada do banco onde você não tem acesso fácil pelo app. A dificuldade de acesso é proposital — tira a tentação de usar para gastos do dia a dia.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 5</div><div class="ex-sub">5 questões · Fôlego Financeiro</div></div></div>
+  <div id="ex-m5-q"></div>
+  <div class="ex-score" id="ex-m5-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m5-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m6')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M6: NUNCA MAIS -->
+<div id="screen-m6" class="screen">
+<div class="mod-hdr">
+  <div class="mod-eye"><span class="mod-chip chip-num">MÓDULO 06</span><span class="mod-chip chip-adv">Avançado</span></div>
+  <div class="mod-title">🛡️ Nunca Mais se Endividar</div>
+  <div class="mod-meta"><span class="meta-tag">5 lições</span><span class="meta-tag">~1h</span><span class="meta-tag">Hábitos · Reserva · Investimento inicial</span></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 6.1</div>
+  <h2>O orçamento 50/30/20 sustentável</h2>
+  <p>Com as dívidas quitadas, é hora do orçamento de longo prazo. A regra 50/30/20 é a mais equilibrada e fácil de manter:</p>
+  <div class="callout green">
+    <strong>50% — Necessidades:</strong> moradia, alimentação, saúde, transporte, contas essenciais<br><br>
+    <strong>30% — Desejos:</strong> lazer, restaurantes, viagens, roupas, hobbies — com consciência<br><br>
+    <strong>20% — Futuro:</strong> reserva de emergência (até 6 meses) → depois investimentos
+  </div>
+  <p>Se sua renda não comporta 50/30/20, comece com 70/20/10 ou 80/10/10. O <strong>hábito de separar</strong> é mais importante do que o percentual perfeito.</p>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 6.2</div>
+  <h2>Construindo a reserva de emergência completa</h2>
+  <p>A reserva de emergência ideal cobre <strong>3 a 6 meses de gastos totais</strong>. Para quem trabalha com renda variável ou autônomo, o ideal é 12 meses.</p>
+  <div class="tbl"><table>
+    <tr><th>Perfil</th><th>Reserva ideal</th><th>Onde guardar</th></tr>
+    <tr><td>CLT com emprego estável</td><td>3 meses de gastos</td><td>CDB liquidez diária ou Tesouro Selic</td></tr>
+    <tr><td>CLT com renda variável (comissões)</td><td>6 meses</td><td>CDB liquidez diária + poupança</td></tr>
+    <tr><td>Autônomo / freelancer</td><td>6-12 meses</td><td>Tesouro Selic + CDB banco digital</td></tr>
+    <tr><td>Empresário</td><td>12 meses</td><td>Reserva pessoal separada da empresa</td></tr>
+  </table></div>
+  <div class="callout blue"><strong>A reserva não é investimento</strong> — é seguro. Não busque rentabilidade máxima, busque segurança e liquidez imediata. Tesouro Selic e CDB de banco digital (Nubank, Inter, C6) são ideais.</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 6.3</div>
+  <h2>Usando o crédito como ferramenta, não armadilha</h2>
+  <p>Crédito não é inimigo. O problema é usá-lo para cobrir gastos que a renda não comporta. Usado corretamente, o crédito pode ser uma ferramenta poderosa:</p>
+  <div class="callout green"><strong>Uso saudável do crédito:</strong><br>
+  • Cartão de crédito pago INTEGRALMENTE todo mês (sem rotativo)<br>
+  • Parcelamento sem juros apenas para bens que você JÁ tem o dinheiro<br>
+  • Crédito para investimento (negócio com retorno calculado)<br>
+  • Financiamento de imóvel (patrimônio que valoriza)</div>
+  <div class="callout red"><strong>Uso perigoso do crédito:</strong><br>
+  • Parcelar para "caber no bolso" sem saber o total<br>
+  • Usar cheque especial ou rotativo como extensão da renda<br>
+  • Múltiplos parcelamentos que somam mais que 30% da renda<br>
+  • Crédito para gastos de consumo que não geram retorno</div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 6.4</div>
+  <h2>Primeiros passos no mundo dos investimentos</h2>
+  <p>Com dívidas quitadas e reserva formada, você está pronto para o próximo nível: fazer o dinheiro trabalhar por você.</p>
+  <div class="tbl"><table>
+    <tr><th>Investimento</th><th>Para quem</th><th>Risco</th><th>Como começar</th></tr>
+    <tr><td><strong>Tesouro Selic</strong></td><td>Iniciante absoluto</td><td>Baixíssimo</td><td>A partir de R$ 30 no Tesouro Direto</td></tr>
+    <tr><td><strong>CDB de banco digital</strong></td><td>Iniciante com liquidez</td><td>Baixo (FGC até 250k)</td><td>Abrir conta em Nubank, Inter, C6</td></tr>
+    <tr><td><strong>Fundos de Renda Fixa</strong></td><td>Iniciante sem tempo de pesquisar</td><td>Baixo</td><td>Através do banco ou corretora</td></tr>
+    <tr><td><strong>Fundos Imobiliários (FII)</strong></td><td>Intermediário</td><td>Médio</td><td>Corretora (XP, Rico, Clear)</td></tr>
+    <tr><td><strong>Ações</strong></td><td>Intermediário/avançado</td><td>Alto</td><td>Estudo antes de começar</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="les-num">Lição 6.5</div>
+  <h2>O sistema automático: pague-se primeiro</h2>
+  <p>O maior segredo das pessoas que nunca mais se endividam é simples: <strong>automatizar as finanças</strong>. No dia do pagamento, o dinheiro para investimento e reserva vai automaticamente para outra conta — antes de qualquer gasto.</p>
+  <div class="callout green"><strong>Como montar o sistema:</strong><br>
+  1. Conta corrente principal (recebe o salário)<br>
+  2. Débito automático no dia do pagamento → conta investimentos<br>
+  3. Conta investimentos: Tesouro Selic ou CDB<br>
+  4. O que sobra na conta corrente é o que você pode gastar<br><br>
+  Se não sobrou, você gastou demais — o sistema te dá esse feedback automaticamente.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-sec">
+  <div class="ex-hdr"><div class="ex-ico">📋</div><div><div class="ex-ttl">Exercícios — Módulo 6</div><div class="ex-sub">5 questões · Sustentabilidade Financeira</div></div></div>
+  <div id="ex-m6-q"></div>
+  <div class="ex-score" id="ex-m6-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-n" id="ex-m6-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('exam')">Ir para o Exame Final →</button></div>
+</div>
+</div>
+
+<!-- EXAM -->
+<div id="screen-exam" class="screen">
+<div class="exam-hdr">
+  <div class="exam-tag">Avaliação Final</div>
+  <h2>Exame de Proficiência</h2>
+  <p>30 questões cobrindo todos os módulos. Nota de corte: 70% (21 acertos). Mostre que você está pronto para a liberdade financeira.</p>
+  <div class="exam-stats">
+    <div><div class="est-n">30</div><div class="est-l">QUESTÕES</div></div>
+    <div><div class="est-n">70%</div><div class="est-l">NOTA DE CORTE</div></div>
+    <div><div class="est-n">6</div><div class="est-l">MÓDULOS</div></div>
+  </div>
+</div>
+<div class="exam-dots" id="exam-dots"></div>
+<div id="exam-qs"></div>
+<div id="exam-submit" style="display:none;text-align:center;margin-top:28px">
+  <button class="btn-go" onclick="submitExam()">Finalizar Exame →</button>
+</div>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="screen">
+<div class="result-wrap">
+  <div class="res-circle" id="res-circle"><div class="res-pct" id="res-pct"></div><div class="res-sub-lbl">aproveitamento</div></div>
+  <div class="res-title" id="res-title"></div>
+  <div class="res-sub" id="res-sub"></div>
+  <div class="res-breakdown" id="res-breakdown"></div>
+  <div>
+    <button class="btn-retry" onclick="retryExam()">↺ Refazer Exame</button>
+    <button class="btn-cert" id="btn-cert" onclick="go('cert')">Ver Certificado →</button>
+  </div>
+</div>
+</div>
+
+<!-- CERT -->
+<div id="screen-cert" class="screen">
+<div class="cert-wrap">
+  <div class="cert-card">
+    <div class="cert-bar"></div>
+    <div class="cert-mark">🗺️</div>
+    <div class="cert-sm">CERTIFICADO DE CONCLUSÃO</div>
+    <div class="cert-course">O Mapa da Liberdade</div>
+    <div class="cert-sub">Saindo das Dívidas do Zero · Finanças Pessoais 2026</div>
+    <div class="cert-score-box">
+      <div class="csb-lbl">Pontuação no Exame Final</div>
+      <div class="csb-val" id="cert-pct"></div>
+    </div>
+    <div class="cert-grid">
+      <div>Módulos<span>6</span></div>
+      <div>Questões<span>30</span></div>
+      <div>Nota de Corte<span>70%</span></div>
+      <div>Status<span id="cert-status" style="color:var(--green)">Aprovado ✓</span></div>
+    </div>
+    <div class="cert-date" id="cert-date"></div>
+  </div>
+  <div style="text-align:center;margin-top:20px"><button class="btn-retry" onclick="go('home')">← Voltar ao Início</button></div>
+</div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// DADOS DOS EXERCÍCIOS
+// ============================================================
+const modEx = {
+  m1:[
+    {q:"O que é 'evitação financeira' e por que ela é prejudicial?",opts:["É quando a pessoa evita gastar dinheiro desnecessariamente","É o mecanismo psicológico de ignorar a dívida, que faz ela crescer sem controle","É a estratégia de evitar novos créditos","É a prática de evitar compras por impulso"],c:1,exp:"Evitação financeira é o mecanismo de defesa que faz a pessoa ignorar sua situação financeira. O problema: a dívida cresce com juros compostos mesmo sem atenção. Olhar para a realidade é o primeiro passo obrigatório."},
+    {q:"Qual é o índice de comprometimento de renda considerado saudável pelos bancos?",opts:["Até 10%","Até 20%","Até 30%","Até 50%"],c:2,exp:"Bancos consideram saudável comprometer até 30% da renda com dívidas. Acima de 50% é zona de perigo e exige ação urgente de negociação e redução de parcelas."},
+    {q:"Onde você pode consultar gratuitamente suas dívidas negativadas?",opts:["Apenas no banco onde tem conta","Serasa Limpa Nome, com seu CPF","Apenas presencialmente no Banco Central","Apenas por carta formal aos credores"],c:1,exp:"O Serasa Limpa Nome (serasa.com.br) permite consulta gratuita com CPF e mostra todas as dívidas negativadas. O SCR do BACEN também mostra dívidas com instituições financeiras."},
+    {q:"Qual informação é MENOS importante no mapeamento de dívidas?",opts:["Taxa de juros de cada dívida","Valor total devido (não a parcela)","O banco onde você tem conta corrente","Status (em dia, atrasado, negativado)"],c:2,exp:"O banco onde você tem conta corrente não é relevante para o mapeamento das dívidas. O essencial é: credor, valor total, taxa de juros, parcela mínima e status de cada dívida."},
+  ],
+  m2:[
+    {q:"Por que pagar só o mínimo do cartão de crédito é uma armadilha?",opts:["Porque reduz o limite disponível","Porque o rotativo do cartão pode ter juros acima de 400% ao ano, fazendo a dívida crescer mesmo pagando","Porque o banco pode cancelar o cartão","Porque aumenta o score negativamente"],c:1,exp:"O rotativo do cartão é a dívida mais cara do Brasil — pode ultrapassar 435% ao ano. Se você paga R$ 150 de mínimo mas os juros do mês são R$ 750, sua dívida CRESCEU R$ 600. É matematicamente insustentável."},
+    {q:"Qual é a taxa de juros MAIS ALTA entre as opções abaixo?",opts:["Crédito consignado INSS (~1,6% a.m.)","Financiamento de veículos (~2% a.m.)","Rotativo do cartão de crédito (~15% a.m.)","Empréstimo pessoal (~4% a.m.)"],c:2,exp:"O rotativo do cartão de crédito tem as maiores taxas do mercado — em média 15% ao mês, o equivalente a ~435% ao ano. É o primeiro a ser quitado ou negociado."},
+    {q:"Qual dos seguintes NÃO é um gatilho psicológico comum do endividamento?",opts:["Compras por ansiedade emocional","Comparação social (querer o que os outros têm)","Planejamento financeiro detalhado","Crença de merecimento após esforço"],c:2,exp:"Planejamento financeiro detalhado é justamente o ANTÍDOTO para o endividamento, não um gatilho. Os gatilhos são: ansiedade, comparação, merecimento, falta de planejamento e armadilhas do crédito parcelado."},
+    {q:"Após quitar uma dívida e ter o acordo cumprido, em quanto tempo o credor deve retirar a negativação?",opts:["Imediatamente na hora do pagamento","Até 5 dias úteis","Até 30 dias corridos","Até 90 dias"],c:1,exp:"O credor tem até 5 dias úteis para solicitar a retirada do CPF da base de inadimplentes após o pagamento. Se não fizer, o consumidor pode acionar o credor e pedir indenização por dano moral."},
+    {q:"Estar negativado pode prejudicar:",opts:["Apenas a contratação de novos créditos bancários","Apenas o acesso a cartões de crédito","Aluguel de imóvel, processos seletivos, abertura de empresa e acesso a crédito","Apenas financiamentos acima de R$ 10.000"],c:2,exp:"A negativação tem efeitos amplos: dificulta aluguel de imóvel, pode bloquear processos seletivos em algumas empresas, impede abertura de empresa e limita acesso a qualquer tipo de crédito."},
+  ],
+  m3:[
+    {q:"No Método Avalanche, qual dívida é quitada PRIMEIRO?",opts:["A dívida com o menor valor total","A dívida mais antiga","A dívida com a maior taxa de juros","A dívida com a maior parcela mensal"],c:2,exp:"Avalanche = prioridade para a maior TAXA DE JUROS. Matematicamente é o método mais eficiente porque reduz o total pago em juros. A dívida mais cara cresce mais rápido e deve ser eliminada primeiro."},
+    {q:"Qual é a principal VANTAGEM do Método Bola de Neve em relação ao Avalanche?",opts:["Economiza mais dinheiro em juros","Gera vitórias rápidas que aumentam a motivação","Funciona melhor para dívidas de valor alto","É recomendado para quem tem poucas dívidas"],c:1,exp:"Bola de Neve prioriza dívidas menores para gerar vitórias rápidas. Psicologicamente, eliminar uma dívida completamente aumenta a motivação e a probabilidade de manter a estratégia a longo prazo."},
+    {q:"Por que o Método Híbrido é recomendado especificamente para o Brasil?",opts:["Porque os brasileiros preferem resultados rápidos","Porque o cartão de crédito e cheque especial têm juros tão altos que ignorá-los inviabiliza qualquer estratégia","Porque a legislação brasileira exige essa ordem","Porque os bancos oferecem desconto para quem usa esse método"],c:1,exp:"No Brasil, cartão rotativo e cheque especial têm taxas absurdas (100-435% a.a.). Deixá-los crescer enquanto quita dívidas menores pode inviabilizar todo o plano. O híbrido elimina primeiro os juros mais perigosos."},
+    {q:"Consolidação de dívidas (trocar por uma dívida com juros menores) é recomendável quando:",opts:["Sempre que possível, independente da situação","A nova linha de crédito tem taxa MENOR que as dívidas atuais E o devedor tem disciplina para não criar novas dívidas","Quando as dívidas estão atrasadas há mais de 12 meses","Apenas para dívidas de empresas, não pessoas físicas"],c:1,exp:"Consolidação só faz sentido se a nova taxa for realmente menor. O grande risco: quem consolida e continua usando o cartão cria duas dívidas — a nova e a do cartão novamente. Exige disciplina absoluta."},
+    {q:"Dívidas no Brasil prescrevem em quantos anos?",opts:["2 anos","3 anos","5 anos","10 anos"],c:2,exp:"Pelo Código Civil Brasileiro, a prescrição geral das dívidas é de 5 anos. Após esse prazo, o credor não pode mais cobrar judicialmente — mas pode manter a negativação por até 5 anos adicionais."},
+  ],
+  m4:[
+    {q:"Por que o devedor tem poder de negociação com o credor?",opts:["Porque a lei obriga o credor a negociar","Porque o credor prefere receber algo a não receber nada, e uma dívida inadimplente se deteriora","Porque o devedor pode processar o credor","Porque bancos têm metas de quitação"],c:1,exp:"O credor sabe que se não negociar, pode não receber nada. Uma dívida antiga vale menos que uma recente — o fator tempo deteriora o valor recuperável. Isso dá ao devedor real poder de barganha."},
+    {q:"Qual plataforma permite negociar dívidas com múltiplos credores de forma 100% digital e gratuita?",opts:["Portal do BACEN","Serasa Limpa Nome","App do seu banco","Receita Federal"],c:1,exp:"O Serasa Limpa Nome (serasa.com.br) é a principal plataforma digital de negociação de dívidas no Brasil, com acesso gratuito, múltiplos credores e frequentemente com descontos de até 99%."},
+    {q:"Qual é a regra de ouro ao fechar um acordo de renegociação?",opts:["Pagar imediatamente após o acordo verbal","Exigir sempre o acordo por escrito ANTES de efetuar o pagamento","Aceitar sempre a primeira proposta para agilizar","Nunca parcelar — sempre pagar à vista"],c:1,exp:"O acordo por escrito (e-mail, carta ou documento) é essencial. Sem documentação, o credor pode alegar que o acordo não existiu. Só pague após ter o comprovante formal do acordo firmado."},
+    {q:"Após pagar um acordo de dívida, o credor tem prazo máximo de quanto tempo para retirar sua negativação?",opts:["Imediatamente — é automático","Até 5 dias úteis","Até 15 dias corridos","Até 30 dias após o pagamento"],c:1,exp:"O prazo legal é de até 5 dias úteis após o pagamento para o credor retirar a negativação. Se ultrapassar, o consumidor pode acionar o credor por dano moral."},
+    {q:"O que NUNCA fazer ao negociar uma dívida?",opts:["Apresentar uma proposta concreta de pagamento","Aceitar a primeira proposta sem tentar negociar","Pedir o acordo por escrito antes de pagar","Calcular quanto realmente pode pagar por mês"],c:1,exp:"Aceitar a primeira proposta sem contra-oferta é um erro — o credor geralmente tem margem de desconto. Sempre contra-proponha com valores reais que você consegue pagar. Negociação é um processo, não uma imposição."},
+  ],
+  m5:[
+    {q:"Qual é o objetivo da reserva de emergência MÍNIMA durante o período de quitação de dívidas?",opts:["Ter 6 meses de gastos disponíveis","Ter pelo menos R$ 1.000 para imprevistos, evitando criar novas dívidas","Investir em Tesouro Direto enquanto paga as dívidas","Ter 3 meses de renda guardada antes de começar a pagar"],c:1,exp:"Durante a quitação, a meta não é a reserva ideal (6 meses) — é ter R$ 1.000 em conta separada. Isso quebra o ciclo de criar nova dívida a cada imprevisto enquanto ainda está quitando as antigas."},
+    {q:"Qual categoria de gasto NUNCA deve ser cortada, mesmo em situação de crise financeira?",opts:["Streaming e entretenimento","Saúde, remédios e plano médico","Academias e lazer","Roupas e calçados"],c:1,exp:"Cortar saúde para economizar pode gerar uma emergência médica que cria uma dívida muito maior. Remédios e plano de saúde são intocáveis. Todo o resto pode ser reduzido ou cortado temporariamente."},
+    {q:"Na regra 50/30/20 sustentável, o que os 20% representam?",opts:["Lazer e entretenimento","Alimentação e moradia","Futuro: reserva de emergência e investimentos","Gastos variáveis imprevistos"],c:2,exp:"Os 20% são destinados ao futuro: primeiro completar a reserva de emergência (3-6 meses de gastos), depois investir regularmente. É a parte que garante a construção de patrimônio e independência financeira."},
+    {q:"Por que a renda extra durante a quitação de dívidas deve ir para a dívida, não para o consumo?",opts:["Por obrigação legal","Porque aplicada na dívida de maior juros pode reduzir o tempo de quitação pela metade","Para aumentar o score mais rapidamente","Porque os bancos exigem isso no contrato"],c:1,exp:"Aplicar renda extra diretamente na dívida de maior juros tem efeito multiplicador: reduz o saldo sobre o qual incidem os juros, acelerando dramaticamente a quitação. É o atalho mais eficaz para a liberdade financeira."},
+    {q:"Qual é o percentual de renda recomendado para 'dívidas' no orçamento de crise?",opts:["5-10%","15-20%","25-30%","40-50%"],c:2,exp:"No orçamento de crise: 60-65% para sobrevivência, 25-30% para dívidas, 5-10% para reserva mínima. O lazer vai para perto de zero temporariamente. O objetivo é sobreviver pagando as dívidas sem criar novas."},
+  ],
+  m6:[
+    {q:"O que significa 'pague-se primeiro' no sistema automático de finanças?",opts:["Gastar com você mesmo antes de pagar contas","Transferir automaticamente o valor de investimento/reserva no dia do pagamento, antes de qualquer gasto","Guardar 100% do salário por um mês inteiro","Pagar dívidas antes de qualquer outra conta"],c:1,exp:"'Pagar-se primeiro' é automatizar a transferência para investimentos/reserva no dia que cai o salário. O que sobrar na conta corrente é o que você pode gastar. Elimina a desculpa 'não sobrou nada para guardar'."},
+    {q:"Qual é o uso SAUDÁVEL do crédito após quitar dívidas?",opts:["Parcelar compras porque 'cabe no bolso'","Usar o cheque especial eventualmente","Pagar o cartão de crédito integralmente todo mês, sem pagar rotativo","Usar o rotativo apenas em emergências"],c:2,exp:"O uso saudável do cartão é pagar 100% da fatura todo mês. Qualquer valor que vá para o rotativo começa o ciclo do endividamento novamente — os juros são os mesmos para quem já foi endividado."},
+    {q:"Para um trabalhador CLT com emprego estável, qual é a reserva de emergência recomendada?",opts:["1 mês de gastos","3 meses de gastos","12 meses de gastos","24 meses de gastos"],c:1,exp:"CLT com estabilidade: 3 meses de gastos. Autônomo ou renda variável: 6 meses. Empresário: 12 meses. A reserva cobre o período entre perder a renda e reestabelecer — menor risco = menor reserva necessária."},
+    {q:"Qual investimento é mais adequado para a reserva de emergência?",opts:["Ações de empresas sólidas","Fundos de renda variável","Tesouro Selic ou CDB com liquidez diária","Fundos Imobiliários (FIIs)"],c:2,exp:"A reserva de emergência precisa de SEGURANÇA e LIQUIDEZ IMEDIATA — não de rentabilidade máxima. Tesouro Selic e CDB com liquidez diária permitem saque em qualquer dia sem perda. Ações e FIIs podem cair exatamente quando você precisar do dinheiro."},
+    {q:"Qual é o principal risco de parcelar compras 'sem juros' quando se tem comprometimento elevado de renda?",opts:["O lojista pode cobrar taxa adicional","Cada parcela somada às demais pode ultrapassar 30% da renda, voltando ao superendividamento","Reduz o score de crédito","O banco pode cancelar o cartão"],c:1,exp:"O parcelamento 'sem juros' é uma armadilha sutil: individualmente parece barato, mas somado a outros parcelamentos pode comprometer 50%, 60% da renda. É o principal caminho de volta ao endividamento para quem saiu das dívidas."},
+  ],
+};
+
+// ============================================================
+// EXAME (30 questões)
+// ============================================================
+const examQs = [
+  {m:"M1",q:"O que é o índice de comprometimento de renda?",opts:["A taxa de juros média das suas dívidas","O percentual da renda mensal comprometido com parcelas de dívidas","A razão entre gastos e investimentos","O percentual do salário destinado ao lazer"],c:1},
+  {m:"M1",q:"Qual plataforma permite consultar dívidas negativadas gratuitamente?",opts:["App do banco central","Portal da Receita Federal","Serasa Limpa Nome","Sistema do INSS"],c:2},
+  {m:"M1",q:"Qual informação é ESSENCIAL ao mapear uma dívida?",opts:["Nome do gerente do banco","Taxa de juros mensal","Data de abertura da conta","Agência bancária"],c:1},
+  {m:"M1",q:"Índice de comprometimento de renda acima de quanto é considerado zona de perigo?",opts:["20%","30%","50%","70%"],c:2},
+  {m:"M2",q:"Qual dívida tem os juros mais altos no Brasil?",opts:["Financiamento imobiliário","Crédito consignado","Rotativo do cartão de crédito","Empréstimo com garantia de imóvel"],c:2},
+  {m:"M2",q:"Juros compostos incidem sobre:",opts:["Apenas o valor inicial da dívida","O saldo devedor acumulado (juros sobre juros)","Apenas as parcelas em atraso","O valor do bem financiado"],c:1},
+  {m:"M2",q:"Qual é a taxa anual aproximada do rotativo do cartão de crédito no Brasil?",opts:["Até 50% ao ano","Cerca de 100% ao ano","Acima de 400% ao ano","Cerca de 200% ao ano"],c:2},
+  {m:"M2",q:"Comprar por ansiedade ou para aliviar estresse é um exemplo de:",opts:["Planejamento financeiro","Gatilho psicológico de endividamento","Uso responsável do crédito","Compra de necessidade"],c:1},
+  {m:"M2",q:"Após quitar uma dívida, o credor deve retirar a negativação em:",opts:["30 dias","15 dias","Imediatamente","Até 5 dias úteis"],c:3},
+  {m:"M3",q:"O Método Avalanche prioriza dívidas pela:",opts:["Menor para maior valor total","Maior para menor taxa de juros","Data de vencimento","Maior parcela mensal"],c:1},
+  {m:"M3",q:"O Método Bola de Neve é recomendado para pessoas que:",opts:["Têm apenas uma dívida","Precisam de motivação rápida e vitórias visíveis","Têm dívidas com juros muito altos","Querem economizar ao máximo em juros"],c:1},
+  {m:"M3",q:"No Brasil, o Método Híbrido recomenda quitar PRIMEIRO:",opts:["A dívida de maior valor total","A dívida mais antiga","Cartão de crédito e cheque especial pelos juros absurdos","A dívida com menor parcela"],c:2},
+  {m:"M3",q:"Consolidação de dívidas é vantajosa quando:",opts:["Sempre — quanto menos dívidas, melhor","A nova taxa de crédito é menor que as dívidas atuais E há disciplina para não criar novas","Há mais de 5 dívidas diferentes","O valor total supera R$ 10.000"],c:1},
+  {m:"M3",q:"Dívidas civis no Brasil prescrevem em:",opts:["2 anos","3 anos","5 anos","10 anos"],c:2},
+  {m:"M3",q:"Qual o destino correto do 13º salário para quem está quitando dívidas?",opts:["Gastar metade e guardar metade","Investir em renda variável","Aplicar na dívida de maior taxa de juros","Dar de entrada em um bem financiado"],c:2},
+  {m:"M4",q:"Por que o devedor tem poder de negociação com o credor?",opts:["Porque a lei obriga negociação","O credor prefere receber algo a não receber nada — dívida velha vale menos","Porque o credor tem medo do Procon","Por disposição regulatória do BACEN"],c:1},
+  {m:"M4",q:"O que é o Serasa Limpa Nome?",opts:["Órgão governamental de controle de dívidas","Plataforma digital gratuita de negociação de dívidas com múltiplos credores","App exclusivo do Serasa para consulta de score","Serviço pago de assessoria financeira"],c:1},
+  {m:"M4",q:"Antes de pagar qualquer acordo de dívida, o consumidor deve:",opts:["Ligar para o BACEN para confirmar","Exigir o acordo por escrito (e-mail ou documento formal)","Pagar à vista para garantir o desconto","Consultar um advogado obrigatoriamente"],c:1},
+  {m:"M4",q:"Ao propor um valor de parcela em uma negociação, você deve:",opts:["Propor o máximo que consegue para impressionar","Propor apenas o que realmente cabe no orçamento — não prometa o que não pode pagar","Sempre aceitar a proposta do credor","Propor 50% do valor original"],c:1},
+  {m:"M4",q:"Se o credor não retirar a negativação após o prazo legal, o consumidor pode:",opts:["Só reclamar no Procon","Acionar o credor e pedir indenização por dano moral","Nada — o credor decide o prazo","Bloquear o credor no sistema bancário"],c:1},
+  {m:"M5",q:"Qual é a reserva de emergência MÍNIMA recomendada durante a quitação de dívidas?",opts:["3 meses de gastos","R$ 500","R$ 1.000 em conta separada","6 meses de renda"],c:2},
+  {m:"M5",q:"Qual gasto NUNCA deve ser cortado em crise financeira?",opts:["Streaming e lazer","Saúde e remédios","Roupas e calçados","Restaurantes e delivery"],c:1},
+  {m:"M5",q:"No orçamento de crise para quitar dívidas, qual percentual vai para sobrevivência?",opts:["30-40%","40-50%","60-65%","75-80%"],c:2},
+  {m:"M5",q:"Renda extra durante a quitação deve ser usada para:",opts:["Melhorar a qualidade de vida temporariamente","Guardar na poupança","Aplicar na dívida de maior taxa de juros","Comprar um bem necessário parcelado"],c:2},
+  {m:"M5",q:"O método de 'pagar-se primeiro' consiste em:",opts:["Gastar com lazer antes de pagar contas","Transferir automaticamente para poupança/investimento no dia do pagamento","Pagar a si mesmo um salário fixo do próprio negócio","Quitar dívidas antes de pagar outras contas"],c:1},
+  {m:"M6",q:"Na regra 50/30/20 sustentável, os 20% são destinados a:",opts:["Lazer e entretenimento","Alimentação e compras essenciais","Reserva de emergência e investimentos","Gastos variáveis mensais"],c:2},
+  {m:"M6",q:"Qual é a forma SAUDÁVEL de usar o cartão de crédito?",opts:["Pagar sempre o mínimo","Usar para compras parceladas sem juros","Pagar o valor total da fatura todo mês","Usar apenas em emergências"],c:2},
+  {m:"M6",q:"Para um autônomo ou freelancer, qual reserva de emergência é recomendada?",opts:["1 mês de gastos","3 meses de gastos","6 a 12 meses de gastos","Não precisa de reserva"],c:2},
+  {m:"M6",q:"Qual investimento é ideal para a reserva de emergência?",opts:["Ações de grandes empresas","Fundos Imobiliários","Tesouro Selic ou CDB com liquidez diária","Criptomoedas estáveis"],c:2},
+  {m:"M6",q:"O principal risco do parcelamento 'sem juros' para quem saiu de dívidas é:",opts:["A loja pode cobrar taxa escondida","A soma das parcelas pode ultrapassar 30% da renda, voltando ao superendividamento","Reduz o score de crédito","O banco cancela o cartão"],c:1},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const ST = { done: new Set(), lastPct: 0 };
+let examST = { ans: {}, done: false };
+
+// ============================================================
+// NAVEGAÇÃO
+// ============================================================
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.nitem').forEach(n => n.classList.remove('active'));
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  window.scrollTo(0, 0);
+  if (/^m[1-6]$/.test(id)) { ST.done.add(id); updateProg(); }
+  if (id === 'exam') renderExam();
+}
+
+function updateProg() {
+  const pct = Math.round((ST.done.size / 6) * 100);
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('ppct').textContent = pct + '%';
+  for (let i = 1; i <= 6; i++) {
+    const n = document.getElementById('nav-m' + i);
+    if (n && ST.done.has('m' + i)) n.classList.add('done');
+  }
+}
+
+// ============================================================
+// CALCULADORA DE DIAGNÓSTICO
+// ============================================================
+function calcDiag() {
+  const ids = ['d1','d2','d3','d4','d5'];
+  const total = ids.reduce((s,id) => s + (parseFloat(document.getElementById(id).value)||0), 0);
+  const fmt = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+  document.getElementById('d-total').textContent = fmt(total);
+  let status, next;
+  if (total === 0) { status = '—'; next = 'Insira os valores'; }
+  else if (total < 5000) { status = 'Controlável'; next = 'Bola de neve funciona bem'; }
+  else if (total < 20000) { status = 'Atenção'; next = 'Negociar e avalanche'; }
+  else if (total < 50000) { status = 'Alto'; next = 'Priorize negociação urgente'; }
+  else { status = 'Crítico'; next = 'Consulte especialista financeiro'; }
+  document.getElementById('d-status').textContent = status;
+  document.getElementById('d-next').textContent = next;
+}
+
+// ============================================================
+// SIMULADOR BOLA DE NEVE / AVALANCHE
+// ============================================================
+function buildSnowInputs() {
+  const c = document.getElementById('snow-inputs');
+  const names = ['Cartão de crédito','Empréstimo pessoal','Financiamento','Conta de loja','Outra dívida'];
+  const vals = ['4500','8000','22000','1200','3300'];
+  const taxas = ['15','4','1.8','6','3'];
+  c.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const row = document.createElement('div');
+    row.className = 'snow-item';
+    row.innerHTML = `
+      <input class="debt-input" style="width:140px" type="text" id="sn-${i}" value="${names[i]}" placeholder="Nome da dívida">
+      <input class="debt-input" style="width:110px" type="number" id="sv-${i}" value="${vals[i]}" placeholder="Valor (R$)">
+      <input class="debt-input" style="width:90px" type="number" id="st-${i}" value="${taxas[i]}" step="0.1" placeholder="Taxa %a.m">
+    `;
+    c.appendChild(row);
+  }
+}
+
+function calcSnow() {
+  const debts = [];
+  for (let i = 0; i < 5; i++) {
+    const name = document.getElementById('sn-'+i).value;
+    const val = parseFloat(document.getElementById('sv-'+i).value)||0;
+    const taxa = parseFloat(document.getElementById('st-'+i).value)||0;
+    if (val > 0) debts.push({name, val, taxa});
+  }
+  if (!debts.length) return;
+  const fmt = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+  const colors = ['r1','r2','r3','r4','r5'];
+  const avalanche = [...debts].sort((a,b) => b.taxa - a.taxa);
+  const bolaNeve = [...debts].sort((a,b) => a.val - b.val);
+  const renderList = (list, containerId) => {
+    const c = document.getElementById(containerId);
+    c.innerHTML = '';
+    list.forEach((d,i) => {
+      const el = document.createElement('div');
+      el.className = 'snow-result-item';
+      el.innerHTML = `<div class="snow-rank ${colors[i]}">${i+1}º</div><div style="flex:1"><strong>${d.name}</strong><div style="font-size:12px;color:var(--text3);font-family:var(--font-mono)">${fmt(d.val)} · ${d.taxa}% a.m.</div></div>`;
+      c.appendChild(el);
+    });
+  };
+  renderList(avalanche, 'snow-av');
+  renderList(bolaNeve, 'snow-bn');
+  document.getElementById('snow-result').style.display = 'block';
+}
+
+// ============================================================
+// EXERCÍCIOS POR MÓDULO
+// ============================================================
+function renderModEx(mk) {
+  const cont = document.getElementById('ex-' + mk + '-q');
+  if (!cont || cont.dataset.rendered) return;
+  cont.dataset.rendered = '1';
+  const qs = modEx[mk];
+  window['__s_' + mk] = { ans: {}, chk: {} };
+  qs.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `
+      <div class="q-num">Questão ${qi+1} de ${qs.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${mk}-${qi}">
+        ${q.opts.map((o,oi)=>`<div class="option" id="opt-${mk}-${qi}-${oi}" onclick="selOpt('${mk}',${qi},${oi},this)"><div class="opt-l">${'ABCD'[oi]}</div><div class="opt-t">${o}</div></div>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${mk}-${qi}"></div>
+      <button class="btn-chk" id="chk-${mk}-${qi}" onclick="checkOpt('${mk}',${qi})" disabled>Verificar</button>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function selOpt(mk, qi, oi, el) {
+  const s = window['__s_' + mk];
+  if (s.chk[qi]) return;
+  document.querySelectorAll(`#opts-${mk}-${qi} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  s.ans[qi] = oi;
+  document.getElementById('chk-' + mk + '-' + qi).disabled = false;
+}
+
+function checkOpt(mk, qi) {
+  const s = window['__s_' + mk];
+  if (s.chk[qi]) return;
+  s.chk[qi] = true;
+  const q = modEx[mk][qi];
+  const chosen = s.ans[qi];
+  document.querySelectorAll(`#opts-${mk}-${qi} .option`).forEach((o,i) => {
+    o.classList.add('disabled');
+    if (i === q.c) o.classList.add('correct');
+    else if (i === chosen) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb-' + mk + '-' + qi);
+  fb.className = 'feedback show ' + (chosen === q.c ? 'ok' : 'fail');
+  fb.textContent = (chosen === q.c ? '✓ Correto! ' : '✗ Incorreto. ') + q.exp;
+  document.getElementById('chk-' + mk + '-' + qi).disabled = true;
+  if (Object.keys(s.chk).length === modEx[mk].length) {
+    const sc = Object.keys(s.chk).filter(i => s.ans[i] === modEx[mk][i].c).length;
+    document.getElementById('ex-' + mk + '-sc').style.display = 'flex';
+    document.getElementById('ex-' + mk + '-sc-v').textContent = sc + ' / ' + modEx[mk].length;
+  }
+}
+
+// ============================================================
+// EXAME FINAL
+// ============================================================
+function renderExam() {
+  const cont = document.getElementById('exam-qs');
+  if (cont.dataset.rendered) return;
+  cont.dataset.rendered = '1';
+  examST = { ans: {}, done: false };
+  const dots = document.getElementById('exam-dots');
+  dots.innerHTML = examQs.map((_,i) => `<div class="edot" id="edot-${i}"></div>`).join('');
+  examQs.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `
+      <div class="q-num">Questão ${qi+1} / ${examQs.length} — <span style="color:var(--text3)">${q.m}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="eopts-${qi}">
+        ${q.opts.map((o,oi)=>`<div class="option" id="eopt-${qi}-${oi}" onclick="selExam(${qi},${oi},this)"><div class="opt-l">${'ABCD'[oi]}</div><div class="opt-t">${o}</div></div>`).join('')}
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function selExam(qi, oi, el) {
+  if (examST.done) return;
+  document.querySelectorAll(`#eopts-${qi} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  examST.ans[qi] = oi;
+  document.getElementById('edot-' + qi).classList.add('answered');
+  if (Object.keys(examST.ans).length >= 1) document.getElementById('exam-submit').style.display = 'block';
+}
+
+function submitExam() {
+  if (examST.done) return;
+  examST.done = true;
+  let correct = 0;
+  const modSc = {};
+  examQs.forEach((q, qi) => {
+    const chosen = examST.ans[qi];
+    const ok = chosen === q.c;
+    if (ok) correct++;
+    if (!modSc[q.m]) modSc[q.m] = { c:0, t:0 };
+    modSc[q.m].t++;
+    if (ok) modSc[q.m].c++;
+    document.querySelectorAll(`#eopts-${qi} .option`).forEach((o,i) => {
+      o.classList.add('disabled');
+      if (i === q.c) o.classList.add('correct');
+      else if (i === chosen) o.classList.add('wrong');
+    });
+    const dot = document.getElementById('edot-' + qi);
+    dot.classList.remove('answered');
+    dot.classList.add(ok ? 'correct' : 'wrong');
+  });
+  const pct = Math.round((correct / examQs.length) * 100);
+  ST.lastPct = pct;
+  document.getElementById('exam-submit').style.display = 'none';
+  go('result');
+  const passed = pct >= 70;
+  document.getElementById('res-circle').className = 'res-circle ' + (passed ? 'pass' : 'fail');
+  document.getElementById('res-pct').textContent = pct + '%';
+  document.getElementById('res-title').textContent = passed ? '🎉 Aprovado! Você está pronto!' : '📖 Continue estudando!';
+  document.getElementById('res-sub').textContent = passed
+    ? `Você acertou ${correct} de ${examQs.length} questões. Agora você tem o conhecimento para traçar seu caminho para a liberdade financeira!`
+    : `Você acertou ${correct} de ${examQs.length}. A nota de corte é 70% (${Math.ceil(examQs.length*0.7)} acertos). Revise os módulos com menor aproveitamento e tente novamente!`;
+  const bd = document.getElementById('res-breakdown');
+  bd.innerHTML = Object.entries(modSc).map(([m,s]) => {
+    const p = Math.round((s.c/s.t)*100);
+    const cls = p>=80?'full':p>=60?'partial':'low';
+    return `<div class="rb-card"><div class="rb-mod">${m}</div><div class="rb-score ${cls}">${s.c}/${s.t}</div><div class="rb-pct">${p}%</div></div>`;
+  }).join('');
+  document.getElementById('btn-cert').style.display = passed ? 'inline-block' : 'none';
+  document.getElementById('cert-pct').textContent = pct + '%';
+  document.getElementById('cert-date').textContent = 'Emitido em ' + new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+}
+
+function retryExam() {
+  examST = { ans:{}, done:false };
+  const c = document.getElementById('exam-qs');
+  c.innerHTML = '';
+  delete c.dataset.rendered;
+  go('exam');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.onload = () => {
+  calcDiag();
+  buildSnowInputs();
+  for (let i = 1; i <= 6; i++) renderModEx('m' + i);
+};
+</script>
+</body>
+</html>

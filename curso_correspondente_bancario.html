@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correspondente Bancário — Preparatório FBB-100 / ANEPS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f7fa; --bg2:#ffffff; --bg3:#eef1f6; --bg4:#e2e8f2;
+  --navy:#0a1628; --navy2:#122040; --navy3:#1a3160;
+  --blue:#1e5fd6; --blue2:#2563eb; --blue3:#3b82f6;
+  --gold:#d4a017; --gold2:#f0b429; --gold3:#fcd34d;
+  --text:#0f172a; --text2:#475569; --text3:#94a3b8;
+  --border:#dde3ef; --border2:#c8d3e8;
+  --green:#16a34a; --green-bg:#f0fdf4; --green-border:#bbf7d0;
+  --red:#dc2626; --red-bg:#fef2f2; --red-border:#fecaca;
+  --amber:#d97706; --amber-bg:#fffbeb; --amber-border:#fde68a;
+  --radius:12px; --radius-sm:8px;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.7}
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:270px;background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sidebar-brand{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.brand-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,160,23,0.15);border:1px solid rgba(212,160,23,0.3);border-radius:6px;padding:4px 10px;margin-bottom:12px}
+.brand-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold2)}
+.brand-badge-text{font-family:var(--font-mono);font-size:10px;color:var(--gold2);letter-spacing:1.5px;text-transform:uppercase}
+.brand-title{font-family:var(--font-head);font-size:17px;font-weight:700;color:#fff;line-height:1.3}
+.brand-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;font-family:var(--font-mono)}
+
+.prog-wrap{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prog-lbl{font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase}
+.prog-pct{font-size:12px;font-family:var(--font-mono);color:var(--gold2)}
+.prog-track{background:rgba(255,255,255,0.08);border-radius:999px;height:3px}
+.prog-fill{height:3px;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .5s ease}
+
+.nav-grp{padding:8px 0}
+.nav-grp-title{padding:6px 20px;font-size:9px;font-family:var(--font-mono);color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;transition:background .15s;border-left:2px solid transparent;position:relative}
+.nav-item:hover{background:rgba(255,255,255,0.05)}
+.nav-item.active{background:rgba(30,95,214,0.2);border-left-color:var(--blue3)}
+.nav-item.active .nav-label{color:#fff}
+.nav-item.done .nav-num{background:var(--gold2);color:var(--navy);border-color:var(--gold2)}
+.nav-num{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--font-mono);color:rgba(255,255,255,0.4);flex-shrink:0;transition:all .2s}
+.nav-label{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.3;flex:1;transition:color .15s}
+.nav-check{font-size:11px;color:var(--gold2);opacity:0;transition:opacity .2s}
+.nav-item.done .nav-check{opacity:1}
+
+/* MAIN */
+.main{margin-left:270px;flex:1}
+.screen{display:none;min-height:100vh;padding:40px 48px;max-width:920px}
+.screen.active{display:block}
+
+/* HERO */
+.hero{min-height:100vh;padding:48px;max-width:920px;display:flex;flex-direction:column;justify-content:center}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.hero-tag{font-family:var(--font-mono);font-size:11px;color:var(--blue2);letter-spacing:2px;text-transform:uppercase}
+.hero-divider{height:1px;width:32px;background:var(--border2)}
+.hero h1{font-family:var(--font-head);font-size:clamp(34px,4.5vw,54px);font-weight:800;line-height:1.1;letter-spacing:-1px;color:var(--navy);margin-bottom:8px}
+.hero h1 .accent{color:var(--blue2)}
+.hero-cert{display:inline-flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-sm);padding:8px 14px;margin-bottom:20px;font-size:13px;color:var(--amber)}
+.hero p{font-size:16px;color:var(--text2);max-width:560px;line-height:1.75;margin-bottom:32px}
+.hero-stats{display:flex;gap:28px;margin-bottom:36px;flex-wrap:wrap}
+.hero-stat-num{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--navy)}
+.hero-stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--blue2);color:#fff;font-family:var(--font-head);font-size:14px;font-weight:700;padding:14px 28px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
+.btn-primary:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,0.35)}
+.hero-modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:40px}
+.hm-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.hm-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-bottom:6px}
+.hm-title{font-size:12px;font-weight:600;color:var(--navy);line-height:1.35}
+.hm-badge{font-size:10px;margin-top:6px;font-family:var(--font-mono)}
+.badge-ini{color:var(--green)} .badge-int{color:var(--amber)} .badge-adv{color:var(--red)}
+
+/* MODULE */
+.mod-header{margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid var(--border)}
+.mod-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.mod-num-badge{background:var(--navy);color:#fff;font-family:var(--font-mono);font-size:11px;padding:4px 12px;border-radius:6px}
+.mod-level-badge{font-size:11px;padding:4px 10px;border-radius:6px;font-family:var(--font-mono)}
+.lvl-ini{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.lvl-int{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.lvl-adv{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.mod-title{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--navy);line-height:1.2;letter-spacing:-0.5px;margin-bottom:12px}
+.mod-meta{display:flex;gap:10px;flex-wrap:wrap}
+.meta-chip{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--text2);font-family:var(--font-mono)}
+.meta-chip.blue{background:#eff6ff;border-color:#bfdbfe;color:var(--blue2)}
+
+/* LESSON */
+.lesson{margin-bottom:36px}
+.lesson-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.lesson h2{font-family:var(--font-head);font-size:21px;font-weight:700;color:var(--navy);margin-bottom:14px;letter-spacing:-0.3px}
+.lesson p{color:var(--text2);margin-bottom:12px;line-height:1.75}
+.lesson p strong{color:var(--text);font-weight:600}
+
+/* CALLOUT */
+.callout{border-radius:var(--radius-sm);padding:14px 18px;margin:16px 0;font-size:14px;line-height:1.65;border-left:3px solid}
+.callout.blue{background:#eff6ff;border-color:var(--blue2);color:#1e40af}
+.callout.green{background:var(--green-bg);border-color:var(--green);color:#14532d}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);color:#78350f}
+.callout.red{background:var(--red-bg);border-color:var(--red);color:#7f1d1d}
+.callout strong{font-weight:600}
+
+/* CODE */
+.code-block{background:var(--navy);border-radius:var(--radius-sm);padding:16px 20px;font-family:var(--font-mono);font-size:13px;color:#94a3b8;line-height:1.8;margin:14px 0;white-space:pre-wrap;word-break:break-word}
+.code-block .hl{color:#7dd3fc} .code-block .val{color:#86efac} .code-block .key{color:#f9a8d4} .code-block .com{color:#475569;font-style:italic}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:14px 0;border-radius:var(--radius-sm);border:1px solid var(--border);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--navy);color:#fff;font-family:var(--font-head);font-weight:600;font-size:12px;padding:10px 14px;text-align:left;letter-spacing:0.3px}
+td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--bg3)}
+
+/* COMPARE */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+.cc{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.cc.bad{border-top:3px solid var(--red)} .cc.good{border-top:3px solid var(--green)}
+.cc-lbl{font-size:11px;font-family:var(--font-mono);font-weight:600;margin-bottom:10px}
+.cc-lbl.bad{color:var(--red)} .cc-lbl.good{color:var(--green)}
+.cc-body{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* INTERACTIVE */
+.ibox{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:20px 0;box-shadow:var(--shadow)}
+.ibox-title{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ibox-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue2);display:inline-block}
+.calc-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.calc-label{font-size:13px;color:var(--text2);min-width:140px}
+.calc-input{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 12px;font-family:var(--font-mono);font-size:13px;color:var(--text);width:160px;outline:none;transition:border-color .2s}
+.calc-input:focus{border-color:var(--blue2)}
+.calc-result{background:var(--navy);border-radius:var(--radius-sm);padding:14px 18px;margin-top:8px}
+.cr-label{font-size:11px;font-family:var(--font-mono);color:rgba(255,255,255,0.4);margin-bottom:4px}
+.cr-val{font-family:var(--font-head);font-size:24px;font-weight:700;color:#fff}
+.cr-detail{font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;font-family:var(--font-mono)}
+
+/* EXERCISE */
+.ex-section{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px;box-shadow:var(--shadow-md)}
+.ex-hdr{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.ex-icon{width:40px;height:40px;background:var(--navy);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ex-hdr-info{}
+.ex-title{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--navy)}
+.ex-sub{font-size:12px;color:var(--text3);font-family:var(--font-mono);margin-top:2px}
+.question{margin-bottom:24px}
+.q-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.q-text{font-size:15px;color:var(--text);margin-bottom:14px;line-height:1.6;font-weight:500}
+.options{display:flex;flex-direction:column;gap:8px}
+.option{display:flex;align-items:flex-start;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;cursor:pointer;transition:all .2s}
+.option:hover:not(.disabled){border-color:var(--blue3);background:#eff6ff}
+.option.selected{border-color:var(--blue2);background:#eff6ff}
+.option.correct{border-color:var(--green);background:var(--green-bg)}
+.option.wrong{border-color:var(--red);background:var(--red-bg)}
+.option.disabled{cursor:default}
+.opt-letter{width:26px;height:26px;border-radius:7px;background:#fff;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text3);flex-shrink:0;transition:all .2s;font-weight:600}
+.option.selected .opt-letter{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.option.correct .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+.option.wrong .opt-letter{background:var(--red);border-color:var(--red);color:#fff}
+.opt-text{font-size:14px;color:var(--text2);line-height:1.5}
+.feedback{margin-top:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;display:none;line-height:1.55}
+.feedback.show{display:block}
+.feedback.ok{background:var(--green-bg);border:1px solid var(--green-border);color:#14532d}
+.feedback.fail{background:var(--red-bg);border:1px solid var(--red-border);color:#7f1d1d}
+.btn-check{background:var(--blue2);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-check:hover{background:var(--blue)} .btn-check:disabled{opacity:.35;cursor:default}
+.btn-next{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--blue2);border:1px solid var(--blue3);border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-next:hover{background:#eff6ff}
+.ex-score{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 18px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--text2)}
+.ex-score-num{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--blue2)}
+
+/* EXAM */
+.exam-header{text-align:center;padding:48px 0 36px;border-bottom:1px solid var(--border);margin-bottom:36px}
+.exam-tag{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.exam-header h2{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:-0.5px}
+.exam-header p{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto}
+.exam-stats{display:flex;justify-content:center;gap:32px;margin-top:24px;flex-wrap:wrap}
+.exam-stat-num{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--navy)}
+.exam-stat-label{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.exam-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.edot{width:8px;height:8px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);transition:all .2s}
+.edot.answered{border-color:var(--blue2)}
+.edot.correct{background:var(--green);border-color:var(--green)}
+.edot.wrong{background:var(--red);border-color:var(--red)}
+
+/* RESULT */
+.result-wrap{padding:48px 0;text-align:center}
+.result-circle{width:150px;height:150px;border-radius:50%;margin:0 auto 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:4px solid;position:relative}
+.result-circle.pass{border-color:var(--green);background:var(--green-bg)}
+.result-circle.fail{border-color:var(--red);background:var(--red-bg)}
+.result-pct{font-family:var(--font-head);font-size:42px;font-weight:800}
+.result-circle.pass .result-pct{color:var(--green)}
+.result-circle.fail .result-pct{color:var(--red)}
+.result-sublbl{font-size:11px;font-family:var(--font-mono);color:var(--text3)}
+.result-title{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.result-sub{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto 28px}
+.result-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:24px 0 32px;text-align:left}
+.rb-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.rb-mod{font-size:10px;font-family:var(--font-mono);color:var(--text3);margin-bottom:6px;text-transform:uppercase}
+.rb-score{font-family:var(--font-head);font-size:22px;font-weight:800}
+.rb-score.full{color:var(--green)} .rb-score.partial{color:var(--amber)} .rb-score.low{color:var(--red)}
+.rb-pct{font-size:11px;color:var(--text3);font-family:var(--font-mono);margin-top:2px}
+.btn-retry{background:transparent;color:var(--blue2);border:1px solid var(--blue3);border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin:6px}
+.btn-retry:hover{background:#eff6ff}
+.btn-cert{background:var(--navy);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 22px;font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin:6px}
+.btn-cert:hover{background:var(--navy2)}
+
+/* CERT */
+.cert-wrap{padding:40px 0}
+.cert-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:48px;text-align:center;max-width:680px;margin:0 auto;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.cert-top-bar{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--navy),var(--blue2),var(--gold2))}
+.cert-watermark{font-family:var(--font-head);font-size:80px;font-weight:800;color:var(--bg3);position:absolute;bottom:-10px;right:-10px;line-height:1;pointer-events:none;user-select:none}
+.cert-logo-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
+.cert-logo-box{background:var(--navy);border-radius:var(--radius-sm);padding:8px 16px;font-family:var(--font-head);font-size:14px;font-weight:700;color:#fff}
+.cert-title-sm{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:3px;margin-bottom:16px}
+.cert-course{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.cert-sub{font-size:13px;color:var(--text3);margin-bottom:24px}
+.cert-score-box{background:var(--navy);border-radius:var(--radius-sm);padding:16px 28px;display:inline-block;margin-bottom:24px}
+.cert-score-lbl{font-size:11px;font-family:var(--font-mono);color:rgba(255,255,255,0.4);margin-bottom:4px}
+.cert-score-val{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--gold2)}
+.cert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.cert-grid span{display:block;font-size:14px;font-weight:600;color:var(--text);margin-top:4px}
+.cert-seal{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px}
+.cert-seal-icon{font-size:20px}
+.cert-seal-text{font-size:12px;color:var(--text3);font-family:var(--font-mono)}
+.cert-date{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.screen,.hero{padding:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-badge"><div class="brand-badge-dot"></div><span class="brand-badge-text">FBB-100 / ANEPS</span></div>
+    <div class="brand-title">Correspondente<br>Bancário</div>
+    <div class="brand-sub">Preparatório certificação · 2026</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top"><span class="prog-lbl">Progresso</span><span class="prog-pct" id="prog-pct">0%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <nav class="nav-grp">
+    <div class="nav-grp-title">Módulos</div>
+    <div class="nav-item active" onclick="go('home')"><div class="nav-num">⌂</div><div class="nav-label">Início</div></div>
+    <div class="nav-item" id="nav-m1" onclick="go('m1')"><div class="nav-num">1</div><div class="nav-label">Sistema Financeiro Nacional</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m2" onclick="go('m2')"><div class="nav-num">2</div><div class="nav-label">Regulamentação e BACEN</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m3" onclick="go('m3')"><div class="nav-num">3</div><div class="nav-label">Produtos de Crédito</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m4" onclick="go('m4')"><div class="nav-num">4</div><div class="nav-label">Matemática Financeira</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m5" onclick="go('m5')"><div class="nav-num">5</div><div class="nav-label">CDC do Consumidor e Ética</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m6" onclick="go('m6')"><div class="nav-num">6</div><div class="nav-label">LGPD e Prevenção a Fraudes</div><div class="nav-check">✓</div></div>
+    <div class="nav-item" id="nav-m7" onclick="go('m7')"><div class="nav-num">7</div><div class="nav-label">Autorregulação Bancária</div><div class="nav-check">✓</div></div>
+  </nav>
+  <nav class="nav-grp" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
+    <div class="nav-grp-title">Avaliação</div>
+    <div class="nav-item" id="nav-exam" onclick="go('exam')"><div class="nav-num">★</div><div class="nav-label">Exame Final — Simulado FBB-100</div></div>
+  </nav>
+</aside>
+
+<main class="main">
+
+<!-- HOME -->
+<div id="screen-home" class="screen active">
+<div class="hero">
+  <div class="hero-eyebrow"><span class="hero-tag">Preparatório Oficial</span><div class="hero-divider"></div></div>
+  <h1>Correspondente<br><span class="accent">Bancário</span></h1>
+  <div class="hero-cert">⚠️ Certificação OBRIGATÓRIA pelo BACEN — Resolução CMN nº 3.954/2011</div>
+  <p>Prepare-se para as certificações <strong>FEBRABAN FBB-100</strong> e <strong>ANEPS</strong> com o conteúdo completo do edital oficial. Do Sistema Financeiro Nacional à LGPD — tudo que cai na prova.</p>
+  <div class="hero-stats">
+    <div><div class="hero-stat-num">7</div><div class="hero-stat-label">Módulos</div></div>
+    <div><div class="hero-stat-num">40</div><div class="hero-stat-label">Questões</div></div>
+    <div><div class="hero-stat-num">70%</div><div class="hero-stat-label">Nota de corte</div></div>
+    <div><div class="hero-stat-num">~10h</div><div class="hero-stat-label">Duração</div></div>
+  </div>
+  <button class="btn-primary" onclick="go('m1')">Iniciar Curso →</button>
+  <div class="hero-modules">
+    <div class="hm-card"><div class="hm-num">MÓD 01</div><div class="hm-title">Sistema Financeiro Nacional</div><div class="hm-badge badge-ini">Iniciante</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 02</div><div class="hm-title">Regulamentação e BACEN</div><div class="hm-badge badge-ini">Iniciante</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 03</div><div class="hm-title">Produtos de Crédito</div><div class="hm-badge badge-int">Intermediário</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 04</div><div class="hm-title">Matemática Financeira</div><div class="hm-badge badge-int">Intermediário</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 05</div><div class="hm-title">CDC e Ética</div><div class="hm-badge badge-int">Intermediário</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 06</div><div class="hm-title">LGPD e Prevenção a Fraudes</div><div class="hm-badge badge-adv">Avançado</div></div>
+    <div class="hm-card"><div class="hm-num">MÓD 07</div><div class="hm-title">Autorregulação Bancária</div><div class="hm-badge badge-adv">Avançado</div></div>
+  </div>
+</div>
+</div>
+
+<!-- M1: SFN -->
+<div id="screen-m1" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 01</span><span class="mod-level-badge lvl-ini">Iniciante</span></div>
+  <div class="mod-title">🏛️ Sistema Financeiro Nacional</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h</span><span class="meta-chip blue">Edital FEBRABAN/ANEPS</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 1.1</div>
+  <h2>O que é o Sistema Financeiro Nacional (SFN)</h2>
+  <p>O SFN é o conjunto de <strong>instituições, instrumentos e mercados</strong> que permitem a transferência de recursos entre poupadores e tomadores no Brasil. É regulado e supervisionado pelo governo para garantir estabilidade e segurança.</p>
+  <p>Ele é composto por dois grandes grupos: os <strong>órgãos normativos</strong> (que criam as regras) e as <strong>entidades supervisoras e operadoras</strong> (que fiscalizam e executam).</p>
+  <div class="callout blue"><strong>Por que cai na prova:</strong> Toda prova FBB-100/ANEPS cobra a estrutura do SFN. Você precisa saber quem manda em quem e qual o papel de cada órgão.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 1.2</div>
+  <h2>Órgãos Normativos — quem cria as regras</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Órgão</th><th>Sigla</th><th>Função Principal</th></tr>
+    <tr><td><strong>Conselho Monetário Nacional</strong></td><td>CMN</td><td>Órgão máximo do SFN. Define a política monetária, cambial e de crédito. NÃO executa — só normatiza.</td></tr>
+    <tr><td><strong>Conselho Nacional de Seguros Privados</strong></td><td>CNSP</td><td>Normatiza seguros, previdência privada aberta e capitalização.</td></tr>
+    <tr><td><strong>Conselho Nacional de Previdência Complementar</strong></td><td>CNPC</td><td>Normatiza fundos de pensão (previdência fechada).</td></tr>
+  </table></div>
+  <div class="callout amber"><strong>Atenção:</strong> O CMN é formado pelo Ministro da Fazenda (presidente), Ministro do Planejamento e o Presidente do Banco Central. Não tem poder executivo — só normativo.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 1.3</div>
+  <h2>Entidades Supervisoras — quem fiscaliza</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Entidade</th><th>Sigla</th><th>O que supervisiona</th></tr>
+    <tr><td><strong>Banco Central do Brasil</strong></td><td>BACEN</td><td>Bancos, financeiras, correspondentes bancários, política monetária. O mais importante para o CB.</td></tr>
+    <tr><td><strong>Comissão de Valores Mobiliários</strong></td><td>CVM</td><td>Mercado de capitais, bolsa de valores, fundos de investimento.</td></tr>
+    <tr><td><strong>Superintendência de Seguros Privados</strong></td><td>SUSEP</td><td>Seguradoras, corretoras de seguros, capitalização.</td></tr>
+    <tr><td><strong>Superintendência Nacional de Previdência Complementar</strong></td><td>PREVIC</td><td>Fundos de pensão fechados.</td></tr>
+  </table></div>
+  <p>O <strong>BACEN</strong> é o mais relevante para o correspondente bancário. É ele que exige a certificação (Resolução 3.954), autoriza os bancos e supervisiona as operações de crédito.</p>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 1.4</div>
+  <h2>Instituições Operadoras — quem executa</h2>
+  <p>São as instituições que efetivamente realizam as operações financeiras com o público:</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Tipo</th><th>Exemplos</th><th>Operações</th></tr>
+    <tr><td>Bancos Comerciais</td><td>Bradesco, Itaú, BB</td><td>Depósitos à vista, crédito, câmbio</td></tr>
+    <tr><td>Bancos Múltiplos</td><td>Caixa, Santander</td><td>Várias carteiras (comercial, investimento, crédito imobiliário)</td></tr>
+    <tr><td>Financeiras</td><td>Losango, Fininvest</td><td>Crédito ao consumidor (CDC)</td></tr>
+    <tr><td>Cooperativas de Crédito</td><td>Sicoob, Sicredi</td><td>Serviços financeiros a cooperados</td></tr>
+    <tr><td><strong>Correspondentes Bancários</strong></td><td>Lotéricas, farmácias, lojas</td><td>Intermediação — captam clientes para os bancos</td></tr>
+  </table></div>
+  <div class="callout green"><strong>Você como Correspondente Bancário</strong> é uma instituição operadora — representa o banco perante o cliente, mas não é o banco. Você intermedia, não concede o crédito diretamente.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 1</div><div class="ex-sub">4 questões · Sistema Financeiro Nacional</div></div></div>
+  <div id="ex-m1-q"></div>
+  <div class="ex-score" id="ex-m1-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m1-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m2')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M2: REGULAMENTAÇÃO -->
+<div id="screen-m2" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 02</span><span class="mod-level-badge lvl-ini">Iniciante</span></div>
+  <div class="mod-title">⚖️ Regulamentação e BACEN</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h</span><span class="meta-chip blue">Resolução CMN 3.954/2011</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 2.1</div>
+  <h2>O que é o Correspondente Bancário</h2>
+  <p>Correspondente bancário é uma <strong>pessoa jurídica contratada por uma instituição financeira</strong> para oferecer serviços bancários em seu estabelecimento. Pode ser uma lotérica, farmácia, mercado, escritório de crédito, etc.</p>
+  <p>A base legal é a <strong>Resolução CMN nº 3.954, de 24/02/2011</strong>, que define quem pode ser CB, o que pode fazer, e que exige certificação obrigatória para quem atende o público em operações de crédito.</p>
+  <div class="callout blue"><strong>Definição legal (Res. 3.954):</strong> "Empresas contratadas por instituições financeiras e demais instituições autorizadas a funcionar pelo Banco Central do Brasil para a prestação de serviços de atendimento aos clientes e usuários dessas instituições."</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 2.2</div>
+  <h2>O que o CB pode e não pode fazer</h2>
+  <div class="compare-grid">
+    <div class="cc good"><div class="cc-lbl good">✓ PODE FAZER</div><div class="cc-body">• Receber e encaminhar propostas de crédito<br>• Realizar cobrança de dívidas<br>• Receber pagamentos (contas, tributos)<br>• Abertura de contas (quando autorizado)<br>• Oferecer produtos financeiros do banco parceiro<br>• Realizar câmbio manual (se autorizado)<br>• Captar recursos via poupança (lotéricas CEF)</div></div>
+    <div class="cc bad"><div class="cc-lbl bad">✗ NÃO PODE FAZER</div><div class="cc-body">• Conceder crédito com recursos próprios<br>• Firmar contratos em nome do banco sem autorização<br>• Realizar operações sem o contrato com o banco<br>• Prestar garantias em nome da IF<br>• Emitir instrumentos de pagamento (cartões)<br>• Realizar serviços fora do contrato firmado</div></div>
+  </div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 2.3</div>
+  <h2>Certificação obrigatória — FEBRABAN e ANEPS</h2>
+  <p>A Resolução 3.954/2011 tornou a certificação <strong>obrigatória desde 24/02/2014</strong> para todo CB que atende o público em operações de crédito. Sem ela, o banco não pode credenciar o correspondente.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Certificação</th><th>Emissor</th><th>Cobre</th><th>Validade</th></tr>
+    <tr><td><strong>FBB-100</strong> (completa)</td><td>FEBRABAN</td><td>Consignado + CDC + Veículos</td><td>3 anos</td></tr>
+    <tr><td>FBB-110</td><td>FEBRABAN</td><td>Consignado + CDC</td><td>3 anos</td></tr>
+    <tr><td>FBB-120</td><td>FEBRABAN</td><td>CDC apenas</td><td>3 anos</td></tr>
+    <tr><td>FBB-130</td><td>FEBRABAN</td><td>Veículos + CDC</td><td>3 anos</td></tr>
+    <tr><td><strong>ANEPS Completa</strong></td><td>ANEPS</td><td>Consignado + CDC + Veículos + Imobiliário</td><td>3 anos</td></tr>
+    <tr><td><strong>CA-300 / CA-600</strong></td><td>ABECIP</td><td>Crédito Imobiliário</td><td>3 anos</td></tr>
+  </table></div>
+  <div class="callout amber"><strong>Dica de ouro:</strong> Para ser um CB completo, tire FBB-100 + CA-300. Assim você pode operar com qualquer banco, incluindo a Caixa, em todas as modalidades de crédito.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 2.4</div>
+  <h2>Responsabilidades e sigilo bancário</h2>
+  <p>O CB responde perante o banco contratante por todos os atendimentos prestados em seu ponto de atendimento. A Lei Complementar nº 105/2001 estabelece o <strong>sigilo bancário</strong> — o CB não pode revelar dados dos clientes a terceiros.</p>
+  <p>Violações do sigilo bancário podem gerar: reclusão de 1 a 4 anos, mais multa. O sigilo pode ser quebrado apenas por ordem judicial ou por solicitação do próprio cliente.</p>
+  <div class="callout red"><strong>Importante:</strong> O CB responde solidariamente com o banco pelos danos causados ao consumidor. Se o atendimento gerar prejuízo ao cliente por má conduta do CB, ambos respondem.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 2</div><div class="ex-sub">5 questões · Regulamentação e BACEN</div></div></div>
+  <div id="ex-m2-q"></div>
+  <div class="ex-score" id="ex-m2-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m2-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m3')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M3: PRODUTOS DE CRÉDITO -->
+<div id="screen-m3" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 03</span><span class="mod-level-badge lvl-int">Intermediário</span></div>
+  <div class="mod-title">💳 Produtos de Crédito</div>
+  <div class="mod-meta"><span class="meta-chip">5 lições</span><span class="meta-chip">~1h30</span><span class="meta-chip blue">Consignado · CDC · Veículos · Imobiliário</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 3.1</div>
+  <h2>Crédito Consignado</h2>
+  <p>O crédito consignado é um empréstimo cuja <strong>parcela é descontada diretamente na folha de pagamento</strong> ou benefício do INSS. É o produto mais negociado pelos correspondentes bancários.</p>
+  <p><strong>Quem pode contratar:</strong> servidores públicos (federal, estadual, municipal), aposentados e pensionistas do INSS, militares e empregados CLT de empresas conveniadas.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Característica</th><th>Regra</th></tr>
+    <tr><td>Margem consignável INSS</td><td>Até 45% do benefício líquido (35% empréstimo + 10% cartão consignado)</td></tr>
+    <tr><td>Prazo máximo INSS</td><td>84 meses (7 anos)</td></tr>
+    <tr><td>Taxa de juros</td><td>Tabelada pelo INSS — uma das mais baixas do mercado</td></tr>
+    <tr><td>Portabilidade</td><td>Garantida por lei — cliente pode migrar para banco com taxa menor</td></tr>
+    <tr><td>Liquidação antecipada</td><td>Direito do consumidor, com redução proporcional de juros</td></tr>
+  </table></div>
+  <div class="callout blue"><strong>CET — Custo Efetivo Total:</strong> É a taxa que inclui TODOS os encargos do crédito (juros + IOF + tarifas). Deve ser informada ao cliente ANTES da contratação.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 3.2</div>
+  <h2>Crédito Direto ao Consumidor (CDC)</h2>
+  <p>O CDC é o crédito concedido a pessoas físicas para aquisição de bens e serviços. Diferente do consignado, <strong>o desconto é em conta, não em folha</strong>. Exemplos: compra de eletrodomésticos, celulares, reformas.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Item</th><th>CDC</th><th>Consignado</th></tr>
+    <tr><td>Desconto</td><td>Em conta corrente</td><td>Em folha/benefício</td></tr>
+    <tr><td>Taxa de juros</td><td>Mais alta (maior risco)</td><td>Mais baixa (menor risco)</td></tr>
+    <tr><td>Público</td><td>Qualquer pessoa física</td><td>Servidores, aposentados, CLT conveniado</td></tr>
+    <tr><td>Garantia</td><td>Pode ter alienação fiduciária</td><td>Próprio salário/benefício</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 3.3</div>
+  <h2>Financiamento e Crédito de Veículos</h2>
+  <p>Modalidade de crédito para compra de veículos (novos ou usados). O veículo fica alienado fiduciariamente ao banco até a quitação total.</p>
+  <div class="callout amber"><strong>Alienação fiduciária:</strong> O bem é comprado pelo cliente, mas a propriedade fica com o banco até o pagamento integral. Se o cliente não pagar, o banco retoma o bem (busca e apreensão). É a principal garantia do financiamento de veículos.</div>
+  <p><strong>Leasing vs Financiamento:</strong> No leasing, o banco é dono do bem durante o contrato e o cliente paga pelo uso. No financiamento, o cliente é proprietário, mas o bem está alienado. Ambos são operações que o CB pode intermediar.</p>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 3.4</div>
+  <h2>Crédito Imobiliário (ABECIP CA-300)</h2>
+  <p>Para operar com crédito imobiliário, o CB precisa da certificação <strong>CA-300 ou CA-600 da ABECIP</strong> — além da FEBRABAN. Os principais sistemas são o SFH e o SFI.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Sistema</th><th>Nome completo</th><th>Características</th></tr>
+    <tr><td><strong>SFH</strong></td><td>Sistema Financeiro de Habitação</td><td>Usa recursos do FGTS e poupança. Taxa máxima de 12% a.a. Imóvel até R$1,5 mi.</td></tr>
+    <tr><td><strong>SFI</strong></td><td>Sistema de Financiamento Imobiliário</td><td>Sem limite de valor. Taxas de mercado. Recursos de LCI e CRI.</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 3.5</div>
+  <h2>Tarifas bancárias e IOF</h2>
+  <p>O CB deve conhecer as principais tarifas e tributos para orientar corretamente o cliente:</p>
+  <p><strong>IOF (Imposto sobre Operações Financeiras):</strong> tributo federal incidente sobre operações de crédito. É calculado sobre o valor do empréstimo e integra o CET. Varia conforme o prazo — quanto maior o prazo, maior o IOF proporcional.</p>
+  <p><strong>ISS (Imposto sobre Serviços):</strong> tributo municipal incidente sobre os serviços bancários. O banco recolhe, mas o custo pode ser repassado ao cliente via tarifa.</p>
+  <div class="callout green"><strong>Regra do CET:</strong> O cliente tem direito a receber o CET antes de assinar qualquer contrato de crédito. Se o banco ou CB não informar o CET, a operação pode ser anulada.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 3</div><div class="ex-sub">5 questões · Produtos de Crédito</div></div></div>
+  <div id="ex-m3-q"></div>
+  <div class="ex-score" id="ex-m3-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m3-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m4')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M4: MATEMÁTICA FINANCEIRA -->
+<div id="screen-m4" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 04</span><span class="mod-level-badge lvl-int">Intermediário</span></div>
+  <div class="mod-title">🧮 Matemática Financeira</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h30</span><span class="meta-chip blue">Juros · CET · Parcelas · Portabilidade</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 4.1</div>
+  <h2>Juros simples vs juros compostos</h2>
+  <p><strong>Juros simples:</strong> incidem sempre sobre o capital inicial. Usados em operações de curtíssimo prazo.</p>
+  <div class="code-block"><span class="com">// Juros Simples</span>
+J = C × i × t
+Onde: C = capital | i = taxa | t = tempo
+
+<span class="hl">Exemplo:</span> R$10.000 a 2% a.m. por 3 meses
+J = 10.000 × 0,02 × 3 = <span class="val">R$ 600,00</span>
+Montante = 10.000 + 600 = <span class="val">R$ 10.600,00</span></div>
+  <p><strong>Juros compostos:</strong> incidem sobre o saldo acumulado (juros sobre juros). São usados em TODAS as operações de crédito bancário no Brasil.</p>
+  <div class="code-block"><span class="com">// Juros Compostos</span>
+M = C × (1 + i)^t
+Onde: M = montante | C = capital | i = taxa | t = tempo
+
+<span class="hl">Exemplo:</span> R$10.000 a 2% a.m. por 3 meses
+M = 10.000 × (1,02)³ = 10.000 × 1,0612 = <span class="val">R$ 10.612,08</span>
+J = 10.612,08 - 10.000 = <span class="val">R$ 612,08</span> (maior que nos simples!)</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 4.2</div>
+  <h2>Calculadora de Parcelas — Simulador Interativo</h2>
+  <div class="ibox">
+    <div class="ibox-title">Simulador de Crédito Consignado</div>
+    <div class="calc-row"><span class="calc-label">Valor do empréstimo (R$)</span><input class="calc-input" type="number" id="c-val" value="10000" oninput="calcParc()"></div>
+    <div class="calc-row"><span class="calc-label">Taxa mensal (%)</span><input class="calc-input" type="number" id="c-taxa" value="1.80" step="0.01" oninput="calcParc()"></div>
+    <div class="calc-row"><span class="calc-label">Prazo (meses)</span><input class="calc-input" type="number" id="c-prazo" value="48" oninput="calcParc()"></div>
+    <div class="calc-result">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div><div class="cr-label">PARCELA MENSAL</div><div class="cr-val" id="c-parc">R$ 0,00</div></div>
+        <div><div class="cr-label">TOTAL PAGO</div><div class="cr-val" id="c-total">R$ 0,00</div></div>
+        <div><div class="cr-label">TOTAL DE JUROS</div><div class="cr-val" id="c-juros">R$ 0,00</div></div>
+      </div>
+      <div class="cr-detail" id="c-cet"></div>
+    </div>
+  </div>
+  <p>A fórmula da parcela de empréstimo (Sistema Price — parcelas fixas) é:</p>
+  <div class="code-block"><span class="com">// Fórmula Price (parcelas fixas)</span>
+PMT = PV × [i × (1+i)^n] / [(1+i)^n - 1]
+Onde: PV = valor presente | i = taxa | n = número de parcelas</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 4.3</div>
+  <h2>CET — Custo Efetivo Total</h2>
+  <p>O <strong>CET é a taxa que representa o custo real do crédito</strong>, incluindo juros, IOF, tarifas, seguros e demais encargos. É expresso em percentual anual e deve ser divulgado ao cliente antes da contratação.</p>
+  <div class="callout blue"><strong>CET &gt; taxa de juros nominal</strong> sempre. Se alguém te oferece 1,5% a.m. mas o CET é 2,8% a.m., o custo real é 2,8%. O cliente tem direito a saber o CET antes de assinar.</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Componente</th><th>Inclui no CET?</th></tr>
+    <tr><td>Taxa de juros</td><td>✓ Sim</td></tr>
+    <tr><td>IOF</td><td>✓ Sim</td></tr>
+    <tr><td>Tarifas bancárias (cadastro, avaliação)</td><td>✓ Sim</td></tr>
+    <tr><td>Seguros obrigatórios</td><td>✓ Sim</td></tr>
+    <tr><td>Seguros opcionais (contratados separadamente)</td><td>✗ Não</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 4.4</div>
+  <h2>Portabilidade de crédito e liquidação antecipada</h2>
+  <p><strong>Portabilidade:</strong> o direito do cliente de transferir seu crédito para outra instituição que ofereça taxa menor, sem custo adicional. O banco original é obrigado a aceitar. Regulada pela Resolução BACEN 4.292/2013.</p>
+  <p><strong>Liquidação antecipada:</strong> o cliente pode quitar o empréstimo antes do prazo e tem direito à redução proporcional dos juros. O banco não pode cobrar multa pela liquidação antecipada de pessoa física (Lei 10.820/2003).</p>
+  <div class="callout green"><strong>Oportunidade comercial:</strong> A portabilidade é uma das maiores fontes de captação de clientes para o CB. Se você encontrar um cliente com taxa alta, pode propor a portabilidade para um banco parceiro com taxa menor.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 4</div><div class="ex-sub">5 questões · Matemática Financeira</div></div></div>
+  <div id="ex-m4-q"></div>
+  <div class="ex-score" id="ex-m4-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m4-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m5')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M5: CDC DO CONSUMIDOR E ÉTICA -->
+<div id="screen-m5" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 05</span><span class="mod-level-badge lvl-int">Intermediário</span></div>
+  <div class="mod-title">🛡️ Código de Defesa do Consumidor e Ética</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h</span><span class="meta-chip blue">CDC · Ouvidoria · Ética Profissional</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 5.1</div>
+  <h2>Código de Defesa do Consumidor (Lei 8.078/90)</h2>
+  <p>O CDC é a principal lei de proteção do consumidor no Brasil. Para o CB, é fundamental conhecê-la para atender corretamente e evitar infrações.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Direito</th><th>Aplicação para o CB</th></tr>
+    <tr><td>Direito à informação</td><td>Informar claramente taxa, CET, prazo e total pago antes da assinatura</td></tr>
+    <tr><td>Direito ao arrependimento</td><td>Contratos feitos fora do estabelecimento (telefone, internet): 7 dias para cancelar sem custo</td></tr>
+    <tr><td>Vedação à abusividade</td><td>Proibido venda casada — não pode condicionar crédito à compra de seguro ou produto</td></tr>
+    <tr><td>Inversão do ônus da prova</td><td>Em ação judicial, é o fornecedor que prova que não errou, não o consumidor</td></tr>
+    <tr><td>Responsabilidade solidária</td><td>O banco e o CB respondem juntos pelos danos causados ao consumidor</td></tr>
+  </table></div>
+  <div class="callout red"><strong>Venda casada é crime:</strong> Condicionar a concessão de crédito à contratação de seguro, título de capitalização ou qualquer outro produto é prática abusiva e pode gerar multa, processo e cancelamento do credenciamento.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 5.2</div>
+  <h2>Direito de Arrependimento e Contratos de Crédito</h2>
+  <p>Quando o contrato de crédito é celebrado <strong>fora do estabelecimento comercial</strong> (por telefone, internet, domicílio), o consumidor tem <strong>7 dias corridos</strong> para cancelar sem nenhum custo.</p>
+  <p>Para contratos celebrados presencialmente no ponto de atendimento, o arrependimento de 7 dias não se aplica — mas o consumidor ainda pode pagar antecipadamente sem multa.</p>
+  <div class="callout amber"><strong>Atenção na prova:</strong> Os 7 dias de arrependimento contam a partir da assinatura do contrato ou do recebimento do produto, o que ocorrer por último.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 5.3</div>
+  <h2>Ouvidoria Bancária</h2>
+  <p>A ouvidoria é o canal de última instância para resolução de conflitos entre clientes e bancos. Todo banco é obrigado a ter uma ouvidoria (Resolução BACEN nº 4.860/2020).</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Canal</th><th>Prazo de resposta</th><th>Quando usar</th></tr>
+    <tr><td>SAC (0800)</td><td>Imediato ou até 5 dias úteis</td><td>Primeiro contato — reclamações, cancelamentos</td></tr>
+    <tr><td>Ouvidoria</td><td>Até 10 dias úteis (prorrogável por mais 10)</td><td>Quando o SAC não resolveu</td></tr>
+    <tr><td>BACEN (BC Resolve)</td><td>Variável</td><td>Quando a ouvidoria não resolveu</td></tr>
+    <tr><td>Procon / Judiciário</td><td>Variável</td><td>Último recurso</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 5.4</div>
+  <h2>Ética Profissional do Correspondente</h2>
+  <p>A conduta ética é exigida tanto pelo CDC quanto pelo Código de Autorregulação Bancária. O CB ético:</p>
+  <div class="callout green"><strong>Sempre:</strong> informa o CET antes da assinatura · explica todas as cláusulas do contrato · trata o cliente com respeito e igualdade · protege os dados do cliente · orienta o cliente a contratar apenas o que precisa e pode pagar.</div>
+  <div class="callout red"><strong>Nunca:</strong> pratica venda casada · omite informações relevantes · assina contratos sem leitura pelo cliente · usa dados do cliente para fins não autorizados · discrimina clientes por raça, gênero ou condição social.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 5</div><div class="ex-sub">5 questões · CDC e Ética</div></div></div>
+  <div id="ex-m5-q"></div>
+  <div class="ex-score" id="ex-m5-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m5-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m6')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M6: LGPD -->
+<div id="screen-m6" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 06</span><span class="mod-level-badge lvl-adv">Avançado</span></div>
+  <div class="mod-title">🔒 LGPD e Prevenção a Fraudes</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h</span><span class="meta-chip blue">Lei 13.709/2018 · PLD/FT · Circular 3.978</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 6.1</div>
+  <h2>LGPD — Lei Geral de Proteção de Dados (Lei 13.709/2018)</h2>
+  <p>A LGPD regula o tratamento de dados pessoais no Brasil. Para o CB, é fundamental — você coleta CPF, renda, dados bancários e histórico de crédito de clientes diariamente.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Conceito</th><th>Definição</th></tr>
+    <tr><td>Dado pessoal</td><td>Qualquer informação que identifique ou possa identificar uma pessoa (CPF, nome, endereço, renda)</td></tr>
+    <tr><td>Dado sensível</td><td>Dados sobre saúde, biometria, origem racial, religião — tratamento mais restrito</td></tr>
+    <tr><td>Titular</td><td>A pessoa a quem os dados pertencem (o cliente)</td></tr>
+    <tr><td>Controlador</td><td>Quem decide como os dados são usados (o banco)</td></tr>
+    <tr><td>Operador</td><td>Quem processa os dados a mando do controlador (pode ser o CB)</td></tr>
+    <tr><td>ANPD</td><td>Autoridade Nacional de Proteção de Dados — fiscaliza o cumprimento da LGPD</td></tr>
+  </table></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 6.2</div>
+  <h2>Bases legais para tratamento de dados no crédito</h2>
+  <p>O CB só pode coletar e usar dados do cliente com uma <strong>base legal válida</strong>. As principais para operações de crédito:</p>
+  <div class="callout blue"><strong>Execução de contrato:</strong> Para analisar e conceder crédito, o banco/CB pode usar os dados sem consentimento expresso — é necessário para executar o contrato que o cliente pediu.</div>
+  <div class="callout blue"><strong>Consentimento:</strong> Para uso de dados para marketing, cross-sell ou compartilhamento com terceiros — é necessário consentimento expresso e específico do titular.</div>
+  <div class="callout amber"><strong>Legítimo interesse:</strong> Pode ser usado para prevenção a fraudes e análise de risco de crédito, desde que não prejudique os direitos do titular.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 6.3</div>
+  <h2>Prevenção à Lavagem de Dinheiro (PLD/FT)</h2>
+  <p>A Circular BACEN nº 3.978/2020 exige que bancos e correspondentes implementem política de prevenção à lavagem de dinheiro e ao financiamento do terrorismo. A Lei de referência é a <strong>Lei 9.613/1998</strong>.</p>
+  <p>Lavagem de dinheiro ocorre em <strong>3 etapas:</strong></p>
+  <div class="code-block"><span class="hl">1. COLOCAÇÃO</span>    → Inserir dinheiro ilegal no sistema financeiro
+   Ex: depósitos em espécie fragmentados (smurfing)
+
+<span class="hl">2. OCULTAÇÃO</span>    → Disfarçar a origem ilícita
+   Ex: transferências entre contas, conversão em ativos
+
+<span class="hl">3. INTEGRAÇÃO</span>   → Reintroduzir na economia como recurso "limpo"
+   Ex: compra de imóveis, investimentos, empresas</div>
+  <div class="callout red"><strong>Obrigação do CB:</strong> Comunicar ao banco qualquer operação suspeita — movimentações incompatíveis com o perfil do cliente, operações em espécie acima de R$50.000, ou qualquer operação que levante suspeita de lavagem.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 6.4</div>
+  <h2>Sinais de alerta e KYC — Conheça seu Cliente</h2>
+  <p>KYC (Know Your Customer) é o processo de coleta e verificação de informações dos clientes para identificar e mitigar riscos. É obrigação do CB colaborar com esse processo.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Sinal de alerta</th><th>O que pode indicar</th></tr>
+    <tr><td>Cliente recusa fornecer documentos</td><td>Identidade falsa ou ocultação de origem</td></tr>
+    <tr><td>Renda declarada incompatível com operação</td><td>Capacidade financeira falsa</td></tr>
+    <tr><td>Várias operações pequenas no mesmo dia</td><td>Smurfing (fragmentação para lavagem)</td></tr>
+    <tr><td>Terceiro paga em nome do cliente sem justificativa</td><td>Testa-de-ferro</td></tr>
+    <tr><td>Endereço ou telefone falso</td><td>Fraude de identidade</td></tr>
+  </table></div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 6</div><div class="ex-sub">5 questões · LGPD e PLD</div></div></div>
+  <div id="ex-m6-q"></div>
+  <div class="ex-score" id="ex-m6-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m6-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('m7')">Próximo módulo →</button></div>
+</div>
+</div>
+
+<!-- M7: AUTORREGULAÇÃO -->
+<div id="screen-m7" class="screen">
+<div class="mod-header">
+  <div class="mod-eyebrow"><span class="mod-num-badge">MÓDULO 07</span><span class="mod-level-badge lvl-adv">Avançado</span></div>
+  <div class="mod-title">📜 Autorregulação Bancária</div>
+  <div class="mod-meta"><span class="meta-chip">4 lições</span><span class="meta-chip">~1h</span><span class="meta-chip blue">FEBRABAN · Open Finance · PIX</span></div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 7.1</div>
+  <h2>O que é Autorregulação Bancária</h2>
+  <p>A autorregulação é o conjunto de normas e boas práticas que os próprios bancos, por meio da <strong>FEBRABAN</strong>, se comprometem a seguir — além das exigências legais do BACEN. É voluntária, mas quem adere assume o compromisso perante o mercado.</p>
+  <p>O <strong>Código de Autorregulação Bancária da FEBRABAN</strong> abrange: transparência na comunicação, publicidade responsável, proteção ao consumidor, canais de atendimento e produtos e serviços.</p>
+  <div class="callout blue"><strong>Por que o CB precisa saber:</strong> O banco parceiro segue o código de autorregulação e exige que os CBs também sigam as mesmas práticas. Violações podem gerar cancelamento do credenciamento.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 7.2</div>
+  <h2>PIX e Meios de Pagamento Digitais</h2>
+  <p>O <strong>PIX</strong> é o sistema de pagamentos instantâneos do BACEN, lançado em novembro de 2020. Opera 24h por dia, 7 dias por semana, com liquidação em segundos.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Chave PIX</th><th>Pode ser</th></tr>
+    <tr><td>CPF/CNPJ</td><td>Pessoa física ou jurídica</td></tr>
+    <tr><td>Celular</td><td>Número de telefone com DDD</td></tr>
+    <tr><td>E-mail</td><td>Endereço de e-mail</td></tr>
+    <tr><td>Chave aleatória</td><td>Código gerado pelo banco</td></tr>
+  </table></div>
+  <p>O CB pode usar o PIX para facilitar recebimentos e pagamentos, mas deve orientar o cliente sobre <strong>golpes do PIX</strong>: engenharia social, links falsos, QR codes adulterados.</p>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 7.3</div>
+  <h2>Open Finance (Open Banking)</h2>
+  <p>O Open Finance é o sistema que permite ao cliente <strong>compartilhar seus dados financeiros com outras instituições</strong>, com consentimento, para obter melhores produtos e taxas.</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Fase</th><th>O que permite</th></tr>
+    <tr><td>Fase 1</td><td>Bancos compartilham dados de produtos e serviços (tarifas, canais)</td></tr>
+    <tr><td>Fase 2</td><td>Cliente autoriza compartilhar seus dados cadastrais e de conta</td></tr>
+    <tr><td>Fase 3</td><td>Iniciação de pagamentos e portabilidade de crédito facilitada</td></tr>
+    <tr><td>Fase 4</td><td>Dados de seguros, câmbio e investimentos</td></tr>
+  </table></div>
+  <div class="callout amber"><strong>Oportunidade para o CB:</strong> Com o Open Finance, o CB pode acessar o histórico financeiro do cliente (com autorização) para oferecer produtos mais adequados e competitivos — maior conversão com menos retrabalho.</div>
+</div>
+
+<div class="lesson">
+  <div class="lesson-num">Lição 7.4</div>
+  <h2>Sigilo Bancário e Exclusão do Cadastro Negativo</h2>
+  <p>O <strong>Cadastro Positivo</strong> (Lei 12.414/2011) registra o histórico de pagamentos do consumidor. Permite que bons pagadores obtenham taxas menores. Desde 2019, o cadastro é automático — o cliente precisa pedir para sair.</p>
+  <p>Os bancos de dados como <strong>Serasa, SPC e SCR (BACEN)</strong> registram inadimplência e histórico de crédito. O CB deve conhecer esses sistemas para orientar clientes sobre consulta e regularização.</p>
+  <div class="callout green"><strong>SCR — Sistema de Informações de Crédito do BACEN:</strong> Todo crédito acima de R$200 é registrado no SCR. O cliente pode consultar seu próprio SCR gratuitamente no site do BACEN.</div>
+</div>
+
+<hr class="divider">
+<div class="ex-section">
+  <div class="ex-hdr"><div class="ex-icon">📋</div><div class="ex-hdr-info"><div class="ex-title">Exercícios — Módulo 7</div><div class="ex-sub">5 questões · Autorregulação e Mercado</div></div></div>
+  <div id="ex-m7-q"></div>
+  <div class="ex-score" id="ex-m7-sc" style="display:none"><span>Sua pontuação</span><span class="ex-score-num" id="ex-m7-sc-v"></span></div>
+  <div style="margin-top:16px"><button class="btn-next" onclick="go('exam')">Ir para o Exame Final →</button></div>
+</div>
+</div>
+
+<!-- EXAM -->
+<div id="screen-exam" class="screen">
+<div class="exam-header">
+  <div class="exam-tag">Simulado Oficial</div>
+  <h2>Exame Final — FBB-100 / ANEPS</h2>
+  <p>40 questões no padrão da prova real. Nota de corte: 70% (28 acertos). Você tem 2 tentativas na prova oficial.</p>
+  <div class="exam-stats">
+    <div><div class="exam-stat-num">40</div><div class="exam-stat-label">QUESTÕES</div></div>
+    <div><div class="exam-stat-num">70%</div><div class="exam-stat-label">NOTA DE CORTE</div></div>
+    <div><div class="exam-stat-num">7</div><div class="exam-stat-label">MÓDULOS</div></div>
+  </div>
+</div>
+<div class="exam-dots" id="exam-dots"></div>
+<div id="exam-qs"></div>
+<div id="exam-submit" style="display:none;text-align:center;margin-top:28px">
+  <button class="btn-primary" onclick="submitExam()">Finalizar Exame e Ver Resultado →</button>
+</div>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="screen">
+<div class="result-wrap">
+  <div class="result-circle" id="res-circle"><div class="result-pct" id="res-pct"></div><div class="result-sublbl">aproveitamento</div></div>
+  <div class="result-title" id="res-title"></div>
+  <div class="result-sub" id="res-sub"></div>
+  <div class="result-breakdown" id="res-breakdown"></div>
+  <div>
+    <button class="btn-retry" onclick="retryExam()">↺ Refazer Simulado</button>
+    <button class="btn-cert" id="btn-cert" onclick="go('cert')">Ver Certificado →</button>
+  </div>
+</div>
+</div>
+
+<!-- CERT -->
+<div id="screen-cert" class="screen">
+<div class="cert-wrap">
+  <div class="cert-card">
+    <div class="cert-top-bar"></div>
+    <div class="cert-watermark">CB</div>
+    <div class="cert-logo-row">
+      <div class="cert-logo-box">FBB-100</div>
+      <div style="font-size:12px;color:var(--text3);font-family:var(--font-mono)">Simulado Preparatório</div>
+    </div>
+    <div class="cert-title-sm">CERTIFICADO DE CONCLUSÃO</div>
+    <div class="cert-course">Correspondente Bancário</div>
+    <div class="cert-sub">Preparatório Certificação FEBRABAN FBB-100 / ANEPS · 2026</div>
+    <div class="cert-score-box">
+      <div class="cert-score-lbl">PONTUAÇÃO NO EXAME FINAL</div>
+      <div class="cert-score-val" id="cert-pct-val"></div>
+    </div>
+    <div class="cert-grid">
+      <div>Módulos<span>7</span></div>
+      <div>Questões<span>40</span></div>
+      <div>Nota de Corte<span>70%</span></div>
+      <div>Status<span id="cert-status" style="color:var(--green)">Aprovado ✓</span></div>
+    </div>
+    <div class="cert-seal"><span class="cert-seal-icon">🏛️</span><span class="cert-seal-text">Baseado no edital oficial FEBRABAN/ANEPS 2026</span></div>
+    <div class="cert-date" id="cert-date"></div>
+  </div>
+  <div style="text-align:center;margin-top:20px"><button class="btn-retry" onclick="go('home')">← Voltar ao Início</button></div>
+</div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// DADOS DOS EXERCÍCIOS POR MÓDULO
+// ============================================================
+const modEx = {
+  m1:[
+    {q:"Qual é o órgão máximo do Sistema Financeiro Nacional responsável por definir as políticas monetária, cambial e de crédito?",opts:["Banco Central do Brasil (BACEN)","Conselho Monetário Nacional (CMN)","Comissão de Valores Mobiliários (CVM)","SUSEP"],c:1,exp:"O CMN é o órgão normativo máximo do SFN. O BACEN é o executor e supervisor, mas as regras gerais vêm do CMN."},
+    {q:"Qual entidade supervisora é responsável por fiscalizar os correspondentes bancários e exigir a certificação?",opts:["CVM","SUSEP","BACEN","PREVIC"],c:2,exp:"O BACEN supervisiona todas as instituições financeiras e os correspondentes bancários. A Resolução 3.954/2011 do BACEN é a base legal da certificação."},
+    {q:"O correspondente bancário é classificado no SFN como:",opts:["Órgão normativo","Entidade supervisora","Instituição operadora","Banco comercial"],c:2,exp:"O CB é uma instituição operadora — intermedia serviços financeiros entre o banco e o cliente, mas não é uma instituição financeira independente."},
+    {q:"Qual a diferença entre o CMN e o BACEN?",opts:["São o mesmo órgão com nomes diferentes","CMN normatiza, BACEN supervisiona e executa","BACEN normatiza, CMN supervisiona","Ambos normatizam, mas em áreas diferentes"],c:1,exp:"CMN = normatiza (cria as regras). BACEN = supervisiona e executa (fiscaliza o cumprimento das regras). É uma das distinções mais cobradas nas provas."},
+  ],
+  m2:[
+    {q:"Qual resolução do Banco Central tornou obrigatória a certificação do correspondente bancário?",opts:["Resolução CMN 4.292/2013","Resolução CMN 3.954/2011","Lei 8.078/1990","Circular BACEN 3.978/2020"],c:1,exp:"A Resolução CMN 3.954, de 24/02/2011, é a norma que define e regulamenta os correspondentes bancários e torna obrigatória a certificação."},
+    {q:"A certificação FEBRABAN FBB-100 habilita o correspondente a operar com quais modalidades?",opts:["Apenas crédito consignado","Consignado, CDC e Financiamento de Veículos","Consignado, CDC, Veículos e Crédito Imobiliário","Apenas crédito imobiliário"],c:1,exp:"A FBB-100 é a certificação completa da FEBRABAN, mas NÃO cobre crédito imobiliário. Para isso, é necessária também a CA-300/ABECIP."},
+    {q:"Um correspondente bancário pode:",opts:["Conceder crédito com recursos próprios","Firmar contratos em nome do banco sem autorização","Receber e encaminhar propostas de crédito ao banco","Emitir cartões de crédito em nome do banco"],c:2,exp:"O CB é um intermediário — ele recebe e encaminha propostas, mas quem concede o crédito é o banco. O CB não pode agir além do que está autorizado no contrato com o banco."},
+    {q:"Quantos anos é a validade da certificação FEBRABAN FBB-100?",opts:["1 ano","2 anos","3 anos","5 anos"],c:2,exp:"Todas as certificações da série FBB (100, 110, 120, 130) têm validade de 3 anos, após os quais o profissional precisa renovar."},
+    {q:"Em caso de dano ao consumidor causado por má conduta do correspondente bancário, quem responde?",opts:["Apenas o correspondente bancário","Apenas o banco contratante","Ambos respondem solidariamente","Nenhum, o consumidor assume o risco"],c:2,exp:"A responsabilidade é solidária — banco e CB respondem juntos pelos danos causados ao consumidor, conforme o CDC e a Resolução 3.954."},
+  ],
+  m3:[
+    {q:"Qual é a margem consignável máxima do benefício líquido do INSS para crédito consignado?",opts:["30% (apenas empréstimo)","35% (apenas empréstimo)","45% (35% empréstimo + 10% cartão)","50% (empréstimo + cartão)"],c:2,exp:"A margem total é 45%: 35% para empréstimos consignados e 10% para cartão de crédito ou benefício consignado."},
+    {q:"O que é o CET — Custo Efetivo Total?",opts:["A taxa de juros nominal do empréstimo","A taxa que inclui apenas juros e IOF","A taxa que representa o custo real do crédito, incluindo todos os encargos","O valor total das parcelas"],c:2,exp:"O CET inclui juros + IOF + tarifas + seguros obrigatórios e qualquer outro custo. É sempre maior que a taxa nominal e deve ser informado antes da contratação."},
+    {q:"Na alienação fiduciária de veículos, quem é o proprietário do bem durante o financiamento?",opts:["O cliente, com o banco como credor","O banco, com o cliente como possuidor","A financiadora, com o banco como avalista","Ambos conjuntamente"],c:1,exp:"Na alienação fiduciária, a propriedade do bem fica com o banco (credor fiduciário) até a quitação. O cliente tem a posse e o uso, mas não é o dono legal até pagar tudo."},
+    {q:"O IOF em operações de crédito é:",opts:["Imposto estadual sobre serviços financeiros","Tributo federal incidente sobre operações de crédito, parte integrante do CET","Taxa bancária cobrada pelo banco","Opcional, dependendo do banco"],c:1,exp:"IOF = Imposto sobre Operações Financeiras. É federal, obrigatório e compõe o CET. Varia conforme o prazo da operação."},
+    {q:"Qual a principal diferença entre CDC e Crédito Consignado?",opts:["CDC tem taxa menor","No CDC o desconto é em folha, no consignado em conta","No consignado o desconto é em folha/benefício, no CDC em conta corrente","Não há diferença relevante"],c:2,exp:"Consignado = desconto direto na folha ou benefício (menor risco → menor taxa). CDC = desconto em conta corrente (maior risco → maior taxa)."},
+  ],
+  m4:[
+    {q:"João contrata um empréstimo de R$5.000 a juros compostos de 2% a.m. por 2 meses. Qual o montante?",opts:["R$ 5.200,00","R$ 5.202,00","R$ 5.204,00","R$ 5.210,00"],c:1,exp:"M = 5.000 × (1,02)² = 5.000 × 1,0404 = R$5.202,00. Juros compostos incidem sobre o saldo acumulado, não apenas sobre o capital inicial."},
+    {q:"Um cliente quer quitar seu empréstimo antes do prazo. O banco pode cobrar multa?",opts:["Sim, até 2% do saldo devedor","Sim, equivalente a 3 prestações","Não, é direito do consumidor sem custo adicional","Apenas se estiver previsto no contrato"],c:2,exp:"A liquidação antecipada é direito do consumidor pessoa física (Lei 10.820/2003 e CDC). O banco deve reduzir proporcionalmente os juros e não pode cobrar multa."},
+    {q:"O que é portabilidade de crédito?",opts:["Transferência do débito para outra conta no mesmo banco","Direito do cliente de migrar seu crédito para outra IF com taxa menor, sem custo","Renegociação de dívida com desconto","Refinanciamento do saldo devedor"],c:1,exp:"Portabilidade é o direito de transferir a dívida para outro banco que ofereça condições melhores. O banco original deve aceitar a quitação e transferir os dados. Regulada pela Resolução BACEN 4.292/2013."},
+    {q:"Em juros compostos, comparado aos juros simples no mesmo período, o valor dos juros é:",opts:["Sempre igual","Sempre menor","Sempre maior (exceto em operações de 1 período)","Pode ser maior ou menor dependendo da taxa"],c:2,exp:"Em juros compostos, os juros de um período são incorporados ao capital para o período seguinte (juros sobre juros). Isso resulta em um total de juros sempre maior que nos simples, exceto quando n=1."},
+    {q:"O CET deve ser informado ao cliente:",opts:["Após a assinatura do contrato","Apenas se o cliente solicitar","Antes da contratação","Apenas para empréstimos acima de R$10.000"],c:2,exp:"O CET deve ser divulgado ANTES da contratação. É um direito do consumidor (CDC + regulamentação BACEN) conhecer o custo real do crédito para poder tomar uma decisão informada."},
+  ],
+  m5:[
+    {q:"O direito de arrependimento de 7 dias se aplica a contratos de crédito celebrados:",opts:["Presencialmente no banco","Apenas por telefone","Fora do estabelecimento comercial (telefone, internet, domicílio)","Em qualquer situação"],c:2,exp:"O direito de arrependimento de 7 dias (CDC Art. 49) aplica-se apenas a contratos celebrados FORA do estabelecimento — por telefone, internet ou na casa do cliente."},
+    {q:"Condicionar a concessão de crédito à contratação de seguro obrigatório pelo CB é:",opts:["Permitido e é boa prática","Prática abusiva (venda casada) vedada pelo CDC","Permitido se o cliente concordar","Obrigatório para crédito imobiliário"],c:1,exp:"Venda casada é prática abusiva proibida pelo CDC (Art. 39, I). O cliente pode contratar o seguro, mas não pode ser obrigado a fazê-lo como condição para obter o crédito."},
+    {q:"Quando o SAC não resolve a reclamação do cliente, qual é o próximo canal correto?",opts:["Diretamente ao Procon","Ouvidoria do banco","BACEN (BC Resolve)","Poder Judiciário"],c:1,exp:"A hierarquia é: SAC → Ouvidoria → BACEN (BC Resolve) → Procon/Judiciário. A ouvidoria tem prazo de 10 dias úteis para responder."},
+    {q:"A responsabilidade civil do correspondente bancário em relação ao consumidor é:",opts:["Apenas subjetiva — precisa provar culpa","Objetiva — independe de culpa para produtos defeituosos","Limitada ao valor do crédito concedido","Não existe — o banco é o único responsável"],c:1,exp:"O CDC prevê responsabilidade objetiva do fornecedor de serviços (Art. 14) — não é necessário provar culpa para responsabilizar o CB por danos ao consumidor."},
+    {q:"Qual é o prazo máximo para a ouvidoria bancária responder uma reclamação?",opts:["5 dias úteis","10 dias úteis, prorrogável por mais 10","15 dias corridos","30 dias corridos"],c:1,exp:"A ouvidoria tem até 10 dias úteis para responder, podendo prorrogar por mais 10 dias úteis em casos complexos, conforme Resolução BACEN 4.860/2020."},
+  ],
+  m6:[
+    {q:"Segundo a LGPD, quem é o 'titular' dos dados?",opts:["O banco que armazena os dados","O sistema que processa os dados","A pessoa a quem os dados se referem (o cliente)","O correspondente bancário"],c:2,exp:"Titular é a pessoa natural a quem se referem os dados. Na relação bancária, é o cliente. O titular tem direitos: acesso, correção, exclusão, portabilidade e informação sobre uso dos dados."},
+    {q:"Quais são as 3 etapas da lavagem de dinheiro?",opts:["Captação, aplicação e distribuição","Colocação, ocultação e integração","Entrada, processamento e saída","Depósito, transferência e saque"],c:1,exp:"As 3 etapas clássicas são: Colocação (inserir o dinheiro no sistema), Ocultação (disfarçar a origem) e Integração (reintroduzir como recurso lícito)."},
+    {q:"A Circular BACEN 3.978/2020 trata de:",opts:["Taxa Selic e política monetária","Correspondentes bancários e credenciamento","Política de prevenção à lavagem de dinheiro e financiamento do terrorismo","Open Finance e compartilhamento de dados"],c:2,exp:"A Circular 3.978/2020 substituiu a 3.461/2009 e é a principal norma de PLD/FT (Prevenção à Lavagem de Dinheiro e ao Financiamento do Terrorismo) para instituições financeiras e seus correspondentes."},
+    {q:"Um cliente realiza vários depósitos pequenos de R$4.000 ao longo do mesmo dia. Esse comportamento pode indicar:",opts:["Operação normal de pequeno empresário","Smurfing — fragmentação para evitar comunicação de operações suspeitas","Poupança regular do cliente","Pagamento de fornecedores"],c:1,exp:"Smurfing é uma técnica de lavagem onde grandes valores são fragmentados em depósitos menores para evitar detecção. É um dos principais sinais de alerta de PLD."},
+    {q:"Para usar dados do cliente para fins de marketing e cross-sell, o CB/banco precisa de qual base legal?",opts:["Execução de contrato — não precisa de consentimento","Consentimento expresso e específico do titular","Legítimo interesse — sempre autorizado","Interesse público — autorizado pelo BACEN"],c:1,exp:"Marketing e cross-sell não são necessários para executar o contrato de crédito — portanto exigem consentimento expresso. A base 'execução de contrato' só justifica o uso dos dados para a finalidade principal do contrato."},
+  ],
+  m7:[
+    {q:"O que é o Open Finance no Brasil?",opts:["Sistema exclusivo de pagamentos instantâneos","Sistema que permite ao cliente compartilhar dados financeiros com outras IFs, com consentimento","Regulamentação de fintechs pelo BACEN","Sistema de registro de crédito imobiliário"],c:1,exp:"Open Finance é o ecossistema que permite portabilidade de dados financeiros do cliente entre instituições, mediante consentimento. Aumenta a competição e permite melhores ofertas ao consumidor."},
+    {q:"Qual das seguintes NÃO é uma chave PIX válida?",opts:["CPF","Número de celular","Agência e conta bancária","E-mail"],c:2,exp:"As chaves PIX válidas são: CPF/CNPJ, celular, e-mail e chave aleatória. Agência e conta não são chaves — são usadas para transferências TED tradicionais."},
+    {q:"O Cadastro Positivo registra:",opts:["Apenas dívidas em aberto e inadimplência","O histórico de pagamentos em dia do consumidor","Apenas operações de crédito imobiliário","Dados de investimentos do cliente"],c:1,exp:"O Cadastro Positivo registra o histórico de pagamentos em dia — não só inadimplência. Bons pagadores conseguem taxas menores pois demonstram capacidade de pagamento."},
+    {q:"O SCR — Sistema de Informações de Crédito do BACEN registra:",opts:["Apenas inadimplentes","Todo crédito acima de R$200 de qualquer pessoa física ou jurídica","Apenas crédito imobiliário acima de R$50.000","Dados exclusivos de servidores públicos"],c:1,exp:"O SCR registra toda operação de crédito acima de R$200 no Brasil — independente do produto. É o banco de dados oficial de crédito do BACEN e pode ser consultado gratuitamente pelo titular."},
+    {q:"A autorregulação bancária da FEBRABAN é:",opts:["Obrigatória por lei federal","Voluntária, mas quem adere assume compromissos perante o mercado","Exigida pelo BACEN como complemento à regulação","Exclusiva para bancos de grande porte"],c:1,exp:"A autorregulação é voluntária — os bancos escolhem aderir. Mas ao aderir, assumem compromissos com o mercado e com os consumidores que vão além das exigências legais mínimas."},
+  ],
+};
+
+// ============================================================
+// QUESTÕES DO EXAME FINAL (40 questões)
+// ============================================================
+const examQs = [
+  {m:"M1",q:"Qual é o papel do CMN no Sistema Financeiro Nacional?",opts:["Supervisionar bancos e financeiras","Conceder crédito ao governo","Normatizar as políticas monetária, cambial e de crédito","Emitir moeda e controlar inflação"],c:2},
+  {m:"M1",q:"Quem supervisiona o mercado de capitais e a bolsa de valores no Brasil?",opts:["BACEN","CVM","SUSEP","CMN"],c:1},
+  {m:"M1",q:"Cooperativas de crédito como Sicoob e Sicredi são classificadas como:",opts:["Órgãos normativos","Entidades supervisoras","Instituições operadoras","Bancos comerciais tradicionais"],c:2},
+  {m:"M1",q:"A SUSEP supervisiona:",opts:["Bancos e financeiras","Fundos de pensão fechados","Seguradoras, capitalização e previdência aberta","Correspondentes bancários"],c:2},
+  {m:"M1",q:"O BACEN é responsável por:",opts:["Apenas emitir moeda","Supervisionar IFs, controlar política monetária e autorizar correspondentes","Apenas definir a taxa Selic","Fiscalizar apenas bancos públicos"],c:1},
+  {m:"M2",q:"A partir de quando a certificação do CB se tornou obrigatória?",opts:["24/02/2011","24/02/2013","24/02/2014","01/01/2020"],c:2},
+  {m:"M2",q:"Para operar com crédito imobiliário, além da FEBRABAN, o CB precisa de:",opts:["Certificação ANEPS Consignado","Certificação CA-300 ou CA-600 da ABECIP","Certificação FBB-200","Apenas a FBB-100 cobre imobiliário"],c:1},
+  {m:"M2",q:"Uma pessoa física pode ser correspondente bancário?",opts:["Sim, sem restrições","Sim, desde que certificada","Não, apenas pessoas jurídicas podem ser CBs","Apenas em casos de microempreendedor individual"],c:2},
+  {m:"M2",q:"O CB pode assinar contratos em nome do banco?",opts:["Sim, sempre","Sim, mas apenas para operações até R$50.000","Não, salvo autorização expressa no contrato com o banco","Não, em nenhuma hipótese"],c:2},
+  {m:"M2",q:"Qual norma regulamenta o sigilo bancário no Brasil?",opts:["Lei 9.613/1998","Lei Complementar 105/2001","Resolução 3.954/2011","LGPD 13.709/2018"],c:1},
+  {m:"M3",q:"Qual produto de crédito tem a menor taxa de juros em geral?",opts:["Cheque especial","Cartão de crédito rotativo","Crédito consignado","CDC sem garantia"],c:2},
+  {m:"M3",q:"A margem de 10% adicional no consignado INSS é destinada a:",opts:["Seguro de vida","Cartão de crédito ou benefício consignado","Segundo empréstimo","Taxa administrativa do banco"],c:1},
+  {m:"M3",q:"No financiamento de veículos com alienação fiduciária, se o cliente não pagar, o banco pode:",opts:["Apenas cobrar juros de mora","Protestar o nome no SPC/Serasa","Fazer busca e apreensão do veículo","Cobrar apenas via judicial"],c:2},
+  {m:"M3",q:"Qual sistema de financiamento imobiliário usa recursos do FGTS?",opts:["SFI","SFH","CDC Imobiliário","Minha Casa Minha Vida exclusivamente"],c:1},
+  {m:"M3",q:"O CET deve incluir:",opts:["Apenas taxa de juros e IOF","Juros, IOF, tarifas e seguros obrigatórios","Apenas os juros nominais","Todos os custos, incluindo seguros opcionais"],c:1},
+  {m:"M4",q:"Juros compostos diferem de juros simples porque:",opts:["A taxa é sempre maior nos compostos","Os juros incidem sobre o capital+juros acumulados (juros sobre juros)","O prazo máximo é diferente","Compostos são usados apenas em investimentos"],c:1},
+  {m:"M4",q:"Um empréstimo de R$10.000 a 1,5% a.m. por 1 mês tem montante (composto) de:",opts:["R$ 10.100,00","R$ 10.150,00","R$ 10.115,00","R$ 10.200,00"],c:1},
+  {m:"M4",q:"O que é a Tabela Price em crédito?",opts:["Tabela de atualização do INSS","Sistema de amortização com parcelas fixas e juros compostos","Índice de inflação bancária","Lista de tarifas máximas permitidas pelo BACEN"],c:1},
+  {m:"M4",q:"A portabilidade de crédito é regulada por qual norma?",opts:["Resolução CMN 3.954/2011","Resolução BACEN 4.292/2013","Lei 8.078/1990","Circular BACEN 3.978/2020"],c:1},
+  {m:"M4",q:"Na liquidação antecipada, o cliente tem direito a:",opts:["Pagar apenas o valor original sem juros","Redução proporcional dos juros futuros, sem multa","Desconto fixo de 10% sobre o saldo","Isenção total do IOF pago"],c:1},
+  {m:"M5",q:"O CDC (Código de Defesa do Consumidor) foi instituído pela:",opts:["Lei 9.613/1998","Lei 8.078/1990","Resolução CMN 3.954/2011","Lei 13.709/2018"],c:1},
+  {m:"M5",q:"Venda casada no contexto bancário é:",opts:["Vender dois produtos do mesmo banco juntos","Condicionar a concessão de um produto à aquisição de outro","Oferecer pacotes com desconto","Vender produtos de parceiros no mesmo ponto"],c:1},
+  {m:"M5",q:"O prazo para o SAC do banco responder reclamações urgentes (cancelamentos) é:",opts:["Imediato","5 dias úteis","10 dias úteis","30 dias corridos"],c:0},
+  {m:"M5",q:"A responsabilidade objetiva do fornecedor de serviços (CDC Art.14) significa:",opts:["Precisa provar culpa para ser responsabilizado","Independe de culpa — responde pelo dano causado","Só é responsável por dolo","É limitada ao valor do serviço contratado"],c:1},
+  {m:"M5",q:"O CB tem obrigação de informar o CET ao cliente:",opts:["Apenas se o cliente solicitar","Após a assinatura, como confirmação","Antes da contratação, para decisão informada","Apenas para operações acima de R$5.000"],c:2},
+  {m:"M6",q:"A LGPD é a Lei número:",opts:["9.613/1998","8.078/1990","13.709/2018","12.414/2011"],c:2},
+  {m:"M6",q:"Dados sobre saúde e biometria são classificados pela LGPD como:",opts:["Dados públicos","Dados pessoais comuns","Dados sensíveis — com tratamento mais restrito","Dados anonimizados"],c:2},
+  {m:"M6",q:"Para envio de e-mail marketing usando dados de clientes, a base legal correta é:",opts:["Execução de contrato","Legítimo interesse sempre","Consentimento expresso do titular","Interesse público"],c:2},
+  {m:"M6",q:"A Lei 9.613/1998 trata de:",opts:["Proteção de dados pessoais","Crimes de lavagem de dinheiro e ocultação de bens","Regulamentação dos correspondentes bancários","Defesa do consumidor"],c:1},
+  {m:"M6",q:"Qual sinal de alerta de PLD indica possível uso de 'laranja' ou testa-de-ferro?",opts:["Cliente usa cartão de débito","Terceiro paga operação de crédito de outra pessoa sem justificativa","Cliente tem renda alta","Operação é feita via internet banking"],c:1},
+  {m:"M7",q:"O PIX funciona em quais horários?",opts:["Dias úteis das 6h às 22h","24 horas por dia, 7 dias por semana","Apenas em dias úteis, sem limite de horário","Das 0h às 24h em dias úteis, até 22h nos fins de semana"],c:1},
+  {m:"M7",q:"Quantas fases tem a implementação do Open Finance no Brasil?",opts:["2 fases","3 fases","4 fases","5 fases"],c:2},
+  {m:"M7",q:"O Cadastro Positivo foi tornado automático para todos os brasileiros em:",opts:["2011, com a criação da lei","2016, por decreto","2019, pela Lei 13.972/2019","2021, pelo BACEN"],c:2},
+  {m:"M7",q:"A autorregulação bancária da FEBRABAN tem caráter:",opts:["Obrigatório por força de lei","Voluntário, com adesão por escolha das instituições","Imposto pelo BACEN como requisito","Aplicável apenas a bancos públicos"],c:1},
+  {m:"M7",q:"O SCR (Sistema de Informações de Crédito do BACEN) registra operações acima de:",opts:["R$ 100,00","R$ 200,00","R$ 500,00","R$ 1.000,00"],c:1},
+  {m:"M2",q:"A certificação FBB-110 da FEBRABAN habilita o correspondente a operar com:",opts:["Apenas crédito direto ao consumidor","Consignado e crédito direto ao consumidor","Consignado, CDC e veículos","Todas as modalidades incluindo imobiliário"],c:1},
+  {m:"M3",q:"A portabilidade de crédito consignado do INSS é:",opts:["Proibida — o INSS não permite portabilidade","Permitida apenas após 12 meses de contrato","Garantida por lei — o cliente pode migrar para banco com taxa menor a qualquer momento","Permitida apenas uma vez a cada 3 anos"],c:2},
+  {m:"M4",q:"Qual tributo incide especificamente sobre operações de crédito no Brasil?",opts:["ICMS","ISS","IOF","IRRF"],c:2},
+  {m:"M5",q:"O direito de arrependimento de 7 dias do CDC começa a contar:",opts:["Da data da proposta","Da data da assinatura do contrato ou recebimento do produto, o que ocorrer por último","Da data do primeiro pagamento","Da data do depósito do crédito na conta"],c:1},
+  {m:"M6",q:"O ANPD (Autoridade Nacional de Proteção de Dados) tem função de:",opts:["Conceder crédito a MPEs","Fiscalizar o cumprimento da LGPD e aplicar sanções","Regular o mercado de capitais","Supervisionar seguradoras"],c:1},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const ST = { done: new Set(), examAns: {}, examDone: false, lastPct: 0 };
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  window.scrollTo(0, 0);
+  if (id.startsWith('m') && parseInt(id.slice(1)) >= 1 && parseInt(id.slice(1)) <= 7) {
+    ST.done.add(id);
+    updateProgress();
+  }
+  if (id === 'exam') renderExam();
+}
+
+function updateProgress() {
+  const pct = Math.round((ST.done.size / 7) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  for (let i = 1; i <= 7; i++) {
+    const nav = document.getElementById('nav-m' + i);
+    if (nav && ST.done.has('m' + i)) nav.classList.add('done');
+  }
+}
+
+// ============================================================
+// CALCULATOR
+// ============================================================
+function calcParc() {
+  const pv = parseFloat(document.getElementById('c-val').value) || 0;
+  const i = parseFloat(document.getElementById('c-taxa').value) / 100 || 0;
+  const n = parseInt(document.getElementById('c-prazo').value) || 0;
+  if (!pv || !i || !n) return;
+  const pmt = pv * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+  const total = pmt * n;
+  const juros = total - pv;
+  const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('c-parc').textContent = fmt(pmt);
+  document.getElementById('c-total').textContent = fmt(total);
+  document.getElementById('c-juros').textContent = fmt(juros);
+  document.getElementById('c-cet').textContent = 'Taxa anual equivalente: ~' + (Math.pow(1 + i, 12) - 1).toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 1 }) + ' a.a.';
+}
+
+// ============================================================
+// MODULE EXERCISES
+// ============================================================
+function renderModEx(mKey) {
+  const cont = document.getElementById('ex-' + mKey + '-q');
+  if (!cont || cont.dataset.rendered) return;
+  cont.dataset.rendered = '1';
+  const qs = modEx[mKey];
+  window['__ms_' + mKey] = { ans: {}, chk: {} };
+  qs.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `
+      <div class="q-num">Questão ${qi + 1} de ${qs.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${mKey}-${qi}">
+        ${q.opts.map((o, oi) => `<div class="option" id="opt-${mKey}-${qi}-${oi}" onclick="selOpt('${mKey}',${qi},${oi},this)"><div class="opt-letter">${'ABCD'[oi]}</div><div class="opt-text">${o}</div></div>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${mKey}-${qi}"></div>
+      <button class="btn-check" id="chk-${mKey}-${qi}" onclick="checkOpt('${mKey}',${qi})" disabled>Verificar</button>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function selOpt(mk, qi, oi, el) {
+  const s = window['__ms_' + mk];
+  if (s.chk[qi]) return;
+  document.querySelectorAll(`#opts-${mk}-${qi} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  s.ans[qi] = oi;
+  document.getElementById('chk-' + mk + '-' + qi).disabled = false;
+}
+
+function checkOpt(mk, qi) {
+  const s = window['__ms_' + mk];
+  if (s.chk[qi]) return;
+  s.chk[qi] = true;
+  const q = modEx[mk][qi];
+  const chosen = s.ans[qi];
+  document.querySelectorAll(`#opts-${mk}-${qi} .option`).forEach((o, i) => {
+    o.classList.add('disabled');
+    if (i === q.c) o.classList.add('correct');
+    else if (i === chosen) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb-' + mk + '-' + qi);
+  const ok = chosen === q.c;
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'fail');
+  fb.textContent = (ok ? '✓ Correto! ' : '✗ Incorreto. ') + q.exp;
+  document.getElementById('chk-' + mk + '-' + qi).disabled = true;
+  if (Object.keys(s.chk).length === modEx[mk].length) {
+    const sc = Object.keys(s.chk).filter(i => s.ans[i] === modEx[mk][i].c).length;
+    const tot = modEx[mk].length;
+    document.getElementById('ex-' + mk + '-sc').style.display = 'flex';
+    document.getElementById('ex-' + mk + '-sc-v').textContent = sc + ' / ' + tot;
+  }
+}
+
+// ============================================================
+// EXAM
+// ============================================================
+let examST = { ans: {}, done: false };
+
+function renderExam() {
+  const cont = document.getElementById('exam-qs');
+  if (cont.dataset.rendered) return;
+  cont.dataset.rendered = '1';
+  examST = { ans: {}, done: false };
+  const dots = document.getElementById('exam-dots');
+  dots.innerHTML = examQs.map((_, i) => `<div class="edot" id="edot-${i}"></div>`).join('');
+  examQs.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `
+      <div class="q-num">Questão ${qi + 1} / ${examQs.length} — <span style="color:var(--text3)">${q.m}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="eopts-${qi}">
+        ${q.opts.map((o, oi) => `<div class="option" id="eopt-${qi}-${oi}" onclick="selExam(${qi},${oi},this)"><div class="opt-letter">${'ABCD'[oi]}</div><div class="opt-text">${o}</div></div>`).join('')}
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function selExam(qi, oi, el) {
+  if (examST.done) return;
+  document.querySelectorAll(`#eopts-${qi} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  examST.ans[qi] = oi;
+  document.getElementById('edot-' + qi).classList.add('answered');
+  if (Object.keys(examST.ans).length >= 1) document.getElementById('exam-submit').style.display = 'block';
+}
+
+function submitExam() {
+  if (examST.done) return;
+  examST.done = true;
+  let correct = 0;
+  const modScores = {};
+  examQs.forEach((q, qi) => {
+    const chosen = examST.ans[qi];
+    const ok = chosen === q.c;
+    if (ok) correct++;
+    if (!modScores[q.m]) modScores[q.m] = { c: 0, t: 0 };
+    modScores[q.m].t++;
+    if (ok) modScores[q.m].c++;
+    document.querySelectorAll(`#eopts-${qi} .option`).forEach((o, i) => {
+      o.classList.add('disabled');
+      if (i === q.c) o.classList.add('correct');
+      else if (i === chosen) o.classList.add('wrong');
+    });
+    const dot = document.getElementById('edot-' + qi);
+    dot.classList.remove('answered');
+    dot.classList.add(ok ? 'correct' : 'wrong');
+  });
+  const pct = Math.round((correct / examQs.length) * 100);
+  ST.lastPct = pct;
+  document.getElementById('exam-submit').style.display = 'none';
+  go('result');
+  const passed = pct >= 70;
+  const circle = document.getElementById('res-circle');
+  circle.className = 'result-circle ' + (passed ? 'pass' : 'fail');
+  document.getElementById('res-pct').textContent = pct + '%';
+  document.getElementById('res-title').textContent = passed ? '🏆 Aprovado! Parabéns!' : '📚 Não atingiu a nota de corte.';
+  document.getElementById('res-sub').textContent = passed
+    ? `Você acertou ${correct} de ${examQs.length} questões. Nota de corte (70%) atingida! Você está pronto para a prova real da FEBRABAN/ANEPS.`
+    : `Você acertou ${correct} de ${examQs.length} questões. A nota de corte é 70% (${Math.ceil(examQs.length * 0.7)} acertos). Revise os módulos com menor aproveitamento.`;
+  const bd = document.getElementById('res-breakdown');
+  bd.innerHTML = Object.entries(modScores).map(([m, s]) => {
+    const p = Math.round((s.c / s.t) * 100);
+    const cls = p >= 80 ? 'full' : p >= 60 ? 'partial' : 'low';
+    return `<div class="rb-card"><div class="rb-mod">${m}</div><div class="rb-score ${cls}">${s.c}/${s.t}</div><div class="rb-pct">${p}%</div></div>`;
+  }).join('');
+  document.getElementById('btn-cert').style.display = passed ? 'inline-block' : 'none';
+  document.getElementById('cert-pct-val').textContent = pct + '%';
+  document.getElementById('cert-date').textContent = 'Emitido em ' + new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+function retryExam() {
+  examST = { ans: {}, done: false };
+  const cont = document.getElementById('exam-qs');
+  cont.innerHTML = '';
+  delete cont.dataset.rendered;
+  go('exam');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.onload = () => {
+  calcParc();
+  for (let i = 1; i <= 7; i++) renderModEx('m' + i);
+};
+</script>
+</body>
+</html>
