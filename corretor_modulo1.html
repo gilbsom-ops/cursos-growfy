@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corretor de Seguros — Módulo 1 | Academia Growfy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>:root{--primary:#5E72E4;--teal:#4DD0E1;--purple:#7C4DFF;--grad:linear-gradient(135deg,#4DD0E1 0%,#5E72E4 50%,#7C4DFF 100%);--dark:#0D0F1A;--dark2:#131629;--dark3:#1A1E35;--card:#1E2340;--border:rgba(94,114,228,0.2);--text:#E8EAFF;--muted:#8892C8;--success:#2DCEA3;--warning:#FFB547;--danger:#F5365C;}
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.header{background:var(--dark2);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header-badge{background:var(--grad);color:white;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
+.hero{background:var(--dark2);padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(94,114,228,.12) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-block;background:rgba(94,114,228,.15);border:1px solid rgba(94,114,228,.4);color:var(--teal);font-size:.75rem;font-weight:700;padding:6px 16px;border-radius:20px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:1rem;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.4rem);font-weight:800;line-height:1.2;margin-bottom:.8rem;}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.95rem;max-width:600px;margin:0 auto 1.5rem;line-height:1.7;}
+.trail-steps{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:.5rem;}
+.trail-step{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.5rem 1rem;font-size:.8rem;color:var(--muted);}
+.trail-step.active{border-color:var(--primary);color:var(--text);font-weight:600;}
+.container{max-width:1100px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start;}
+.sidebar{position:sticky;top:80px;}
+.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
+.sidebar-title{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:1rem;}
+.disc-list{list-style:none;}
+.disc-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:2px;font-size:.84rem;color:var(--muted);border:1px solid transparent;}
+.disc-item:hover{background:rgba(94,114,228,.1);color:var(--text);border-color:var(--border);}
+.disc-item.active{background:rgba(94,114,228,.15);color:var(--text);border-color:rgba(94,114,228,.4);font-weight:600;}
+.disc-item.completed{color:var(--success);}
+.disc-num{width:24px;height:24px;border-radius:50%;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;border:1px solid var(--border);}
+.disc-item.completed .disc-num{background:var(--success);border-color:var(--success);color:white;}
+.disc-item.active .disc-num{background:var(--grad);border-color:transparent;color:white;}
+.progress-bar{height:6px;background:var(--dark3);border-radius:10px;margin:.5rem 0;overflow:hidden;}
+.progress-fill{height:100%;background:var(--grad);border-radius:10px;transition:width .4s ease;}
+.progress-text{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);}
+.main{min-width:0;}
+.disc-content{display:none;}
+.disc-content.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.content-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.5rem;}
+.disc-header{margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.disc-badge{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:.4rem;}
+.disc-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;}
+.content-body h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin:1.4rem 0 .7rem;display:flex;align-items:center;gap:8px;}
+.content-body h2::before{content:'';width:4px;height:16px;background:var(--grad);border-radius:2px;flex-shrink:0;}
+.content-body p{color:#B0B8E8;line-height:1.85;margin-bottom:.9rem;font-size:.93rem;}
+.content-body ul,.content-body ol{margin:.8rem 0 1rem 1.2rem;color:#B0B8E8;font-size:.93rem;}
+.content-body li{margin-bottom:.5rem;line-height:1.7;}
+.info-box{background:rgba(77,208,225,.08);border:1px solid rgba(77,208,225,.25);border-left:4px solid var(--teal);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.info-box .box-title{font-weight:700;color:var(--teal);margin-bottom:.3rem;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;}
+.warning-box{background:rgba(255,181,71,.08);border:1px solid rgba(255,181,71,.25);border-left:4px solid var(--warning);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.warning-box .box-title{color:var(--warning);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem;}
+.success-box{background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.25);border-left:4px solid var(--success);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.success-box .box-title{color:var(--success);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem;}
+.table-wrap{overflow-x:auto;margin:1rem 0;}
+table{width:100%;border-collapse:collapse;font-size:.87rem;}
+th{background:rgba(94,114,228,.15);color:var(--teal);font-weight:700;font-size:.73rem;text-transform:uppercase;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:9px 13px;border-bottom:1px solid rgba(94,114,228,.08);color:#B0B8E8;vertical-align:top;}
+tr:last-child td{border-bottom:none;}tr:hover td{background:rgba(94,114,228,.05);}
+.exercise-section{background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-top:1.5rem;}
+.exercise-header{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.exercise-icon{width:40px;height:40px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.exercise-header-text h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.exercise-header-text p{font-size:.8rem;color:var(--muted);margin:0;}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem;}
+.question-num{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:.5rem;}
+.question-text{font-size:.9rem;font-weight:500;margin-bottom:1rem;line-height:1.6;}
+.options{display:flex;flex-direction:column;gap:6px;}
+.option{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all .2s;font-size:.87rem;color:var(--muted);background:var(--dark2);}
+.option:hover{border-color:var(--primary);color:var(--text);}
+.option.correct{border-color:var(--success);background:rgba(45,206,163,.1);color:var(--success);}
+.option.wrong{border-color:var(--danger);background:rgba(245,54,92,.1);color:var(--danger);}
+.option-letter{width:22px;height:22px;border-radius:50%;background:var(--dark3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;}
+.option.correct .option-letter{background:var(--success);border-color:var(--success);color:white;}
+.option.wrong .option-letter{background:var(--danger);border-color:var(--danger);color:white;}
+.explanation{display:none;margin-top:.8rem;padding:.8rem 1rem;background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.2);border-radius:8px;font-size:.83rem;color:#B0B8E8;line-height:1.6;}
+.explanation.show{display:block;}
+.explanation strong{color:var(--success);}
+.exercise-actions{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-primary{background:var(--grad);color:white;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--primary);color:var(--text);}
+.btn-next{background:var(--grad);color:white;width:100%;justify-content:center;padding:14px;font-size:1rem;border-radius:12px;margin-top:1rem;}
+.btn-next:hover{opacity:.9;transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+.score-display{display:none;text-align:center;padding:1.5rem;background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.25);border-radius:12px;margin-top:1rem;}
+.score-display.show{display:block;}
+.score-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.score-label{color:var(--muted);font-size:.9rem;margin-top:.3rem;}
+.module-test-section{background:linear-gradient(135deg,rgba(94,114,228,.08),rgba(124,77,255,.08));border:1px solid rgba(124,77,255,.3);border-radius:16px;padding:2rem;margin-top:1.5rem;}
+.module-test-header{text-align:center;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(124,77,255,.2);}
+.module-test-header h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:.3rem;}
+.module-test-header p{color:var(--muted);font-size:.9rem;}
+.next-module-btn{display:none;margin-top:1.5rem;padding:1.5rem;background:var(--dark2);border:1px solid var(--border);border-radius:16px;text-align:center;}
+.next-module-btn.show{display:block;}
+.next-module-btn h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+.next-module-btn p{font-size:.85rem;color:var(--muted);margin-bottom:1rem;}
+.disclaimer{background:rgba(255,181,71,.06);border-top:1px solid rgba(255,181,71,.2);padding:1.5rem 2rem;text-align:center;font-size:.78rem;color:var(--muted);line-height:1.7;margin-top:3rem;}
+.disclaimer strong{color:var(--warning);}
+@media(max-width:768px){.container{grid-template-columns:1fr;}.sidebar{position:static;order:-1;}.hero{padding:2.5rem 1rem 2rem;}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">🌱 Growfy</div>
+  <div style="flex:1;text-align:center;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);">Academia Growfy — Corretor de Seguros</div>
+  <div class="header-badge">SUSEP Prep</div>
+</header>
+<div class="hero">
+  <div class="hero-tag">🛡️ Habilitação SUSEP</div>
+  <h1>Preparatório Corretor de Seguros<br><span>Módulo 1 — Capitalização (96h)</span></h1>
+  <p>Grade curricular oficial SUSEP. 5 disciplinas com exercícios + Teste do Módulo. Complete todos os módulos para acessar os 3 Simulados SUSEP.</p>
+  <div class="trail-steps">
+    <div class="trail-step active">📘 Módulo 1 — Capitalização</div>
+    <div class="trail-step">📗 Módulo 2 — Vida e Previdência</div>
+    <div class="trail-step">📕 Módulo 3 — Seguros de Danos</div>
+    <div class="trail-step">🏆 Simulados SUSEP</div>
+  </div>
+</div>
+<div class="container">
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-title">Seu Progresso</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text"><span id="progressLabel">0 de 5 disciplinas</span><span id="progressPct">0%</span></div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-title">Disciplinas — Módulo 1</div>
+    <ul class="disc-list">
+      <li class="disc-item active" onclick="showDisc('d1')" id="nav-d1"><span class="disc-num">1</span>Teoria Geral do Seguro</li>
+      <li class="disc-item" onclick="showDisc('d2')" id="nav-d2"><span class="disc-num">2</span>Direito e Legislação</li>
+      <li class="disc-item" onclick="showDisc('d3')" id="nav-d3"><span class="disc-num">3</span>Matemática Financeira</li>
+      <li class="disc-item" onclick="showDisc('d4')" id="nav-d4"><span class="disc-num">4</span>Capitalização</li>
+      <li class="disc-item" onclick="showDisc('d5')" id="nav-d5"><span class="disc-num">5</span>LGPD para Corretores</li>
+      <li class="disc-item" onclick="showDisc('teste')" id="nav-teste" style="border-top:1px solid var(--border);margin-top:6px;padding-top:10px;"><span class="disc-num" style="background:var(--purple);color:white;border:none;">🧪</span>Teste do Módulo 1</li>
+    </ul>
+  </div>
+</aside>
+<main class="main">
+
+<div class="disc-content active" id="disc-d1">
+<div class="content-card"><div class="disc-header"><div class="disc-badge">Disciplina 1 — Módulo 1</div><h2 class="disc-title">Teoria Geral do Seguro</h2></div><div class="content-body"><h2>Conceito e Fundamentos do Seguro</h2>
+<p>O seguro é um contrato pelo qual o segurador se obriga, mediante o recebimento do prêmio, a indenizar o segurado contra riscos predeterminados. É um mecanismo de transferência e mutualização de riscos — o prejuízo de poucos é diluído entre muitos contribuintes.</p>
+<div class="info-box"><div class="box-title">💡 Elementos Essenciais</div><ul>
+<li><strong>Risco:</strong> Evento futuro, incerto e involuntário</li>
+<li><strong>Prêmio:</strong> Valor pago pelo segurado pela cobertura</li>
+<li><strong>Sinistro:</strong> Ocorrência do evento coberto</li>
+<li><strong>Indenização:</strong> Prestação paga após o sinistro</li>
+<li><strong>Apólice:</strong> Documento formal do contrato</li>
+</ul></div>
+<h2>Princípios Fundamentais</h2>
+<ul>
+<li><strong>Mutualismo:</strong> Fundo coletivo para cobrir sinistros de poucos</li>
+<li><strong>Boa-fé (Ubérrima fides):</strong> Máxima honestidade de ambas as partes — omissão dolosa pode anular o contrato</li>
+<li><strong>Interesse Segurável:</strong> O segurado deve ter interesse legítimo no bem/pessoa segurada</li>
+<li><strong>Indenização:</strong> O seguro repõe o prejuízo — não gera lucro ao segurado</li>
+<li><strong>Sub-rogação:</strong> Após indenizar, o segurador assume os direitos do segurado contra terceiros responsáveis</li>
+</ul>
+<h2>Estrutura do Mercado Segurador</h2>
+<div class="table-wrap"><table><thead><tr><th>Entidade</th><th>Função</th></tr></thead><tbody>
+<tr><td><strong>CNSP</strong></td><td>Órgão normativo máximo — define diretrizes e políticas</td></tr>
+<tr><td><strong>SUSEP</strong></td><td>Órgão executivo — fiscaliza e regulamenta</td></tr>
+<tr><td><strong>IRB Brasil RE</strong></td><td>Resseguro</td></tr>
+<tr><td><strong>Seguradora</strong></td><td>Assume o risco e paga a indenização</td></tr>
+<tr><td><strong>Corretor</strong></td><td>Intermediário habilitado pela SUSEP</td></tr>
+</tbody></table></div>
+<h2>Resseguro e Cosseguro</h2>
+<ul>
+<li><strong>Resseguro:</strong> Seguro das seguradoras — transfere parte do risco ao ressegurador</li>
+<li><strong>Cosseguro:</strong> Duas ou mais seguradoras dividem o mesmo risco em apólice única. Cada uma responde pela sua quota-parte.</li>
+</ul>
+<div class="warning-box"><div class="box-title">⚠️ Ponto crítico SUSEP</div>O corretor NÃO é empregado da seguradora. É profissional autônomo ou empresa habilitada pela SUSEP. Atuar sem registro é crime.</div></div></div>
+<div class="exercise-section"><div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Teoria Geral do Seguro</h3><p>5 questões nível SUSEP avançado.</p></div></div><div id="qblock-d1"><div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O princípio da 'ubérrima fides' no contrato de seguro determina que:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d1q1')"><span class="option-letter">A</span>Apenas o segurador tem obrigação de transparência</div><div class="option" onclick="sel(this,'correct','d1q1')"><span class="option-letter">B</span>Ambas as partes têm obrigação máxima de boa-fé e transparência</div><div class="option" onclick="sel(this,'wrong','d1q1')"><span class="option-letter">C</span>O corretor pode omitir informações desfavoráveis</div><div class="option" onclick="sel(this,'wrong','d1q1')"><span class="option-letter">D</span>A seguradora pode negar sinistros sem justificativa</div></div><div class="explanation" id="eexp-d1q1"><strong>✅ B.</strong> Ubérrima fides = boa-fé máxima de AMBAS as partes. Omissão ou falsidade do segurado pode anular o contrato e isentar a seguradora.</div></div><div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">A sub-rogação no contrato de seguro significa que:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d1q2')"><span class="option-letter">A</span>O segurado pode trocar de seguradora sem ônus</div><div class="option" onclick="sel(this,'correct','d1q2')"><span class="option-letter">B</span>Após indenizar, o segurador assume os direitos do segurado contra o terceiro causador do sinistro</div><div class="option" onclick="sel(this,'wrong','d1q2')"><span class="option-letter">C</span>O segurado pode transferir a apólice para outra pessoa</div><div class="option" onclick="sel(this,'wrong','d1q2')"><span class="option-letter">D</span>A seguradora pode cobrar franquia adicional</div></div><div class="explanation" id="eexp-d1q2"><strong>✅ B.</strong> Sub-rogação: a seguradora que paga se coloca no lugar do segurado e pode cobrar do terceiro responsável pelo sinistro.</div></div><div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">O CNSP exerce a função de:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d1q3')"><span class="option-letter">A</span>Fiscalizar as seguradoras no dia a dia</div><div class="option" onclick="sel(this,'correct','d1q3')"><span class="option-letter">B</span>Órgão normativo máximo do mercado segurador — define diretrizes e políticas</div><div class="option" onclick="sel(this,'wrong','d1q3')"><span class="option-letter">C</span>Intermediar contratos entre segurados e seguradoras</div><div class="option" onclick="sel(this,'wrong','d1q3')"><span class="option-letter">D</span>Gerir o resseguro obrigatório</div></div><div class="explanation" id="eexp-d1q3"><strong>✅ B.</strong> CNSP é o órgão NORMATIVO máximo. A SUSEP é o órgão executivo que fiscaliza e aplica as normas do CNSP.</div></div><div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">No cosseguro, em caso de sinistro, cada seguradora responde:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d1q4')"><span class="option-letter">A</span>Solidariamente pelo valor total</div><div class="option" onclick="sel(this,'wrong','d1q4')"><span class="option-letter">B</span>Pela totalidade, independente da quota</div><div class="option" onclick="sel(this,'correct','d1q4')"><span class="option-letter">C</span>Pela sua quota-parte proporcional na apólice</div><div class="option" onclick="sel(this,'wrong','d1q4')"><span class="option-letter">D</span>Nada — o segurado aciona apenas a líder</div></div><div class="explanation" id="eexp-d1q4"><strong>✅ C.</strong> No cosseguro, cada seguradora responde proporcionalmente à sua quota. Se detém 40% do risco, paga 40% do sinistro.</div></div><div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Corretor que atua sem registro na SUSEP:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d1q5')"><span class="option-letter">A</span>Pode atuar se tiver curso de seguros</div><div class="option" onclick="sel(this,'wrong','d1q5')"><span class="option-letter">B</span>Comete infração sem consequências penais</div><div class="option" onclick="sel(this,'correct','d1q5')"><span class="option-letter">C</span>Pratica ato ilegal sujeito a sanções administrativas e penais</div><div class="option" onclick="sel(this,'wrong','d1q5')"><span class="option-letter">D</span>Está autorizado se tiver CNPJ ativo</div></div><div class="explanation" id="eexp-d1q5"><strong>✅ C.</strong> Habilitação SUSEP é obrigatória. Atuar sem registro é ilegal — sujeito a multas, apreensão de documentos e processo criminal.</div></div></div><div class="exercise-actions"><button class="btn btn-primary" onclick="checkDisc('d1',5)">Verificar</button><button class="btn btn-outline" onclick="resetDisc('d1')">Refazer</button></div><div class="score-display" id="score-disc-d1"></div><button class="btn btn-next" onclick="showDisc('d2')" id="next-d1" style="display:none">Próximo: Direito e Legislação →</button></div></div>
+<div class="disc-content " id="disc-d2">
+<div class="content-card"><div class="disc-header"><div class="disc-badge">Disciplina 2 — Módulo 1</div><h2 class="disc-title">Direito e Legislação do Seguro</h2></div><div class="content-body"><h2>Marco Legal do Seguro no Brasil</h2>
+<p>O contrato de seguro é regulado principalmente pelo <strong>Código Civil (Lei 10.406/2002)</strong>, artigos 757 a 802, e pelo <strong>Decreto-Lei 73/1966</strong> que estruturou o Sistema Nacional de Seguros Privados.</p>
+<div class="table-wrap"><table><thead><tr><th>Legislação</th><th>Conteúdo</th></tr></thead><tbody>
+<tr><td>Dec.-Lei 73/1966</td><td>Estrutura o SNSP, cria CNSP e SUSEP</td></tr>
+<tr><td>Lei 10.406/2002 (CC)</td><td>Regula o contrato de seguro — arts. 757–802</td></tr>
+<tr><td>LC 109/2001</td><td>Previdência Complementar (PGBL/VGBL)</td></tr>
+<tr><td>Lei 9.656/1998</td><td>Planos de Saúde</td></tr>
+<tr><td>Lei 11.110/2005</td><td>Resseguro — abertura do mercado</td></tr>
+</tbody></table></div>
+<h2>Características Jurídicas do Contrato</h2>
+<ul>
+<li><strong>Bilateral:</strong> Obrigações para ambas as partes</li>
+<li><strong>Oneroso:</strong> Prêmio × cobertura</li>
+<li><strong>Aleatório:</strong> Prestação do segurador depende de evento futuro e incerto</li>
+<li><strong>Consensual:</strong> Aperfeiçoa-se pelo acordo de vontades</li>
+<li><strong>De adesão:</strong> Condições gerais pré-definidas pela seguradora</li>
+</ul>
+<h2>Partes do Contrato</h2>
+<ul>
+<li><strong>Segurador:</strong> Sociedade autorizada pela SUSEP</li>
+<li><strong>Segurado:</strong> Contrata em nome próprio</li>
+<li><strong>Estipulante:</strong> Contrata em nome de terceiros (ex: empresa contrata seguro de vida coletivo)</li>
+<li><strong>Beneficiário:</strong> Quem recebe a indenização</li>
+</ul>
+<div class="info-box"><div class="box-title">💡 Prazo Prescricional</div>Prazo para ação contra seguradora em seguros de dano: <strong>1 ano</strong> (CC art. 206, §1°, II). Ponto frequente em provas SUSEP.</div>
+<h2>Franquia</h2>
+<ul>
+<li><strong>Franquia Dedutível:</strong> Seguradora paga o que excede a franquia</li>
+<li><strong>Franquia Simples:</strong> Se sinistro for inferior à franquia, segurado arca com tudo; se superior, seguradora paga integralmente</li>
+<li><strong>Cláusula de Rateio:</strong> Bem sub-segurado — segurado assume proporcionalmente a diferença</li>
+</ul></div></div>
+<div class="exercise-section"><div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Direito e Legislação do Seguro</h3><p>5 questões nível SUSEP avançado.</p></div></div><div id="qblock-d2"><div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O contrato de seguro se aperfeiçoa:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d2q1')"><span class="option-letter">A</span>Apenas com a entrega da apólice assinada</div><div class="option" onclick="sel(this,'correct','d2q1')"><span class="option-letter">B</span>Pelo simples acordo de vontades (contrato consensual)</div><div class="option" onclick="sel(this,'wrong','d2q1')"><span class="option-letter">C</span>Com o pagamento do primeiro prêmio</div><div class="option" onclick="sel(this,'wrong','d2q1')"><span class="option-letter">D</span>Com aprovação da SUSEP</div></div><div class="explanation" id="eexp-d2q1"><strong>✅ B.</strong> Contrato de seguro é CONSENSUAL — aperfeiçoa-se com o acordo de vontades, independente da emissão formal da apólice.</div></div><div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">O 'estipulante' em contrato de seguro é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d2q2')"><span class="option-letter">A</span>O beneficiário da indenização</div><div class="option" onclick="sel(this,'wrong','d2q2')"><span class="option-letter">B</span>Quem contrata em nome próprio</div><div class="option" onclick="sel(this,'correct','d2q2')"><span class="option-letter">C</span>Quem contrata em nome de terceiros, como empresa que faz seguro de vida coletivo</div><div class="option" onclick="sel(this,'wrong','d2q2')"><span class="option-letter">D</span>A seguradora que assume o risco</div></div><div class="explanation" id="eexp-d2q2"><strong>✅ C.</strong> Estipulante: contrata seguro coletivo em nome de terceiros. Ex: empresa (estipulante) contrata seguro de vida para seus funcionários.</div></div><div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">A cláusula de rateio determina que:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d2q3')"><span class="option-letter">A</span>A seguradora paga integralmente qualquer sinistro</div><div class="option" onclick="sel(this,'correct','d2q3')"><span class="option-letter">B</span>O segurado que segurou o bem por valor inferior ao real arca proporcionalmente com a diferença</div><div class="option" onclick="sel(this,'wrong','d2q3')"><span class="option-letter">C</span>A franquia é dobrada automaticamente</div><div class="option" onclick="sel(this,'wrong','d2q3')"><span class="option-letter">D</span>O beneficiário assume os direitos do segurado</div></div><div class="explanation" id="eexp-d2q3"><strong>✅ B.</strong> Rateio: imóvel vale R$500k, segurado por R$250k (50%). Sinistro de R$100k: seguradora paga R$50k (50%). Segurado arca com os outros R$50k.</div></div><div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O Decreto-Lei 73/1966 é fundamental porque:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d2q4')"><span class="option-letter">A</span>Criou o Código Civil</div><div class="option" onclick="sel(this,'correct','d2q4')"><span class="option-letter">B</span>Estruturou o SNSP, criou CNSP e SUSEP</div><div class="option" onclick="sel(this,'wrong','d2q4')"><span class="option-letter">C</span>Regulamentou o resseguro após 2007</div><div class="option" onclick="sel(this,'wrong','d2q4')"><span class="option-letter">D</span>Criou as regras de saúde suplementar</div></div><div class="explanation" id="eexp-d2q4"><strong>✅ B.</strong> Dec.-Lei 73/66: base do sistema segurador — estruturou o mercado, criou CNSP (normativo) e SUSEP (executivo).</div></div><div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Franquia dedutível de R$1.000, sinistro de R$3.500. Seguradora paga:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d2q5')"><span class="option-letter">A</span>R$1.000</div><div class="option" onclick="sel(this,'correct','d2q5')"><span class="option-letter">B</span>R$2.500</div><div class="option" onclick="sel(this,'wrong','d2q5')"><span class="option-letter">C</span>R$3.500</div><div class="option" onclick="sel(this,'wrong','d2q5')"><span class="option-letter">D</span>R$4.500</div></div><div class="explanation" id="eexp-d2q5"><strong>✅ B.</strong> Franquia dedutível: segurado arca com os primeiros R$1.000. Seguradora paga o excedente: R$3.500 - R$1.000 = R$2.500.</div></div></div><div class="exercise-actions"><button class="btn btn-primary" onclick="checkDisc('d2',5)">Verificar</button><button class="btn btn-outline" onclick="resetDisc('d2')">Refazer</button></div><div class="score-display" id="score-disc-d2"></div><button class="btn btn-next" onclick="showDisc('d3')" id="next-d2" style="display:none">Próximo: Matemática Financeira →</button></div></div>
+<div class="disc-content " id="disc-d3">
+<div class="content-card"><div class="disc-header"><div class="disc-badge">Disciplina 3 — Módulo 1</div><h2 class="disc-title">Matemática Financeira Aplicada</h2></div><div class="content-body"><h2>Matemática Financeira Aplicada a Seguros</h2>
+<p>A matemática financeira é base do cálculo de prêmios, reservas técnicas e análise de produtos de capitalização e previdência.</p>
+<h2>Componentes do Prêmio de Seguro</h2>
+<div class="table-wrap"><table><thead><tr><th>Componente</th><th>Descrição</th></tr></thead><tbody>
+<tr><td><strong>Prêmio Puro</strong></td><td>Custo estatístico do risco — base atuarial</td></tr>
+<tr><td><strong>Carregamento de Segurança</strong></td><td>Margem para incertezas estatísticas</td></tr>
+<tr><td><strong>Carregamento Comercial</strong></td><td>Despesas administrativas + comissão do corretor</td></tr>
+<tr><td><strong>Prêmio Comercial</strong></td><td>Prêmio Puro + Carregamentos</td></tr>
+<tr><td><strong>Prêmio Líquido</strong></td><td>Prêmio Comercial - IOF</td></tr>
+</tbody></table></div>
+<h2>IOF sobre Prêmios</h2>
+<ul>
+<li><strong>Seguros de vida:</strong> 0,38%</li>
+<li><strong>Seguros de saúde:</strong> Isento</li>
+<li><strong>Demais seguros de danos:</strong> 7,38%</li>
+<li><strong>Capitalização:</strong> 1% por contribuição</li>
+</ul>
+<h2>Reservas Técnicas</h2>
+<p>As seguradoras são obrigadas pela SUSEP a constituir reservas técnicas para garantir pagamentos futuros. A SUSEP monitora a solvência das seguradoras por meio dessas reservas.</p>
+<div class="info-box"><div class="box-title">💡 FGCseg</div>Em caso de insolvência, o FGCseg garante até <strong>R$ 120.000 por CPF</strong> por grupo segurador.</div>
+<h2>Tábuas de Mortalidade</h2>
+<p>O cálculo de prêmios de vida usa <strong>tábuas de mortalidade</strong> (AT-2000, BR-EMS) que indicam a probabilidade de óbito em cada faixa etária. Quanto maior a idade, maior o risco e maior o prêmio.</p>
+<div class="info-box"><div class="box-title">💡 Juros Compostos — Exemplo</div>Prêmio de R$5.000 aplicado em reserva técnica a 0,5% ao mês por 24 meses:<br>M = 5.000 × (1,005)²⁴ = 5.000 × 1,12716 = <strong>R$ 5.635,80</strong></div></div></div>
+<div class="exercise-section"><div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Matemática Financeira Aplicada</h3><p>5 questões nível SUSEP avançado.</p></div></div><div id="qblock-d3"><div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O 'prêmio comercial' é composto por:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d3q1')"><span class="option-letter">A</span>Apenas o custo estatístico do risco</div><div class="option" onclick="sel(this,'correct','d3q1')"><span class="option-letter">B</span>Prêmio puro + carregamentos de segurança e comercial</div><div class="option" onclick="sel(this,'wrong','d3q1')"><span class="option-letter">C</span>Prêmio puro - IOF</div><div class="option" onclick="sel(this,'wrong','d3q1')"><span class="option-letter">D</span>Apenas a comissão do corretor</div></div><div class="explanation" id="eexp-d3q1"><strong>✅ B.</strong> Prêmio comercial = prêmio puro (risco atuarial) + carregamento de segurança + carregamento comercial (admin + comissão).</div></div><div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">A alíquota de IOF sobre prêmios de seguros de danos é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d3q2')"><span class="option-letter">A</span>0,38%</div><div class="option" onclick="sel(this,'wrong','d3q2')"><span class="option-letter">B</span>Isento</div><div class="option" onclick="sel(this,'correct','d3q2')"><span class="option-letter">C</span>7,38%</div><div class="option" onclick="sel(this,'wrong','d3q2')"><span class="option-letter">D</span>1,00%</div></div><div class="explanation" id="eexp-d3q2"><strong>✅ C.</strong> Danos: IOF 7,38%. Vida: 0,38%. Saúde: isento. Capitalização: 1% por contribuição.</div></div><div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">As tábuas de mortalidade são usadas para:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d3q3')"><span class="option-letter">A</span>Calcular o IOF dos prêmios</div><div class="option" onclick="sel(this,'wrong','d3q3')"><span class="option-letter">B</span>Determinar a comissão do corretor</div><div class="option" onclick="sel(this,'correct','d3q3')"><span class="option-letter">C</span>Calcular a probabilidade de óbito por faixa etária — base do prêmio de vida</div><div class="option" onclick="sel(this,'wrong','d3q3')"><span class="option-letter">D</span>Fixar as reservas técnicas mínimas</div></div><div class="explanation" id="eexp-d3q3"><strong>✅ C.</strong> Tábuas de mortalidade: indicam probabilidade de morte por idade — base atuarial para precificação de seguros de vida.</div></div><div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O FGCseg garante ao segurado em caso de insolvência até:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d3q4')"><span class="option-letter">A</span>R$50.000</div><div class="option" onclick="sel(this,'correct','d3q4')"><span class="option-letter">B</span>R$120.000 por CPF por grupo segurador</div><div class="option" onclick="sel(this,'wrong','d3q4')"><span class="option-letter">C</span>R$250.000</div><div class="option" onclick="sel(this,'wrong','d3q4')"><span class="option-letter">D</span>Ilimitado</div></div><div class="explanation" id="eexp-d3q4"><strong>✅ B.</strong> FGCseg: até R$120.000 por CPF por grupo segurador em caso de liquidação extrajudicial da seguradora.</div></div><div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">R$10.000 em reserva técnica a 0,5% ao mês por 12 meses. Montante:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d3q5')"><span class="option-letter">A</span>R$10.500,00</div><div class="option" onclick="sel(this,'correct','d3q5')"><span class="option-letter">B</span>R$10.616,78</div><div class="option" onclick="sel(this,'wrong','d3q5')"><span class="option-letter">C</span>R$11.000,00</div><div class="option" onclick="sel(this,'wrong','d3q5')"><span class="option-letter">D</span>R$10.060,00</div></div><div class="explanation" id="eexp-d3q5"><strong>✅ B.</strong> M = 10.000 × (1,005)¹² = 10.000 × 1,06168 = R$10.616,78 (juros compostos).</div></div></div><div class="exercise-actions"><button class="btn btn-primary" onclick="checkDisc('d3',5)">Verificar</button><button class="btn btn-outline" onclick="resetDisc('d3')">Refazer</button></div><div class="score-display" id="score-disc-d3"></div><button class="btn btn-next" onclick="showDisc('d4')" id="next-d3" style="display:none">Próximo: Capitalização →</button></div></div>
+<div class="disc-content " id="disc-d4">
+<div class="content-card"><div class="disc-header"><div class="disc-badge">Disciplina 4 — Módulo 1</div><h2 class="disc-title">Capitalização</h2></div><div class="content-body"><h2>O que é Capitalização?</h2>
+<p>O título de capitalização combina formação de poupança com sorteios de prêmios. É regulado pela SUSEP. Não é seguro nem investimento — é modalidade própria.</p>
+<div class="warning-box"><div class="box-title">⚠️ Capitalização NÃO é investimento!</div>A rentabilidade é geralmente inferior à poupança. O atrativo é o sorteio. A SUSEP exige que isso seja informado claramente ao consumidor.</div>
+<h2>Estrutura do Título</h2>
+<div class="table-wrap"><table><thead><tr><th>Componente</th><th>Destino</th></tr></thead><tbody>
+<tr><td><strong>Quota de Capitalização</strong> (mín. 30%)</td><td>Reserva do cliente — corrigida e resgatável</td></tr>
+<tr><td><strong>Quota de Sorteio</strong></td><td>Fundo para premiar sorteados</td></tr>
+<tr><td><strong>Quota de Carregamento</strong></td><td>Despesas administrativas e comissão</td></tr>
+</tbody></table></div>
+<h2>Modalidades</h2>
+<ul>
+<li><strong>Tradicional:</strong> Vigência definida, sorteios e resgate ao final</li>
+<li><strong>Instrumento de Garantia:</strong> Substitui fiador/depósito em locações</li>
+<li><strong>Compra Programada:</strong> Poupança com objetivo de compra</li>
+<li><strong>Popular:</strong> Baixo valor, alta frequência de sorteios</li>
+<li><strong>Filantropia Premiável:</strong> Parte da receita para entidades beneficentes</li>
+</ul>
+<h2>Resgate Antecipado</h2>
+<p>Permitido com possível penalidade de resgate — especialmente nos primeiros meses. O percentual deve estar na proposta.</p>
+<div class="success-box"><div class="box-title">✅ Capitalização como Garantia de Locação</div>Locatário adquire o título no lugar do fiador. Ao final, resgata o valor corrigido. Proprietário pode acionar o título em inadimplência.</div></div></div>
+<div class="exercise-section"><div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Capitalização</h3><p>5 questões nível SUSEP avançado.</p></div></div><div id="qblock-d4"><div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">A 'quota de capitalização' representa:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d4q1')"><span class="option-letter">A</span>O percentual destinado aos sorteios</div><div class="option" onclick="sel(this,'wrong','d4q1')"><span class="option-letter">B</span>O percentual de carregamento administrativo</div><div class="option" onclick="sel(this,'correct','d4q1')"><span class="option-letter">C</span>A parcela que forma a reserva do cliente, resgatável ao final</div><div class="option" onclick="sel(this,'wrong','d4q1')"><span class="option-letter">D</span>O IOF cobrado sobre o título</div></div><div class="explanation" id="eexp-d4q1"><strong>✅ C.</strong> Quota de capitalização: parte da contribuição que forma a reserva do titular — corrigida e resgatável ao final.</div></div><div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">A modalidade de capitalização usada como substituto do fiador em locações é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d4q2')"><span class="option-letter">A</span>Tradicional</div><div class="option" onclick="sel(this,'wrong','d4q2')"><span class="option-letter">B</span>Popular</div><div class="option" onclick="sel(this,'correct','d4q2')"><span class="option-letter">C</span>Instrumento de Garantia</div><div class="option" onclick="sel(this,'wrong','d4q2')"><span class="option-letter">D</span>Filantropia Premiável</div></div><div class="explanation" id="eexp-d4q2"><strong>✅ C.</strong> Instrumento de Garantia: locatário compra o título para garantir o contrato de aluguel. Ao final, resgata o valor.</div></div><div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">A SUSEP exige como quota mínima de capitalização:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d4q3')"><span class="option-letter">A</span>10%</div><div class="option" onclick="sel(this,'wrong','d4q3')"><span class="option-letter">B</span>20%</div><div class="option" onclick="sel(this,'correct','d4q3')"><span class="option-letter">C</span>30%</div><div class="option" onclick="sel(this,'wrong','d4q3')"><span class="option-letter">D</span>50%</div></div><div class="explanation" id="eexp-d4q3"><strong>✅ C.</strong> SUSEP exige pelo menos 30% de quota de capitalização — garantindo que ao menos 30% do prêmio forme a reserva resgatável.</div></div><div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">Em relação à capitalização como investimento é correto que:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d4q4')"><span class="option-letter">A</span>É sempre mais rentável que a poupança</div><div class="option" onclick="sel(this,'correct','d4q4')"><span class="option-letter">B</span>A SUSEP exige informar que a rentabilidade pode ser inferior à poupança</div><div class="option" onclick="sel(this,'wrong','d4q4')"><span class="option-letter">C</span>Garante 100% do CDI</div><div class="option" onclick="sel(this,'wrong','d4q4')"><span class="option-letter">D</span>É isenta de IR e IOF</div></div><div class="explanation" id="eexp-d4q4"><strong>✅ B.</strong> Capitalização: rentabilidade geralmente inferior à poupança. SUSEP exige transparência. O atrativo é o sorteio.</div></div><div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">O resgate antecipado de capitalização:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d4q5')"><span class="option-letter">A</span>É vedado antes do vencimento</div><div class="option" onclick="sel(this,'correct','d4q5')"><span class="option-letter">B</span>É permitido com possível penalidade, especialmente nos primeiros meses</div><div class="option" onclick="sel(this,'wrong','d4q5')"><span class="option-letter">C</span>Não tem penalidade em nenhuma modalidade</div><div class="option" onclick="sel(this,'wrong','d4q5')"><span class="option-letter">D</span>Só é permitido se houver sorteio premiado</div></div><div class="explanation" id="eexp-d4q5"><strong>✅ B.</strong> Resgate antecipado: permitido, mas sujeito a penalidade — especialmente nos primeiros meses. Percentual deve estar na proposta.</div></div></div><div class="exercise-actions"><button class="btn btn-primary" onclick="checkDisc('d4',5)">Verificar</button><button class="btn btn-outline" onclick="resetDisc('d4')">Refazer</button></div><div class="score-display" id="score-disc-d4"></div><button class="btn btn-next" onclick="showDisc('d5')" id="next-d4" style="display:none">Próximo: LGPD para Corretores →</button></div></div>
+<div class="disc-content " id="disc-d5">
+<div class="content-card"><div class="disc-header"><div class="disc-badge">Disciplina 5 — Módulo 1</div><h2 class="disc-title">LGPD para Corretores de Seguros</h2></div><div class="content-body"><h2>LGPD — Lei Geral de Proteção de Dados (Lei 13.709/2018)</h2>
+<p>A LGPD regula coleta, armazenamento, tratamento e compartilhamento de dados pessoais. O corretor lida com dados sensíveis de clientes e é um agente de tratamento de dados.</p>
+<div class="info-box"><div class="box-title">💡 Conceitos Essenciais</div><ul>
+<li><strong>Titular:</strong> Pessoa física a quem os dados pertencem (o segurado)</li>
+<li><strong>Controlador:</strong> Quem decide como os dados são tratados (seguradora/corretor)</li>
+<li><strong>Operador:</strong> Quem trata dados em nome do controlador</li>
+<li><strong>ANPD:</strong> Autoridade Nacional de Proteção de Dados — fiscaliza a LGPD</li>
+</ul></div>
+<h2>Dados Sensíveis no Seguro</h2>
+<p>Exigem consentimento específico e destacado:</p>
+<ul>
+<li>Dados de saúde (DPS — Declaração Pessoal de Saúde)</li>
+<li>Dados biométricos</li>
+<li>Dados genéticos</li>
+</ul>
+<h2>Bases Legais para Tratamento</h2>
+<div class="table-wrap"><table><thead><tr><th>Base Legal</th><th>Aplicação em Seguros</th></tr></thead><tbody>
+<tr><td>Consentimento</td><td>Marketing, envio de ofertas</td></tr>
+<tr><td>Execução de contrato</td><td>Dados para emissão da apólice</td></tr>
+<tr><td>Obrigação legal</td><td>Dados exigidos pela SUSEP/COAF</td></tr>
+<tr><td>Legítimo interesse</td><td>Prevenção à fraude</td></tr>
+</tbody></table></div>
+<h2>Direitos do Titular (Segurado)</h2>
+<ul>
+<li>Acessar, corrigir e eliminar seus dados (quando aplicável)</li>
+<li>Revogar o consentimento a qualquer momento</li>
+<li>Ser informado sobre compartilhamento com terceiros</li>
+<li>Portabilidade dos dados</li>
+</ul>
+<div class="warning-box"><div class="box-title">⚠️ Penalidades LGPD</div>Multa de até 2% do faturamento, limitado a R$50 milhões por infração. Corretor pode responder civil e penalmente por violação de dados.</div></div></div>
+<div class="exercise-section"><div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — LGPD para Corretores de Seguros</h3><p>5 questões nível SUSEP avançado.</p></div></div><div id="qblock-d5"><div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O 'controlador' no contexto de uma corretora de seguros é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d5q1')"><span class="option-letter">A</span>A ANPD</div><div class="option" onclick="sel(this,'wrong','d5q1')"><span class="option-letter">B</span>O segurado</div><div class="option" onclick="sel(this,'correct','d5q1')"><span class="option-letter">C</span>A corretora ou seguradora que decide como os dados são usados</div><div class="option" onclick="sel(this,'wrong','d5q1')"><span class="option-letter">D</span>O operador de TI</div></div><div class="explanation" id="eexp-d5q1"><strong>✅ C.</strong> Controlador: quem determina finalidades e meios do tratamento. A corretora/seguradora é o controlador dos dados dos segurados.</div></div><div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Dados de saúde coletados na DPS são classificados como:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d5q2')"><span class="option-letter">A</span>Dados públicos</div><div class="option" onclick="sel(this,'wrong','d5q2')"><span class="option-letter">B</span>Dados anonimizados</div><div class="option" onclick="sel(this,'correct','d5q2')"><span class="option-letter">C</span>Dados sensíveis — exigem consentimento específico e destacado</div><div class="option" onclick="sel(this,'wrong','d5q2')"><span class="option-letter">D</span>Dados básicos sem restrição</div></div><div class="explanation" id="eexp-d5q2"><strong>✅ C.</strong> Saúde = dado sensível pela LGPD. Requer consentimento específico, diferenciado do consentimento geral.</div></div><div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">A base legal para tratar dados necessários à emissão da apólice é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d5q3')"><span class="option-letter">A</span>Consentimento</div><div class="option" onclick="sel(this,'correct','d5q3')"><span class="option-letter">B</span>Execução de contrato</div><div class="option" onclick="sel(this,'wrong','d5q3')"><span class="option-letter">C</span>Legítimo interesse</div><div class="option" onclick="sel(this,'wrong','d5q3')"><span class="option-letter">D</span>Proteção à vida</div></div><div class="explanation" id="eexp-d5q3"><strong>✅ B.</strong> Execução de contrato: dados necessários para prestar o serviço contratado não precisam de consentimento separado.</div></div><div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O segurado tem direito pela LGPD de:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d5q4')"><span class="option-letter">A</span>Apenas consultar dados sem poder alterá-los</div><div class="option" onclick="sel(this,'correct','d5q4')"><span class="option-letter">B</span>Acessar, corrigir, eliminar e revogar consentimento sobre seus dados</div><div class="option" onclick="sel(this,'wrong','d5q4')"><span class="option-letter">C</span>Impedir qualquer tratamento de dados</div><div class="option" onclick="sel(this,'wrong','d5q4')"><span class="option-letter">D</span>Exigir que a seguradora apague dados obrigatórios por lei</div></div><div class="explanation" id="eexp-d5q4"><strong>✅ B.</strong> Direitos do titular: acesso, correção, eliminação (quando cabível), portabilidade, revogação e informação sobre compartilhamento.</div></div><div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">A multa máxima da ANPD por infração à LGPD é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','d5q5')"><span class="option-letter">A</span>R$1 milhão</div><div class="option" onclick="sel(this,'wrong','d5q5')"><span class="option-letter">B</span>R$10 milhões</div><div class="option" onclick="sel(this,'correct','d5q5')"><span class="option-letter">C</span>2% do faturamento, limitado a R$50 milhões por infração</div><div class="option" onclick="sel(this,'wrong','d5q5')"><span class="option-letter">D</span>Ilimitada</div></div><div class="explanation" id="eexp-d5q5"><strong>✅ C.</strong> LGPD: até 2% do faturamento do grupo econômico no Brasil, limitado a R$50.000.000 por infração.</div></div></div><div class="exercise-actions"><button class="btn btn-primary" onclick="checkDisc('d5',5)">Verificar</button><button class="btn btn-outline" onclick="resetDisc('d5')">Refazer</button></div><div class="score-display" id="score-disc-d5"></div><button class="btn btn-next" onclick="showDisc('teste')" id="next-d5" style="display:none">Próximo: Teste do Módulo 1 →</button></div></div>
+<div class="disc-content" id="disc-teste">
+<div class="module-test-section">
+  <div class="module-test-header">
+    <div style="font-size:2rem;margin-bottom:.5rem;">🧪</div>
+    <h3>Teste do Módulo 1 — Capitalização</h3>
+    <p>10 questões cobrindo todas as disciplinas. Mínimo 70% (7 acertos) para avançar ao Módulo 2.</p>
+  </div>
+  <div id="teste-qs"><div class="question-card"><div class="question-num">Questão 1 de 10</div><div class="question-text">O princípio da ubérrima fides obriga:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q1')"><span class="option-letter">A</span>Apenas o segurador à transparência</div><div class="option" onclick="sel(this,'correct','tm1q1')"><span class="option-letter">B</span>Ambas as partes à máxima boa-fé</div><div class="option" onclick="sel(this,'wrong','tm1q1')"><span class="option-letter">C</span>Apenas o segurado</div><div class="option" onclick="sel(this,'wrong','tm1q1')"><span class="option-letter">D</span>Somente o corretor</div></div><div class="explanation" id="eexp-tm1q1"><strong>✅ B.</strong> Ubérrima fides = boa-fé máxima de AMBAS as partes — segurado, segurador e corretor.</div></div><div class="question-card"><div class="question-num">Questão 2 de 10</div><div class="question-text">A SUSEP tem função de:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q2')"><span class="option-letter">A</span>Órgão normativo máximo</div><div class="option" onclick="sel(this,'correct','tm1q2')"><span class="option-letter">B</span>Órgão executivo — fiscaliza e regulamenta o mercado segurador</div><div class="option" onclick="sel(this,'wrong','tm1q2')"><span class="option-letter">C</span>Ressegurar os riscos</div><div class="option" onclick="sel(this,'wrong','tm1q2')"><span class="option-letter">D</span>Definir tábuas de mortalidade</div></div><div class="explanation" id="eexp-tm1q2"><strong>✅ B.</strong> SUSEP: órgão EXECUTIVO — fiscaliza, regulamenta e aplica as normas do CNSP.</div></div><div class="question-card"><div class="question-num">Questão 3 de 10</div><div class="question-text">A sub-rogação ocorre quando:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q3')"><span class="option-letter">A</span>O segurado troca de seguradora</div><div class="option" onclick="sel(this,'correct','tm1q3')"><span class="option-letter">B</span>A seguradora assume os direitos do segurado contra terceiro após indenizá-lo</div><div class="option" onclick="sel(this,'wrong','tm1q3')"><span class="option-letter">C</span>O beneficiário substitui o segurado</div><div class="option" onclick="sel(this,'wrong','tm1q3')"><span class="option-letter">D</span>O corretor é substituído na apólice</div></div><div class="explanation" id="eexp-tm1q3"><strong>✅ B.</strong> Sub-rogação: após pagar, a seguradora pode cobrar do terceiro responsável pelo sinistro.</div></div><div class="question-card"><div class="question-num">Questão 4 de 10</div><div class="question-text">A cláusula de rateio se aplica quando:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q4')"><span class="option-letter">A</span>O sinistro excede o limite da apólice</div><div class="option" onclick="sel(this,'correct','tm1q4')"><span class="option-letter">B</span>O valor segurado é inferior ao valor real do bem</div><div class="option" onclick="sel(this,'wrong','tm1q4')"><span class="option-letter">C</span>O prêmio não foi pago</div><div class="option" onclick="sel(this,'wrong','tm1q4')"><span class="option-letter">D</span>O beneficiário é menor de idade</div></div><div class="explanation" id="eexp-tm1q4"><strong>✅ B.</strong> Rateio: bem sub-segurado — segurado vira co-segurador na diferença proporcional.</div></div><div class="question-card"><div class="question-num">Questão 5 de 10</div><div class="question-text">O prêmio comercial é composto por:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q5')"><span class="option-letter">A</span>Apenas o risco atuarial puro</div><div class="option" onclick="sel(this,'correct','tm1q5')"><span class="option-letter">B</span>Prêmio puro + carregamentos de segurança e comercial</div><div class="option" onclick="sel(this,'wrong','tm1q5')"><span class="option-letter">C</span>Prêmio puro - IOF</div><div class="option" onclick="sel(this,'wrong','tm1q5')"><span class="option-letter">D</span>Apenas comissão e impostos</div></div><div class="explanation" id="eexp-tm1q5"><strong>✅ B.</strong> Prêmio comercial = prêmio puro + carregamento de segurança + carregamento comercial.</div></div><div class="question-card"><div class="question-num">Questão 6 de 10</div><div class="question-text">A quota de capitalização mínima exigida pela SUSEP é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q6')"><span class="option-letter">A</span>10%</div><div class="option" onclick="sel(this,'wrong','tm1q6')"><span class="option-letter">B</span>20%</div><div class="option" onclick="sel(this,'correct','tm1q6')"><span class="option-letter">C</span>30%</div><div class="option" onclick="sel(this,'wrong','tm1q6')"><span class="option-letter">D</span>50%</div></div><div class="explanation" id="eexp-tm1q6"><strong>✅ C.</strong> SUSEP exige pelo menos 30% de quota de capitalização — parcela resgatável pelo cliente.</div></div><div class="question-card"><div class="question-num">Questão 7 de 10</div><div class="question-text">Dados de saúde coletados na DPS são classificados como:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q7')"><span class="option-letter">A</span>Dados públicos</div><div class="option" onclick="sel(this,'wrong','tm1q7')"><span class="option-letter">B</span>Dados básicos</div><div class="option" onclick="sel(this,'correct','tm1q7')"><span class="option-letter">C</span>Dados sensíveis — exigem consentimento específico</div><div class="option" onclick="sel(this,'wrong','tm1q7')"><span class="option-letter">D</span>Dados anonimizados</div></div><div class="explanation" id="eexp-tm1q7"><strong>✅ C.</strong> Saúde = dado sensível pela LGPD. Requer consentimento específico e destacado.</div></div><div class="question-card"><div class="question-num">Questão 8 de 10</div><div class="question-text">O IOF sobre prêmios de seguros de danos é:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q8')"><span class="option-letter">A</span>0,38%</div><div class="option" onclick="sel(this,'wrong','tm1q8')"><span class="option-letter">B</span>Isento</div><div class="option" onclick="sel(this,'correct','tm1q8')"><span class="option-letter">C</span>7,38%</div><div class="option" onclick="sel(this,'wrong','tm1q8')"><span class="option-letter">D</span>1,00%</div></div><div class="explanation" id="eexp-tm1q8"><strong>✅ C.</strong> Seguros de danos: IOF 7,38%. Vida: 0,38%. Saúde: isento. Capitalização: 1%.</div></div><div class="question-card"><div class="question-num">Questão 9 de 10</div><div class="question-text">O FGCseg garante ao segurado até:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q9')"><span class="option-letter">A</span>R$50.000</div><div class="option" onclick="sel(this,'wrong','tm1q9')"><span class="option-letter">B</span>R$250.000</div><div class="option" onclick="sel(this,'correct','tm1q9')"><span class="option-letter">C</span>R$120.000 por CPF por grupo segurador</div><div class="option" onclick="sel(this,'wrong','tm1q9')"><span class="option-letter">D</span>Ilimitado</div></div><div class="explanation" id="eexp-tm1q9"><strong>✅ C.</strong> FGCseg: até R$120.000 por CPF por grupo segurador em caso de liquidação extrajudicial.</div></div><div class="question-card"><div class="question-num">Questão 10 de 10</div><div class="question-text">O Decreto-Lei 73/1966 é fundamental porque:</div><div class="options"><div class="option" onclick="sel(this,'wrong','tm1q10')"><span class="option-letter">A</span>Criou o Código Civil</div><div class="option" onclick="sel(this,'correct','tm1q10')"><span class="option-letter">B</span>Estruturou o SNSP, criou CNSP e SUSEP</div><div class="option" onclick="sel(this,'wrong','tm1q10')"><span class="option-letter">C</span>Regulamentou o resseguro</div><div class="option" onclick="sel(this,'wrong','tm1q10')"><span class="option-letter">D</span>Criou a LGPD</div></div><div class="explanation" id="eexp-tm1q10"><strong>✅ B.</strong> Dec.-Lei 73/66: estruturou o Sistema Nacional de Seguros Privados, criou CNSP e SUSEP.</div></div></div>
+  <div class="exercise-actions" style="margin-top:1.5rem;">
+    <button class="btn btn-primary" onclick="submitTeste()" id="submitTeste">Enviar Teste do Módulo</button>
+    <button class="btn btn-outline" onclick="resetTeste()">Reiniciar</button>
+  </div>
+  <div class="score-display" id="score-teste"></div>
+</div>
+<div class="next-module-btn" id="next-module-box">
+  <h3>✅ Módulo 1 Concluído!</h3>
+  <p>Avance para o Módulo 2 — Vida e Previdência</p>
+  <a href="corretor_modulo2.html" class="btn btn-primary" style="text-decoration:none;display:inline-flex;margin-top:.5rem;">Avançar para o Módulo 2 →</a>
+</div>
+</div>
+</main>
+</div>
+<div class="disclaimer">
+  <strong>⚠️ Aviso Legal:</strong> Material preparatório e educacional. Não substitui o curso oficial habilitado pela SUSEP. As questões são baseadas no conteúdo programático oficial. A Growfy não tem vínculo com a SUSEP.
+</div>
+<script>
+var completed=new Set(),TOTAL=5;
+function showDisc(id){
+  document.querySelectorAll('.disc-content').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.disc-item').forEach(function(el){el.classList.remove('active');});
+  var d=document.getElementById('disc-'+id);if(d)d.classList.add('active');
+  var n=document.getElementById('nav-'+id);if(n)n.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function sel(el,result,qid){
+  var c=el.parentElement;
+  if(c.dataset.answered)return;
+  c.dataset.answered='1';
+  el.classList.add(result);
+  c.querySelectorAll('.option').forEach(function(o){if(o!==el)o.style.opacity='0.5';});
+  var exp=document.getElementById('eexp-'+qid);
+  if(exp)exp.classList.add('show');
+}
+function checkDisc(discId,total){
+  var correct=0;
+  document.querySelectorAll('#qblock-'+discId+' .question-card').forEach(function(q){if(q.querySelector('.option.correct'))correct++;});
+  var s=document.getElementById('score-disc-'+discId);
+  var pct=Math.round(correct/total*100);
+  s.innerHTML='<div class="score-num">'+correct+'/'+total+'</div><div class="score-label">'+pct+'% de acertos</div>';
+  s.classList.add('show');
+  completed.add(discId);updateProgress();
+  var ni=document.getElementById('nav-'+discId);if(ni)ni.classList.add('completed');
+  var nb=document.getElementById('next-'+discId);if(nb)nb.style.display='flex';
+}
+function resetDisc(discId){
+  document.querySelectorAll('#qblock-'+discId+' .question-card').forEach(function(q){
+    var opts=q.querySelector('.options');if(opts)delete opts.dataset.answered;
+    q.querySelectorAll('.option').forEach(function(o){o.classList.remove('correct','wrong');o.style.opacity='';});
+    q.querySelectorAll('.explanation').forEach(function(e){e.classList.remove('show');});
+  });
+  var s=document.getElementById('score-disc-'+discId);if(s)s.classList.remove('show');
+  var nb=document.getElementById('next-'+discId);if(nb)nb.style.display='none';
+}
+function updateProgress(){
+  var discs=['d1','d2','d3','d4','d5'];
+  var done=discs.filter(function(d){return completed.has(d);}).length;
+  var pct=Math.round(done/TOTAL*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=done+' de '+TOTAL+' disciplinas';
+  document.getElementById('progressPct').textContent=pct+'%';
+}
+var tm1Data=[{id:"tm1q1",c:1},{id:"tm1q2",c:1},{id:"tm1q3",c:1},{id:"tm1q4",c:1},{id:"tm1q5",c:1},{id:"tm1q6",c:2},{id:"tm1q7",c:2},{id:"tm1q8",c:2},{id:"tm1q9",c:2},{id:"tm1q10",c:1}];
+function submitTeste(){
+  var correct=0;
+  tm1Data.forEach(function(item){
+    var opts=document.getElementById('eopts-'+item.id);
+    if(!opts)return;
+    var allOpts=opts.querySelectorAll('.option');
+    if(allOpts[item.c]&&allOpts[item.c].classList.contains('correct'))correct++;
+    if(!opts.dataset.answered){
+      if(allOpts[item.c])allOpts[item.c].classList.add('correct');
+      opts.dataset.answered='1';
+    }
+    var exp=document.getElementById('eexp-'+item.id);
+    if(exp)exp.classList.add('show');
+  });
+  var pct=Math.round(correct/10*100);
+  var approved=correct>=7;
+  var s=document.getElementById('score-teste');
+  s.innerHTML='<div class="score-num">'+correct+'/10 ('+pct+'%)</div><div class="score-label" style="color:'+(approved?'var(--success)':'var(--danger)')+';font-weight:700;font-size:1rem;margin-top:.5rem;">'+(approved?'✅ Aprovado! Avance para o Módulo 2.':'📚 Abaixo de 70% — revise as disciplinas antes de avançar.')+'</div>';
+  s.classList.add('show');
+  document.getElementById('submitTeste').disabled=true;
+  if(approved)document.getElementById('next-module-box').classList.add('show');
+  s.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetTeste(){
+  tm1Data.forEach(function(item){
+    var opts=document.getElementById('eopts-'+item.id);
+    if(opts){delete opts.dataset.answered;opts.querySelectorAll('.option').forEach(function(o){o.classList.remove('correct','wrong');o.style.opacity='';});}
+    var exp=document.getElementById('eexp-'+item.id);if(exp)exp.classList.remove('show');
+  });
+  var s=document.getElementById('score-teste');s.classList.remove('show');
+  document.getElementById('submitTeste').disabled=false;
+  document.getElementById('next-module-box').classList.remove('show');
+}
+</script>
+</body>
+</html>

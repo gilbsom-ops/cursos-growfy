@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preparatório CPA-10 e CPA-20 | Academia Growfy</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#5E72E4;--teal:#4DD0E1;--purple:#7C4DFF;--grad:linear-gradient(135deg,#4DD0E1 0%,#5E72E4 50%,#7C4DFF 100%);--dark:#0D0F1A;--dark2:#131629;--dark3:#1A1E35;--card:#1E2340;--border:rgba(94,114,228,0.2);--text:#E8EAFF;--muted:#8892C8;--success:#2DCEA3;--warning:#FFB547;--danger:#F5365C;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.header{background:var(--dark2);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header-badge{background:var(--grad);color:white;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;}
+.hero{background:var(--dark2);padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(94,114,228,.15) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-block;background:rgba(94,114,228,.15);border:1px solid rgba(94,114,228,.4);color:var(--teal);font-size:.75rem;font-weight:700;padding:6px 16px;border-radius:20px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:1.2rem;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.15;margin-bottom:1rem;}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:1.05rem;max-width:600px;margin:0 auto 2rem;line-height:1.7;}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.container{max-width:1100px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:300px 1fr;gap:2rem;align-items:start;}
+.sidebar{position:sticky;top:80px;}
+.sidebar-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;}
+.sidebar-title{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:1rem;}
+.module-list{list-style:none;}
+.module-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:2px;font-size:.85rem;color:var(--muted);border:1px solid transparent;}
+.module-item:hover{background:rgba(94,114,228,.1);color:var(--text);border-color:var(--border);}
+.module-item.active{background:rgba(94,114,228,.15);color:var(--text);border-color:rgba(94,114,228,.4);font-weight:600;}
+.module-item.completed{color:var(--success);}
+.module-num{width:24px;height:24px;border-radius:50%;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;border:1px solid var(--border);}
+.module-item.completed .module-num{background:var(--success);border-color:var(--success);color:white;}
+.module-item.active .module-num{background:var(--grad);border-color:transparent;color:white;}
+.progress-bar{height:6px;background:var(--dark3);border-radius:10px;margin:.5rem 0;overflow:hidden;}
+.progress-fill{height:100%;background:var(--grad);border-radius:10px;transition:width .4s ease;}
+.progress-text{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);}
+.main{min-width:0;}
+.module-content{display:none;}
+.module-content.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.content-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.5rem;}
+.module-header{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.module-tag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:.5rem;}
+.module-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.5rem;}
+.module-meta{display:flex;gap:1.5rem;font-size:.8rem;color:var(--muted);}
+.content-body h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin:1.5rem 0 .8rem;color:var(--text);display:flex;align-items:center;gap:8px;}
+.content-body h2::before{content:'';width:4px;height:18px;background:var(--grad);border-radius:2px;flex-shrink:0;}
+.content-body p{color:#B0B8E8;line-height:1.85;margin-bottom:1rem;font-size:.95rem;}
+.content-body ul,.content-body ol{margin:.8rem 0 1rem 1.2rem;color:#B0B8E8;font-size:.95rem;}
+.content-body li{margin-bottom:.5rem;line-height:1.7;}
+.info-box{background:rgba(77,208,225,.08);border:1px solid rgba(77,208,225,.25);border-left:4px solid var(--teal);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.info-box .info-title{font-weight:700;color:var(--teal);margin-bottom:.3rem;font-size:.8rem;text-transform:uppercase;letter-spacing:1px;}
+.warning-box{background:rgba(255,181,71,.08);border:1px solid rgba(255,181,71,.25);border-left:4px solid var(--warning);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.warning-box .info-title{color:var(--warning);}
+.success-box{background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.25);border-left:4px solid var(--success);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem;color:#B0B8E8;line-height:1.7;}
+.success-box .info-title{color:var(--success);}
+.table-wrap{overflow-x:auto;margin:1rem 0;}
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th{background:rgba(94,114,228,.15);color:var(--teal);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid rgba(94,114,228,.08);color:#B0B8E8;vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(94,114,228,.05);}
+.exercise-section{background:var(--dark3);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-top:1.5rem;}
+.exercise-header{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.exercise-icon{width:40px;height:40px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.exercise-header-text h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.exercise-header-text p{font-size:.8rem;color:var(--muted);margin:0;}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem;}
+.question-num{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:.5rem;}
+.question-text{font-size:.9rem;color:var(--text);font-weight:500;margin-bottom:1rem;line-height:1.6;}
+.options{display:flex;flex-direction:column;gap:6px;}
+.option{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all .2s;font-size:.87rem;color:var(--muted);background:var(--dark2);}
+.option:hover{border-color:var(--primary);color:var(--text);}
+.option.correct{border-color:var(--success);background:rgba(45,206,163,.1);color:var(--success);}
+.option.wrong{border-color:var(--danger);background:rgba(245,54,92,.1);color:var(--danger);}
+.option.selected{border-color:var(--primary);background:rgba(94,114,228,.1);color:var(--text);}
+.option-letter{width:22px;height:22px;border-radius:50%;background:var(--dark3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;transition:all .2s;}
+.option.correct .option-letter{background:var(--success);border-color:var(--success);color:white;}
+.option.wrong .option-letter{background:var(--danger);border-color:var(--danger);color:white;}
+.option.selected .option-letter{background:var(--primary);border-color:var(--primary);color:white;}
+.explanation{display:none;margin-top:.8rem;padding:.8rem 1rem;background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.2);border-radius:8px;font-size:.83rem;color:#B0B8E8;line-height:1.6;}
+.explanation.show{display:block;}
+.explanation strong{color:var(--success);}
+.exercise-actions{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-primary{background:var(--grad);color:white;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(94,114,228,.35);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--primary);color:var(--text);}
+.btn-next{background:var(--grad);color:white;width:100%;justify-content:center;padding:14px;font-size:1rem;border-radius:12px;margin-top:1rem;}
+.btn-next:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 8px 24px rgba(94,114,228,.35);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+.score-display{display:none;text-align:center;padding:1.5rem;background:rgba(45,206,163,.08);border:1px solid rgba(45,206,163,.25);border-radius:12px;margin-top:1rem;}
+.score-display.show{display:block;}
+.score-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.score-label{color:var(--muted);font-size:.9rem;margin-top:.3rem;}
+.exam-hero{background:var(--dark2);border:1px solid rgba(124,77,255,.3);border-radius:16px;padding:2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.exam-hero h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.5rem;}
+.exam-hero p{color:var(--muted);font-size:.9rem;}
+.exam-info{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;}
+.exam-info-item{background:rgba(94,114,228,.1);border:1px solid var(--border);border-radius:10px;padding:.7rem 1.2rem;text-align:center;}
+.exam-info-item .val{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.exam-info-item .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.certificate{display:none;text-align:center;padding:2rem;background:var(--dark2);border:2px solid var(--primary);border-radius:16px;margin-top:1.5rem;}
+.certificate.show{display:block;animation:fadeIn .5s ease;}
+.certificate-icon{font-size:3rem;margin-bottom:1rem;}
+.certificate h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.5rem;}
+.certificate p{color:var(--muted);font-size:.9rem;}
+.share-btn{margin-top:1rem;background:#0077B5;color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:6px;transition:all .2s;}
+.share-btn:hover{opacity:.9;transform:translateY(-1px);}
+.disclaimer{background:rgba(255,181,71,.06);border-top:1px solid rgba(255,181,71,.2);padding:1.5rem 2rem;text-align:center;font-size:.78rem;color:var(--muted);line-height:1.7;margin-top:3rem;}
+.disclaimer strong{color:var(--warning);}
+@media(max-width:768px){.container{grid-template-columns:1fr;}.sidebar{position:static;order:-1;}.hero{padding:2.5rem 1rem 2rem;}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">🌱 Growfy</div>
+  <div style="flex:1;text-align:center;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--muted);">Academia Growfy</div>
+  <div class="header-badge">100% Grátis</div>
+</header>
+<div class="hero">
+  <div class="hero-tag">📋 Preparatório ANBIMA</div>
+  <h1>Certificações <span>CPA-10 e CPA-20</span></h1>
+  <p>Domine os conteúdos cobrados pela ANBIMA e conquiste sua certificação. Do zero ao aprovado, com exercícios e prova final no estilo do exame real.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10</div><div class="stat-label">Módulos</div></div>
+    <div class="stat"><div class="stat-num">~18h</div><div class="stat-label">Conteúdo</div></div>
+    <div class="stat"><div class="stat-num">30</div><div class="stat-label">Questões Finais</div></div>
+    <div class="stat"><div class="stat-num">R$0</div><div class="stat-label">Investimento</div></div>
+  </div>
+</div>
+<div class="container">
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-title">Seu Progresso</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text"><span id="progressLabel">0 de 10 módulos</span><span id="progressPct">0%</span></div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-title">Conteúdo do Curso</div>
+    <ul class="module-list">
+      <li class="module-item active" onclick="showModule(0)" id="nav-0"><span class="module-num">1</span>Sistema Financeiro Nacional</li>
+      <li class="module-item" onclick="showModule(1)" id="nav-1"><span class="module-num">2</span>Ética e Regulamentação</li>
+      <li class="module-item" onclick="showModule(2)" id="nav-2"><span class="module-num">3</span>Noções de Economia</li>
+      <li class="module-item" onclick="showModule(3)" id="nav-3"><span class="module-num">4</span>Finanças Pessoais</li>
+      <li class="module-item" onclick="showModule(4)" id="nav-4"><span class="module-num">5</span>Renda Fixa</li>
+      <li class="module-item" onclick="showModule(5)" id="nav-5"><span class="module-num">6</span>Renda Variável</li>
+      <li class="module-item" onclick="showModule(6)" id="nav-6"><span class="module-num">7</span>Fundos de Investimento</li>
+      <li class="module-item" onclick="showModule(7)" id="nav-7"><span class="module-num">8</span>Previdência Privada</li>
+      <li class="module-item" onclick="showModule(8)" id="nav-8"><span class="module-num">9</span>Tributação e IOF</li>
+      <li class="module-item" onclick="showModule(9)" id="nav-9"><span class="module-num">10</span>Câmbio e Mercado Internacional</li>
+      <li class="module-item" onclick="showModule(10)" id="nav-10" style="border-top:1px solid var(--border);margin-top:6px;padding-top:10px;"><span class="module-num" style="background:var(--grad);color:white;border:none;">🏆</span><strong>Prova Final</strong></li>
+    </ul>
+  </div>
+</aside>
+<main class="main">
+
+<!-- MOD 1 -->
+<div class="module-content active" id="mod-0">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 1 · CPA-10 e CPA-20</div><h2 class="module-title">Sistema Financeiro Nacional (SFN)</h2><div class="module-meta"><span>⏱ ~90 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>O que é o SFN?</h2>
+<p>O <strong>Sistema Financeiro Nacional (SFN)</strong> é o conjunto de instituições, instrumentos e normas que regulam e operacionalizam a transferência de recursos entre os agentes econômicos no Brasil. É toda a infraestrutura que permite que o dinheiro circule de quem tem sobra (poupadores) para quem tem necessidade (tomadores de crédito).</p>
+<div class="info-box"><div class="info-title">💡 Ponto-chave para a prova</div>O SFN é dividido em dois subsistemas: <strong>Normativo</strong> (quem faz as regras) e <strong>Operativo</strong> (quem executa as operações financeiras). Entender essa divisão é fundamental!</div>
+<h2>Subsistema Normativo</h2>
+<p>Composto pelas entidades que regulam, fiscalizam e supervisionam o sistema financeiro:</p>
+<ul>
+<li><strong>CMN – Conselho Monetário Nacional:</strong> Órgão máximo do SFN. Define diretrizes gerais da política monetária, cambial e de crédito. Não executa operações. Composto pelo Ministro da Fazenda (presidente), Ministro do Planejamento e Presidente do BCB.</li>
+<li><strong>BCB – Banco Central do Brasil:</strong> Executor das políticas do CMN. Emite moeda, controla a inflação (via Selic), fiscaliza instituições financeiras e gerencia reservas internacionais.</li>
+<li><strong>CVM – Comissão de Valores Mobiliários:</strong> Regula e fiscaliza o mercado de valores mobiliários (ações, debêntures, fundos). Protege os investidores.</li>
+<li><strong>SUSEP:</strong> Fiscaliza seguros, previdência complementar aberta e capitalização.</li>
+<li><strong>PREVIC:</strong> Fiscaliza entidades fechadas de previdência complementar (fundos de pensão).</li>
+</ul>
+<h2>Subsistema Operativo</h2>
+<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Exemplos</th><th>Função Principal</th></tr></thead><tbody>
+<tr><td>Bancos Múltiplos</td><td>Itaú, Bradesco, BB</td><td>Crédito, depósitos, câmbio</td></tr>
+<tr><td>Bancos de Investimento</td><td>BTG, XP</td><td>Financiamentos de longo prazo</td></tr>
+<tr><td>Corretoras (CTVM)</td><td>Clear, Rico</td><td>Distribuição de títulos e valores</td></tr>
+<tr><td>Distribuidoras (DTVM)</td><td>Genial, Órama</td><td>Distribuição de fundos e produtos</td></tr>
+<tr><td>Cooperativas de Crédito</td><td>Sicoob, Sicredi</td><td>Crédito para cooperados</td></tr>
+</tbody></table></div>
+<h2>SPB – Sistema de Pagamentos Brasileiro</h2>
+<p>O <strong>SPB</strong> engloba todos os mecanismos de transferência de fundos. O <strong>STR (Sistema de Transferência de Reservas)</strong> é o coração: transferências interbancárias em tempo real.</p>
+<ul>
+<li><strong>TED:</strong> Liquidação no mesmo dia via STR.</li>
+<li><strong>DOC:</strong> Liquidação no dia útil seguinte.</li>
+<li><strong>PIX:</strong> Transferência instantânea 24h/7d, liquidada em segundos, gerenciada pelo BCB.</li>
+</ul>
+<div class="warning-box"><div class="info-title">⚠️ Atenção na prova</div>A CPA-20 exige compreensão mais aprofundada das atribuições do CMN, BCB e CVM. A CPA-10 foca nos conceitos gerais do SFN.</div>
+<h2>ANBIMA</h2>
+<p>A <strong>ANBIMA</strong> é uma entidade privada de autorregulação do mercado de capitais. Não tem poder de lei, mas seus códigos são amplamente adotados. É responsável pela realização das certificações CPA-10 e CPA-20.</p>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 1</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m1">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">Qual órgão é o responsável máximo do Sistema Financeiro Nacional, definindo as diretrizes da política monetária e cambial?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m1q1')"><span class="option-letter">A</span>Banco Central do Brasil (BCB)</div><div class="option" onclick="ans(this,'correct','m1q1')"><span class="option-letter">B</span>Conselho Monetário Nacional (CMN)</div><div class="option" onclick="ans(this,'wrong','m1q1')"><span class="option-letter">C</span>Comissão de Valores Mobiliários (CVM)</div><div class="option" onclick="ans(this,'wrong','m1q1')"><span class="option-letter">D</span>ANBIMA</div></div><div class="explanation" id="exp-m1q1"><strong>✅ B.</strong> O CMN é o órgão máximo do SFN. O BCB executa as políticas definidas pelo CMN.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">A CVM tem competência para regular e fiscalizar:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m1q2')"><span class="option-letter">A</span>Operações de câmbio interbancário</div><div class="option" onclick="ans(this,'wrong','m1q2')"><span class="option-letter">B</span>Contratos de seguros de vida</div><div class="option" onclick="ans(this,'correct','m1q2')"><span class="option-letter">C</span>Ações, debêntures e cotas de fundos de investimento</div><div class="option" onclick="ans(this,'wrong','m1q2')"><span class="option-letter">D</span>A taxa básica de juros (Selic)</div></div><div class="explanation" id="exp-m1q2"><strong>✅ C.</strong> A CVM regula valores mobiliários: ações, debêntures, cotas de fundos. Câmbio e Selic são do BCB; seguros são da SUSEP.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">O PIX se diferencia da TED principalmente porque:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m1q3')"><span class="option-letter">A</span>Tem limite maior por transação</div><div class="option" onclick="ans(this,'correct','m1q3')"><span class="option-letter">B</span>Opera 24 horas por dia, 7 dias por semana, incluindo feriados</div><div class="option" onclick="ans(this,'wrong','m1q3')"><span class="option-letter">C</span>É mais seguro pois não transita pelo BCB</div><div class="option" onclick="ans(this,'wrong','m1q3')"><span class="option-letter">D</span>Só pode ser usado por pessoas físicas</div></div><div class="explanation" id="exp-m1q3"><strong>✅ B.</strong> O PIX opera 24/7, com liquidação em segundos. É gerenciado pelo BCB e usado por PF e PJ.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">A ANBIMA pode ser classificada como:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m1q4')"><span class="option-letter">A</span>Órgão governamental com poder de legislar</div><div class="option" onclick="ans(this,'wrong','m1q4')"><span class="option-letter">B</span>Autarquia vinculada ao Ministério da Fazenda</div><div class="option" onclick="ans(this,'correct','m1q4')"><span class="option-letter">C</span>Entidade privada de autorregulação do mercado de capitais</div><div class="option" onclick="ans(this,'wrong','m1q4')"><span class="option-letter">D</span>Departamento interno do Banco Central</div></div><div class="explanation" id="exp-m1q4"><strong>✅ C.</strong> A ANBIMA é uma associação privada sem fins lucrativos, entidade de autorregulação, sem poder de lei.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Os fundos de pensão (entidades fechadas de previdência complementar) são supervisionados por:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m1q5')"><span class="option-letter">A</span>SUSEP</div><div class="option" onclick="ans(this,'wrong','m1q5')"><span class="option-letter">B</span>CVM</div><div class="option" onclick="ans(this,'correct','m1q5')"><span class="option-letter">C</span>PREVIC</div><div class="option" onclick="ans(this,'wrong','m1q5')"><span class="option-letter">D</span>Banco Central</div></div><div class="explanation" id="exp-m1q5"><strong>✅ C.</strong> A PREVIC supervisiona as entidades fechadas (fundos de pensão). A SUSEP supervisiona a previdência aberta (PGBL, VGBL).</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m1',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m1')">Refazer</button></div>
+<div class="score-display" id="score-m1"></div>
+<button class="btn btn-next" onclick="showModule(1)" id="next-0" style="display:none">Próximo: Ética e Regulamentação →</button>
+</div></div>
+
+<!-- MOD 2 -->
+<div class="module-content" id="mod-1">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 2 · CPA-10 e CPA-20</div><h2 class="module-title">Ética, Regulamentação e Compliance</h2><div class="module-meta"><span>⏱ ~80 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Suitability — Análise do Perfil do Investidor</h2>
+<p>O <strong>suitability (API)</strong> é o processo pelo qual a instituição avalia se um produto é adequado ao perfil do cliente. É obrigatório e deve ser revisado periodicamente.</p>
+<ul>
+<li><strong>Conservador:</strong> Prioriza segurança. Produtos: Tesouro Selic, CDB, poupança.</li>
+<li><strong>Moderado:</strong> Aceita algum risco. Produtos: multimercado, debêntures.</li>
+<li><strong>Agressivo/Arrojado:</strong> Aceita alta volatilidade. Produtos: ações, derivativos.</li>
+</ul>
+<div class="warning-box"><div class="info-title">⚠️ Vedação importante</div>É vedado recomendar produto inadequado ao perfil. Se o cliente insistir, a instituição deve registrar o fato e alertá-lo formalmente.</div>
+<h2>Lavagem de Dinheiro — Lei 9.613/98</h2>
+<p>O processo ocorre em 3 fases:</p>
+<ol>
+<li><strong>Colocação:</strong> Inserção do dinheiro ilícito no sistema financeiro (ex: smurfing — depósitos fracionados).</li>
+<li><strong>Ocultação/Estratificação:</strong> Movimentação para dificultar o rastreamento.</li>
+<li><strong>Integração:</strong> Retorno dos recursos com aparência legal à economia.</li>
+</ol>
+<p>O <strong>COAF</strong> recebe e analisa os reportes de operações suspeitas.</p>
+<h2>KYC — Know Your Customer</h2>
+<p>Obriga as instituições a coletar e manter atualizados dados dos clientes: identificação, qualificação financeira, profissão, origem dos recursos e propósito das transações.</p>
+<h2>Insider Trading e Front Running</h2>
+<ul>
+<li><strong>Insider Trading:</strong> Uso de informações privilegiadas (não públicas) para negociar valores mobiliários. Crime (Lei 6.385/76).</li>
+<li><strong>Front Running:</strong> O profissional opera para si antes de executar a ordem do cliente. Antiético e ilegal.</li>
+</ul>
+<div class="info-box"><div class="info-title">💡 Código de Distribuição ANBIMA</div>Estabelece padrões mínimos de conduta para distribuição de produtos: adequação (suitability), transparência e combate à lavagem de dinheiro.</div>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 2</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m2">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O processo de "suitability" tem como objetivo principal:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m2q1')"><span class="option-letter">A</span>Maximizar as receitas da instituição financeira</div><div class="option" onclick="ans(this,'correct','m2q1')"><span class="option-letter">B</span>Verificar se o produto recomendado é adequado ao perfil do investidor</div><div class="option" onclick="ans(this,'wrong','m2q1')"><span class="option-letter">C</span>Garantir que o cliente invista apenas em renda fixa</div><div class="option" onclick="ans(this,'wrong','m2q1')"><span class="option-letter">D</span>Coletar dados para fins de lavagem de dinheiro</div></div><div class="explanation" id="exp-m2q1"><strong>✅ B.</strong> O suitability verifica se produtos são adequados ao perfil, objetivos e horizonte do investidor.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Na lavagem de dinheiro, a fase de "colocação" refere-se a:</div><div class="options"><div class="option" onclick="ans(this,'correct','m2q2')"><span class="option-letter">A</span>Inserção do dinheiro ilícito no sistema financeiro</div><div class="option" onclick="ans(this,'wrong','m2q2')"><span class="option-letter">B</span>Movimentação dos recursos para dificultar o rastreamento</div><div class="option" onclick="ans(this,'wrong','m2q2')"><span class="option-letter">C</span>Retorno dos recursos à economia com aparência legal</div><div class="option" onclick="ans(this,'wrong','m2q2')"><span class="option-letter">D</span>Declaração dos bens para a Receita Federal</div></div><div class="explanation" id="exp-m2q2"><strong>✅ A.</strong> Colocação é a 1ª fase: inserção do dinheiro ilícito no sistema. 2ª: ocultação. 3ª: integração.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">Um gestor que opera em benefício próprio antes de executar a ordem de um cliente está cometendo:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m2q3')"><span class="option-letter">A</span>Insider Trading</div><div class="option" onclick="ans(this,'correct','m2q3')"><span class="option-letter">B</span>Front Running</div><div class="option" onclick="ans(this,'wrong','m2q3')"><span class="option-letter">C</span>Churning</div><div class="option" onclick="ans(this,'wrong','m2q3')"><span class="option-letter">D</span>Smurfing</div></div><div class="explanation" id="exp-m2q3"><strong>✅ B.</strong> Front running é antecipar a ordem do cliente para benefício próprio. Churning é giro excessivo de carteira. Smurfing é fragmentação de depósitos.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O COAF tem como função principal:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m2q4')"><span class="option-letter">A</span>Fiscalizar as corretoras de valores</div><div class="option" onclick="ans(this,'wrong','m2q4')"><span class="option-letter">B</span>Definir as taxas de juros do mercado</div><div class="option" onclick="ans(this,'correct','m2q4')"><span class="option-letter">C</span>Receber e analisar reportes de operações suspeitas de lavagem de dinheiro</div><div class="option" onclick="ans(this,'wrong','m2q4')"><span class="option-letter">D</span>Emitir as certificações financeiras no Brasil</div></div><div class="explanation" id="exp-m2q4"><strong>✅ C.</strong> O COAF é a unidade de inteligência financeira do Brasil, identificando ocorrências suspeitas de lavagem de dinheiro.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Se um cliente conservador insistir em aplicar em ações de alto risco, o profissional deve:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m2q5')"><span class="option-letter">A</span>Recusar definitivamente, pois é proibido por lei</div><div class="option" onclick="ans(this,'wrong','m2q5')"><span class="option-letter">B</span>Executar sem questionar, o cliente tem sempre razão</div><div class="option" onclick="ans(this,'correct','m2q5')"><span class="option-letter">C</span>Alertar formalmente sobre a inadequação e registrar o fato</div><div class="option" onclick="ans(this,'wrong','m2q5')"><span class="option-letter">D</span>Alterar o perfil do cliente para arrojado automaticamente</div></div><div class="explanation" id="exp-m2q5"><strong>✅ C.</strong> O profissional alerta sobre a inadequação e registra. A operação pode ser feita com manifestação expressa do cliente.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m2',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m2')">Refazer</button></div>
+<div class="score-display" id="score-m2"></div>
+<button class="btn btn-next" onclick="showModule(2)" id="next-1" style="display:none">Próximo: Noções de Economia →</button>
+</div></div>
+
+<!-- MOD 3 -->
+<div class="module-content" id="mod-2">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 3 · CPA-10 e CPA-20</div><h2 class="module-title">Noções de Economia e Finanças</h2><div class="module-meta"><span>⏱ ~90 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Indicadores Macroeconômicos</h2>
+<div class="table-wrap"><table><thead><tr><th>Indicador</th><th>O que mede</th><th>Impacto nos Investimentos</th></tr></thead><tbody>
+<tr><td><strong>IPCA</strong></td><td>Inflação oficial (IBGE)</td><td>Referência para Tesouro IPCA+</td></tr>
+<tr><td><strong>IGP-M</strong></td><td>Inflação ampla (FGV)</td><td>Aluguéis, CRI/CRA</td></tr>
+<tr><td><strong>Selic</strong></td><td>Taxa básica de juros</td><td>Referência para renda fixa pós-fixada</td></tr>
+<tr><td><strong>CDI</strong></td><td>Taxa interbancária</td><td>Benchmark da maioria dos produtos RF</td></tr>
+<tr><td><strong>PIB</strong></td><td>Crescimento econômico</td><td>Sinaliza saúde da economia; impacta ações</td></tr>
+<tr><td><strong>Câmbio</strong></td><td>Relação Real/Dólar</td><td>Impacta exportadores, fundos cambiais</td></tr>
+</tbody></table></div>
+<h2>Política Monetária</h2>
+<p>Conduzida pelo BCB via <strong>COPOM</strong>, que se reúne a cada 45 dias para definir a taxa Selic.</p>
+<ul>
+<li><strong>Expansionista:</strong> Reduz a Selic → barateia o crédito → estimula consumo → pode aumentar a inflação.</li>
+<li><strong>Contracionista:</strong> Eleva a Selic → encarece o crédito → reduz consumo → controla a inflação.</li>
+</ul>
+<div class="info-box"><div class="info-title">💡 Sistema de Metas de Inflação</div>O CMN define a meta e o BCB usa a Selic como instrumento principal. O Brasil adota esse sistema desde 1999.</div>
+<h2>Política Fiscal</h2>
+<ul>
+<li><strong>Superávit primário:</strong> Receitas &gt; Despesas (antes dos juros). Positivo para o mercado.</li>
+<li><strong>Déficit primário:</strong> Gastos &gt; Receitas. Pressiona a dívida pública e pode elevar os juros.</li>
+</ul>
+<h2>Curva de Juros</h2>
+<p>Mostra a relação entre as taxas de juros e os prazos. Normalmente ascendente. Uma curva <strong>invertida</strong> (juros curtos &gt; longos) pode sinalizar expectativa de recessão.</p>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 3</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m3">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">Quando o BCB eleva a taxa Selic, o efeito esperado na economia é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m3q1')"><span class="option-letter">A</span>Estímulo ao consumo e aumento da inflação</div><div class="option" onclick="ans(this,'correct','m3q1')"><span class="option-letter">B</span>Redução do crédito e controle da inflação</div><div class="option" onclick="ans(this,'wrong','m3q1')"><span class="option-letter">C</span>Desvalorização imediata do Real</div><div class="option" onclick="ans(this,'wrong','m3q1')"><span class="option-letter">D</span>Aumento do déficit público</div></div><div class="explanation" id="exp-m3q1"><strong>✅ B.</strong> Elevar a Selic encarece o crédito e remunera melhor a poupança, reduzindo o consumo e a pressão inflacionária.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">O IPCA é calculado pelo:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m3q2')"><span class="option-letter">A</span>Banco Central do Brasil</div><div class="option" onclick="ans(this,'wrong','m3q2')"><span class="option-letter">B</span>Fundação Getulio Vargas (FGV)</div><div class="option" onclick="ans(this,'correct','m3q2')"><span class="option-letter">C</span>IBGE</div><div class="option" onclick="ans(this,'wrong','m3q2')"><span class="option-letter">D</span>Ministério da Fazenda</div></div><div class="explanation" id="exp-m3q2"><strong>✅ C.</strong> O IPCA é calculado pelo IBGE. O IGP-M é calculado pela FGV.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">O CDI é frequentemente usado como:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m3q3')"><span class="option-letter">A</span>Indicador de inflação</div><div class="option" onclick="ans(this,'correct','m3q3')"><span class="option-letter">B</span>Benchmark (referência) para produtos de renda fixa</div><div class="option" onclick="ans(this,'wrong','m3q3')"><span class="option-letter">C</span>Índice para correção de aluguéis</div><div class="option" onclick="ans(this,'wrong','m3q3')"><span class="option-letter">D</span>Taxa cobrada em operações de câmbio</div></div><div class="explanation" id="exp-m3q3"><strong>✅ B.</strong> O CDI é a taxa das operações interbancárias e serve como benchmark para CDB, LCI, LCA e fundos DI.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O COPOM é o comitê responsável por:</div><div class="options"><div class="option" onclick="ans(this,'correct','m3q4')"><span class="option-letter">A</span>Definir a meta para a taxa Selic a cada 45 dias</div><div class="option" onclick="ans(this,'wrong','m3q4')"><span class="option-letter">B</span>Fiscalizar as instituições financeiras</div><div class="option" onclick="ans(this,'wrong','m3q4')"><span class="option-letter">C</span>Regulamentar o mercado de capitais</div><div class="option" onclick="ans(this,'wrong','m3q4')"><span class="option-letter">D</span>Definir metas fiscais do governo</div></div><div class="explanation" id="exp-m3q4"><strong>✅ A.</strong> O COPOM (Comitê de Política Monetária) reúne-se a cada 45 dias para definir a meta da Selic.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Uma curva de juros "invertida" geralmente sinaliza:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m3q5')"><span class="option-letter">A</span>Expectativa de crescimento econômico acelerado</div><div class="option" onclick="ans(this,'wrong','m3q5')"><span class="option-letter">B</span>Alta demanda por títulos de curto prazo</div><div class="option" onclick="ans(this,'correct','m3q5')"><span class="option-letter">C</span>Expectativa de recessão ou queda futura dos juros</div><div class="option" onclick="ans(this,'wrong','m3q5')"><span class="option-letter">D</span>Política fiscal expansionista do governo</div></div><div class="explanation" id="exp-m3q5"><strong>✅ C.</strong> Curva invertida é associada a expectativas de recessão ou de redução de juros futura pelo banco central.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m3',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m3')">Refazer</button></div>
+<div class="score-display" id="score-m3"></div>
+<button class="btn btn-next" onclick="showModule(3)" id="next-2" style="display:none">Próximo: Finanças Pessoais →</button>
+</div></div>
+
+<!-- MOD 4 -->
+<div class="module-content" id="mod-3">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 4 · CPA-10 e CPA-20</div><h2 class="module-title">Finanças Pessoais e Planejamento Financeiro</h2><div class="module-meta"><span>⏱ ~70 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Reserva de Emergência</h2>
+<p>Antes de investir, recomenda-se ter de 3 a 12 meses de despesas em produto de alta liquidez e baixo risco (ex: Tesouro Selic, CDB com liquidez diária).</p>
+<div class="success-box"><div class="info-title">✅ Regra de ouro</div>Reserva de emergência SEMPRE em produto de <strong>alta liquidez</strong>. Nunca imobilize em CDB com carência ou imóveis.</div>
+<h2>Juros Simples x Juros Compostos</h2>
+<div class="table-wrap"><table><thead><tr><th>Característica</th><th>Juros Simples</th><th>Juros Compostos</th></tr></thead><tbody>
+<tr><td>Incidência</td><td>Sobre o capital inicial</td><td>Sobre capital + juros acumulados</td></tr>
+<tr><td>Fórmula</td><td>M = C × (1 + i × t)</td><td>M = C × (1 + i)^t</td></tr>
+<tr><td>Crescimento</td><td>Linear</td><td>Exponencial</td></tr>
+</tbody></table></div>
+<h2>CET — Custo Efetivo Total</h2>
+<p>Representa o custo real de uma operação de crédito, incluindo todos os encargos. É obrigatório ser informado antes da contratação.</p>
+<h2>Horizonte de Investimento</h2>
+<ul>
+<li><strong>Curto prazo (até 2 anos):</strong> Tesouro Selic, CDB liquidez diária, fundos DI.</li>
+<li><strong>Médio prazo (2–5 anos):</strong> CDB pré-fixado, LCI/LCA, Tesouro IPCA+ curto.</li>
+<li><strong>Longo prazo (acima de 5 anos):</strong> Ações, fundos de ações, Tesouro IPCA+ longo, previdência privada.</li>
+</ul>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 4</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m4">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">Para a reserva de emergência, a característica mais importante do produto é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m4q1')"><span class="option-letter">A</span>Alta rentabilidade acima da inflação</div><div class="option" onclick="ans(this,'correct','m4q1')"><span class="option-letter">B</span>Alta liquidez com baixo risco</div><div class="option" onclick="ans(this,'wrong','m4q1')"><span class="option-letter">C</span>Isenção de Imposto de Renda</div><div class="option" onclick="ans(this,'wrong','m4q1')"><span class="option-letter">D</span>Prazo de carência longo para maior rentabilidade</div></div><div class="explanation" id="exp-m4q1"><strong>✅ B.</strong> Disponibilidade rápida é essencial. Alta liquidez e baixo risco são prioritários para a reserva.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Em juros compostos, a fórmula para calcular o montante final é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m4q2')"><span class="option-letter">A</span>M = C × (1 + i × t)</div><div class="option" onclick="ans(this,'wrong','m4q2')"><span class="option-letter">B</span>M = C ÷ (1 + i)^t</div><div class="option" onclick="ans(this,'correct','m4q2')"><span class="option-letter">C</span>M = C × (1 + i)^t</div><div class="option" onclick="ans(this,'wrong','m4q2')"><span class="option-letter">D</span>M = C + (i × t²)</div></div><div class="explanation" id="exp-m4q2"><strong>✅ C.</strong> M = C × (1 + i)^t é a fórmula dos juros compostos. A de simples é M = C × (1 + i × t).</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">O CET em uma operação de crédito deve ser informado:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m4q3')"><span class="option-letter">A</span>Apenas após a assinatura do contrato</div><div class="option" onclick="ans(this,'correct','m4q3')"><span class="option-letter">B</span>Antes da contratação, de forma obrigatória</div><div class="option" onclick="ans(this,'wrong','m4q3')"><span class="option-letter">C</span>Somente se o cliente solicitar</div><div class="option" onclick="ans(this,'wrong','m4q3')"><span class="option-letter">D</span>Apenas em contratos acima de R$ 10.000</div></div><div class="explanation" id="exp-m4q3"><strong>✅ B.</strong> O BCB exige que o CET seja informado obrigatoriamente antes da contratação, permitindo comparar o custo real.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">Investidor com horizonte de curto prazo (até 2 anos) deve priorizar:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m4q4')"><span class="option-letter">A</span>Ações de crescimento (growth)</div><div class="option" onclick="ans(this,'wrong','m4q4')"><span class="option-letter">B</span>Tesouro IPCA+ com vencimento em 2050</div><div class="option" onclick="ans(this,'correct','m4q4')"><span class="option-letter">C</span>Tesouro Selic ou CDB com liquidez diária</div><div class="option" onclick="ans(this,'wrong','m4q4')"><span class="option-letter">D</span>Fundos de ações com lock-up de 3 anos</div></div><div class="explanation" id="exp-m4q4"><strong>✅ C.</strong> Para curto prazo: alta liquidez e baixa volatilidade. Tesouro Selic e CDB diário são ideais.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Nos juros compostos, diferente dos simples, os juros incidem sobre:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m4q5')"><span class="option-letter">A</span>Apenas o capital inicial</div><div class="option" onclick="ans(this,'correct','m4q5')"><span class="option-letter">B</span>O capital mais os juros já acumulados</div><div class="option" onclick="ans(this,'wrong','m4q5')"><span class="option-letter">C</span>Apenas os juros do período anterior</div><div class="option" onclick="ans(this,'wrong','m4q5')"><span class="option-letter">D</span>Um valor fixo em cada período</div></div><div class="explanation" id="exp-m4q5"><strong>✅ B.</strong> Nos compostos, cada período os juros incidem sobre capital + juros acumulados (juros sobre juros), gerando crescimento exponencial.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m4',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m4')">Refazer</button></div>
+<div class="score-display" id="score-m4"></div>
+<button class="btn btn-next" onclick="showModule(4)" id="next-3" style="display:none">Próximo: Renda Fixa →</button>
+</div></div>
+
+<!-- MOD 5 -->
+<div class="module-content" id="mod-4">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 5 · CPA-10 e CPA-20</div><h2 class="module-title">Produtos de Renda Fixa</h2><div class="module-meta"><span>⏱ ~100 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Principais Produtos de Renda Fixa</h2>
+<div class="table-wrap"><table><thead><tr><th>Produto</th><th>Emissor</th><th>FGC</th><th>IR (PF)</th><th>Característica</th></tr></thead><tbody>
+<tr><td><strong>Tesouro Selic</strong></td><td>Governo Federal</td><td>Não</td><td>Sim</td><td>Pós-fixado, alta liquidez</td></tr>
+<tr><td><strong>Tesouro IPCA+</strong></td><td>Governo Federal</td><td>Não</td><td>Sim</td><td>Protege inflação + juro real</td></tr>
+<tr><td><strong>Tesouro Prefixado</strong></td><td>Governo Federal</td><td>Não</td><td>Sim</td><td>Taxa travada na compra</td></tr>
+<tr><td><strong>CDB</strong></td><td>Bancos</td><td>Sim (250k)</td><td>Sim</td><td>% do CDI ou prefixado</td></tr>
+<tr><td><strong>LCI / LCA</strong></td><td>Bancos</td><td>Sim (250k)</td><td>Isento</td><td>Lastreado em imóveis/agro</td></tr>
+<tr><td><strong>Debêntures Incent.</strong></td><td>Empresas</td><td>Não</td><td>Isento</td><td>Financia infraestrutura</td></tr>
+<tr><td><strong>CRI / CRA</strong></td><td>Securitizadoras</td><td>Não</td><td>Isento</td><td>Lastreado em recebíveis</td></tr>
+</tbody></table></div>
+<h2>FGC — Fundo Garantidor de Créditos</h2>
+<p>Garante até <strong>R$ 250.000 por CPF por instituição</strong>, com teto de R$ 1 milhão por CPF em 4 anos. Tesouro Direto, fundos e ações NÃO têm FGC.</p>
+<h2>Tabela Regressiva de IR</h2>
+<div class="table-wrap"><table><thead><tr><th>Prazo</th><th>Alíquota</th></tr></thead><tbody>
+<tr><td>Até 180 dias</td><td>22,5%</td></tr>
+<tr><td>181 a 360 dias</td><td>20%</td></tr>
+<tr><td>361 a 720 dias</td><td>17,5%</td></tr>
+<tr><td>Acima de 720 dias</td><td>15%</td></tr>
+</tbody></table></div>
+<div class="info-box"><div class="info-title">💡 Macete CPA</div><strong>IR decresce com o tempo</strong> (22,5% → 15%) e <strong>IOF zera após 30 dias</strong>. Ambos incidem apenas sobre os rendimentos.</div>
+<div class="warning-box"><div class="info-title">⚠️ Cuidado</div>LCI e LCA são isentas de IR para PF. CDB e Tesouro não são. Essa diferença muda muito o cálculo de rentabilidade real!</div>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 5</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m5">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O FGC garante depósitos em produtos bancários até:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m5q1')"><span class="option-letter">A</span>R$ 100.000 por CPF por banco</div><div class="option" onclick="ans(this,'correct','m5q1')"><span class="option-letter">B</span>R$ 250.000 por CPF por instituição financeira</div><div class="option" onclick="ans(this,'wrong','m5q1')"><span class="option-letter">C</span>R$ 500.000 por CPF no total</div><div class="option" onclick="ans(this,'wrong','m5q1')"><span class="option-letter">D</span>100% dos depósitos sem limite</div></div><div class="explanation" id="exp-m5q1"><strong>✅ B.</strong> FGC: R$ 250.000 por CPF por conglomerado, com teto total de R$ 1 milhão por CPF em 4 anos.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Qual produto é isento de IR para pessoa física?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m5q2')"><span class="option-letter">A</span>CDB</div><div class="option" onclick="ans(this,'wrong','m5q2')"><span class="option-letter">B</span>Tesouro IPCA+</div><div class="option" onclick="ans(this,'correct','m5q2')"><span class="option-letter">C</span>LCI (Letra de Crédito Imobiliário)</div><div class="option" onclick="ans(this,'wrong','m5q2')"><span class="option-letter">D</span>Tesouro Prefixado</div></div><div class="explanation" id="exp-m5q2"><strong>✅ C.</strong> LCI e LCA são isentas de IR para PF. CDB e Tesouro Direto são tributados pela tabela regressiva.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">Investidor resgata CDB após 200 dias. Alíquota de IR sobre os rendimentos:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m5q3')"><span class="option-letter">A</span>22,5%</div><div class="option" onclick="ans(this,'correct','m5q3')"><span class="option-letter">B</span>20%</div><div class="option" onclick="ans(this,'wrong','m5q3')"><span class="option-letter">C</span>17,5%</div><div class="option" onclick="ans(this,'wrong','m5q3')"><span class="option-letter">D</span>15%</div></div><div class="explanation" id="exp-m5q3"><strong>✅ B.</strong> Entre 181 e 360 dias a alíquota é 20%.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">O IOF em renda fixa incide sobre:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m5q4')"><span class="option-letter">A</span>Todo o valor resgatado (principal + rendimentos)</div><div class="option" onclick="ans(this,'wrong','m5q4')"><span class="option-letter">B</span>Apenas o capital inicial</div><div class="option" onclick="ans(this,'correct','m5q4')"><span class="option-letter">C</span>Apenas sobre os rendimentos, em resgates até 29 dias</div><div class="option" onclick="ans(this,'wrong','m5q4')"><span class="option-letter">D</span>Somente em aplicações acima de R$ 50.000</div></div><div class="explanation" id="exp-m5q4"><strong>✅ C.</strong> IOF incide só sobre rendimentos e apenas em resgates com até 29 dias. A partir do 30° dia, alíquota é 0%.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Debêntures Incentivadas (Lei 12.431) são isentas de IR para PF porque:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m5q5')"><span class="option-letter">A</span>São emitidas pelo governo federal</div><div class="option" onclick="ans(this,'correct','m5q5')"><span class="option-letter">B</span>Financiam projetos de infraestrutura de interesse do governo</div><div class="option" onclick="ans(this,'wrong','m5q5')"><span class="option-letter">C</span>Possuem garantia do FGC</div><div class="option" onclick="ans(this,'wrong','m5q5')"><span class="option-letter">D</span>São emitidas por bancos públicos</div></div><div class="explanation" id="exp-m5q5"><strong>✅ B.</strong> A isenção incentiva o financiamento de projetos de infraestrutura prioritários para o governo.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m5',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m5')">Refazer</button></div>
+<div class="score-display" id="score-m5"></div>
+<button class="btn btn-next" onclick="showModule(5)" id="next-4" style="display:none">Próximo: Renda Variável →</button>
+</div></div>
+
+<!-- MOD 6 -->
+<div class="module-content" id="mod-5">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 6 · CPA-20 (Aprofundado)</div><h2 class="module-title">Mercado de Renda Variável</h2><div class="module-meta"><span>⏱ ~90 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Tipos de Ações</h2>
+<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Direito de Voto</th><th>Preferência</th><th>Código</th></tr></thead><tbody>
+<tr><td><strong>Ação Ordinária (ON)</strong></td><td>✅ Sim</td><td>Sem preferência em dividendos</td><td>Termina em 3 (ex: PETR3)</td></tr>
+<tr><td><strong>Ação Preferencial (PN)</strong></td><td>❌ Geralmente não</td><td>Prioridade nos dividendos</td><td>Termina em 4 (ex: PETR4)</td></tr>
+<tr><td><strong>Units / BDR</strong></td><td>Variável</td><td>Certificado representativo</td><td>Termina em 11</td></tr>
+</tbody></table></div>
+<h2>Proventos</h2>
+<ul>
+<li><strong>Dividendos:</strong> Parcela do lucro distribuída. Isento de IR para PF no Brasil.</li>
+<li><strong>JCP:</strong> Remuneração alternativa. Tributado em 15% na fonte para PF.</li>
+<li><strong>Bonificação:</strong> Distribuição de novas ações.</li>
+</ul>
+<h2>Mercado Primário x Secundário</h2>
+<ul>
+<li><strong>Primário:</strong> Emissão de novas ações (IPO). O dinheiro vai para a empresa.</li>
+<li><strong>Secundário:</strong> Negociação na B3. O dinheiro circula entre investidores.</li>
+</ul>
+<h2>Tributação em Renda Variável</h2>
+<div class="table-wrap"><table><thead><tr><th>Operação</th><th>IR</th><th>Isenção PF</th></tr></thead><tbody>
+<tr><td>Day Trade (ações)</td><td>20%</td><td>Nunca</td></tr>
+<tr><td>Swing Trade (ações)</td><td>15%</td><td>Vendas ≤ R$ 20.000/mês</td></tr>
+<tr><td>Dividendos</td><td>0%</td><td>Sempre isento PF</td></tr>
+<tr><td>JCP</td><td>15% (fonte)</td><td>Sem isenção</td></tr>
+</tbody></table></div>
+<div class="info-box"><div class="info-title">💡 Regra dos R$ 20.000</div>PF com vendas de ações no mercado à vista ≤ R$ 20.000/mês: isenção total de IR. Acima disso, 15% sobre o ganho. NÃO se aplica a day trade.</div>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 6</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m6">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">A diferença principal entre ações ON e PN é:</div><div class="options"><div class="option" onclick="ans(this,'correct','m6q1')"><span class="option-letter">A</span>ON confere direito de voto; PN tem preferência nos dividendos</div><div class="option" onclick="ans(this,'wrong','m6q1')"><span class="option-letter">B</span>ON garante dividendos maiores; PN confere direito de voto</div><div class="option" onclick="ans(this,'wrong','m6q1')"><span class="option-letter">C</span>Ambas têm as mesmas características</div><div class="option" onclick="ans(this,'wrong','m6q1')"><span class="option-letter">D</span>PN confere 2 votos por ação</div></div><div class="explanation" id="exp-m6q1"><strong>✅ A.</strong> ON dá direito a voto nas assembleias. PN geralmente não vota mas tem prioridade nos dividendos.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Num IPO, o dinheiro pago pelos investidores vai para:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m6q2')"><span class="option-letter">A</span>Outros investidores vendedores</div><div class="option" onclick="ans(this,'correct','m6q2')"><span class="option-letter">B</span>A própria empresa emissora</div><div class="option" onclick="ans(this,'wrong','m6q2')"><span class="option-letter">C</span>A B3, como taxa de listagem</div><div class="option" onclick="ans(this,'wrong','m6q2')"><span class="option-letter">D</span>O Banco Central</div></div><div class="explanation" id="exp-m6q2"><strong>✅ B.</strong> IPO é mercado primário: a empresa emite novas ações e recebe os recursos para financiar operações.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">PF vendeu R$ 18.000 em ações no mês com ganho de R$ 2.000. IR a pagar:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m6q3')"><span class="option-letter">A</span>R$ 300 (15% sobre R$ 2.000)</div><div class="option" onclick="ans(this,'correct','m6q3')"><span class="option-letter">B</span>R$ 0 (isento — vendas ≤ R$ 20.000/mês)</div><div class="option" onclick="ans(this,'wrong','m6q3')"><span class="option-letter">C</span>R$ 400 (20% sobre R$ 2.000)</div><div class="option" onclick="ans(this,'wrong','m6q3')"><span class="option-letter">D</span>R$ 2.700 (15% sobre R$ 18.000)</div></div><div class="explanation" id="exp-m6q3"><strong>✅ B.</strong> Vendas ≤ R$ 20.000/mês no mercado à vista: isenção total de IR, independente do lucro.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">Dividendos recebidos por pessoa física são:</div><div class="options"><div class="option" onclick="ans(this,'correct','m6q4')"><span class="option-letter">A</span>Isentos de IR</div><div class="option" onclick="ans(this,'wrong','m6q4')"><span class="option-letter">B</span>Tributados em 15% na fonte</div><div class="option" onclick="ans(this,'wrong','m6q4')"><span class="option-letter">C</span>Tributados em 20%</div><div class="option" onclick="ans(this,'wrong','m6q4')"><span class="option-letter">D</span>Tributados pela tabela progressiva</div></div><div class="explanation" id="exp-m6q4"><strong>✅ A.</strong> Dividendos de empresas brasileiras são isentos de IR para PF. JCP é tributado em 15% na fonte.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">O Ibovespa é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m6q5')"><span class="option-letter">A</span>Um fundo de investimento do governo</div><div class="option" onclick="ans(this,'wrong','m6q5')"><span class="option-letter">B</span>A taxa básica do mercado de ações</div><div class="option" onclick="ans(this,'correct','m6q5')"><span class="option-letter">C</span>O principal índice de ações da B3, composto pelas mais negociadas</div><div class="option" onclick="ans(this,'wrong','m6q5')"><span class="option-letter">D</span>Um indicador calculado pelo BCB</div></div><div class="explanation" id="exp-m6q5"><strong>✅ C.</strong> Ibovespa é o índice de referência do mercado acionário, calculado pela B3 com as ações de maior liquidez.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m6',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m6')">Refazer</button></div>
+<div class="score-display" id="score-m6"></div>
+<button class="btn btn-next" onclick="showModule(6)" id="next-5" style="display:none">Próximo: Fundos de Investimento →</button>
+</div></div>
+
+<!-- MOD 7 -->
+<div class="module-content" id="mod-6">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 7 · CPA-10 e CPA-20</div><h2 class="module-title">Fundos de Investimento</h2><div class="module-meta"><span>⏱ ~100 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>O que é um Fundo?</h2>
+<p>Condomínio de investidores que reúnem recursos para aplicação conjunta, gerido por profissional. Emite <strong>cotas</strong>.</p>
+<div class="info-box"><div class="info-title">💡 Partes envolvidas</div><strong>Gestor:</strong> Decide onde investir. <strong>Administrador:</strong> Responsável legal. <strong>Custodiante:</strong> Guarda os ativos. <strong>Distribuidor:</strong> Vende as cotas.</div>
+<h2>Tipos de Fundos</h2>
+<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Composição mínima</th><th>Risco</th></tr></thead><tbody>
+<tr><td>Fundo DI</td><td>≥95% em Selic/CDI</td><td>Muito Baixo</td></tr>
+<tr><td>Fundo de RF</td><td>≥80% em RF</td><td>Baixo</td></tr>
+<tr><td>Fundo Multimercado</td><td>RF, RV, câmbio, derivativos</td><td>Médio-Alto</td></tr>
+<tr><td>Fundo de Ações</td><td>≥67% em ações</td><td>Alto</td></tr>
+<tr><td>Fundo Cambial</td><td>≥80% em moeda estrangeira</td><td>Médio</td></tr>
+</tbody></table></div>
+<h2>Come-Cotas</h2>
+<p>Antecipação semestral do IR em <strong>maio e novembro</strong> para fundos abertos (exceto fundos de ações). Alíquotas: curto prazo (carteira ≤ 365 dias) = 20%; longo prazo = 15%. Fundos de Ações: 15% apenas no resgate.</p>
+<h2>FIIs — Fundos Imobiliários</h2>
+<p>Negociados na B3. Rendimentos mensais <strong>isentos de IR para PF</strong> (fundo com ≥50 cotistas e investidor com &lt;10% das cotas). Ganho de capital na venda: 20%.</p>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 7</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m7">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O "come-cotas" nos fundos ocorre:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m7q1')"><span class="option-letter">A</span>Apenas no resgate das cotas</div><div class="option" onclick="ans(this,'correct','m7q1')"><span class="option-letter">B</span>Semestralmente, em maio e novembro, para a maioria dos fundos abertos</div><div class="option" onclick="ans(this,'wrong','m7q1')"><span class="option-letter">C</span>Anualmente, em dezembro</div><div class="option" onclick="ans(this,'wrong','m7q1')"><span class="option-letter">D</span>Mensalmente com a taxa de administração</div></div><div class="explanation" id="exp-m7q1"><strong>✅ B.</strong> Come-cotas ocorre em maio e novembro. Fundos de ações são a principal exceção: pagam IR só no resgate.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">A função do GESTOR em um fundo é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m7q2')"><span class="option-letter">A</span>Elaborar os documentos regulatórios</div><div class="option" onclick="ans(this,'wrong','m7q2')"><span class="option-letter">B</span>Guardar os ativos do fundo</div><div class="option" onclick="ans(this,'correct','m7q2')"><span class="option-letter">C</span>Tomar as decisões de compra e venda da carteira</div><div class="option" onclick="ans(this,'wrong','m7q2')"><span class="option-letter">D</span>Distribuir cotas para novos investidores</div></div><div class="explanation" id="exp-m7q2"><strong>✅ C.</strong> O gestor decide a estratégia de investimentos. Administrador cuida dos aspectos legais; custodiante guarda os ativos.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">Para ser "Fundo de Ações", a carteira deve ter no mínimo em RV:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m7q3')"><span class="option-letter">A</span>50%</div><div class="option" onclick="ans(this,'wrong','m7q3')"><span class="option-letter">B</span>80%</div><div class="option" onclick="ans(this,'correct','m7q3')"><span class="option-letter">C</span>67%</div><div class="option" onclick="ans(this,'wrong','m7q3')"><span class="option-letter">D</span>100%</div></div><div class="explanation" id="exp-m7q3"><strong>✅ C.</strong> Fundos de ações devem ter pelo menos 67% da carteira em ações, BDRs ou cotas de outros fundos de ações.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">A taxa de performance é cobrada:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m7q4')"><span class="option-letter">A</span>Sempre, independente do desempenho</div><div class="option" onclick="ans(this,'correct','m7q4')"><span class="option-letter">B</span>Quando o fundo supera o benchmark do regulamento</div><div class="option" onclick="ans(this,'wrong','m7q4')"><span class="option-letter">C</span>Apenas em resgates acima de R$ 100.000</div><div class="option" onclick="ans(this,'wrong','m7q4')"><span class="option-letter">D</span>Mensalmente sobre o patrimônio total</div></div><div class="explanation" id="exp-m7q4"><strong>✅ B.</strong> Taxa de performance: cobrada quando o fundo supera o benchmark, alinhando interesses gestor/cotista.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Rendimentos de FIIs distribuídos a PF são isentos de IR quando:</div><div class="options"><div class="option" onclick="ans(this,'correct','m7q5')"><span class="option-letter">A</span>O fundo tem ≥50 cotistas e o investidor detém &lt;10% das cotas</div><div class="option" onclick="ans(this,'wrong','m7q5')"><span class="option-letter">B</span>Sempre, sem qualquer condição</div><div class="option" onclick="ans(this,'wrong','m7q5')"><span class="option-letter">C</span>O investidor mantém cotas por mais de 2 anos</div><div class="option" onclick="ans(this,'wrong','m7q5')"><span class="option-letter">D</span>O fundo é negociado acima do valor patrimonial</div></div><div class="explanation" id="exp-m7q5"><strong>✅ A.</strong> Condições para isenção: fundo com ≥50 cotistas e investidor com &lt;10% das cotas. Ganho de capital na venda é tributado em 20%.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m7',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m7')">Refazer</button></div>
+<div class="score-display" id="score-m7"></div>
+<button class="btn btn-next" onclick="showModule(7)" id="next-6" style="display:none">Próximo: Previdência Privada →</button>
+</div></div>
+
+<!-- MOD 8 -->
+<div class="module-content" id="mod-7">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 8 · CPA-10 e CPA-20</div><h2 class="module-title">Previdência Privada</h2><div class="module-meta"><span>⏱ ~80 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>PGBL x VGBL</h2>
+<div class="table-wrap"><table><thead><tr><th>Característica</th><th>PGBL</th><th>VGBL</th></tr></thead><tbody>
+<tr><td>Dedução IR</td><td>✅ Até 12% da renda bruta</td><td>❌ Não</td></tr>
+<tr><td>Indicado para</td><td>Declaração completa</td><td>Declaração simplificada ou isento</td></tr>
+<tr><td>IR no resgate</td><td>Sobre valor total (aporte + rendimentos)</td><td>Apenas sobre rendimentos</td></tr>
+</tbody></table></div>
+<div class="info-box"><div class="info-title">💡 Regra rápida</div><strong>PGBL → modelo Completo do IR</strong> (deduz agora, paga IR depois sobre tudo). <strong>VGBL → modelo Simples</strong> (não deduz, IR só sobre rendimentos).</div>
+<h2>Tabela Regressiva x Progressiva</h2>
+<div class="table-wrap"><table><thead><tr><th>Aspecto</th><th>Regressiva</th><th>Progressiva</th></tr></thead><tbody>
+<tr><td>Indicada para</td><td>Longo prazo (&gt;10 anos)</td><td>Curto/médio prazo ou renda baixa</td></tr>
+<tr><td>Menor alíquota</td><td>10% (acima de 10 anos)</td><td>Pode ser isento (depende da renda)</td></tr>
+<tr><td>Irreversível?</td><td>Sim</td><td>Pode ajustar na declaração</td></tr>
+</tbody></table></div>
+<h2>Portabilidade</h2>
+<p>Transferência entre planos <strong>sem tributação</strong>. Restrição: não pode transferir PGBL → VGBL. Respeitar carência mínima (geralmente 60 dias).</p>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 8</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m8">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">O PGBL é mais vantajoso para quem:</div><div class="options"><div class="option" onclick="ans(this,'correct','m8q1')"><span class="option-letter">A</span>Faz declaração completa do IR e pode deduzir até 12% da renda bruta</div><div class="option" onclick="ans(this,'wrong','m8q1')"><span class="option-letter">B</span>É isento do Imposto de Renda</div><div class="option" onclick="ans(this,'wrong','m8q1')"><span class="option-letter">C</span>Faz declaração simplificada</div><div class="option" onclick="ans(this,'wrong','m8q1')"><span class="option-letter">D</span>Prefere pagar IR apenas sobre rendimentos</div></div><div class="explanation" id="exp-m8q1"><strong>✅ A.</strong> PGBL deduz até 12% da renda bruta no IR completo. No resgate, IR incide sobre tudo.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Na tabela regressiva, após mais de 10 anos, alíquota de IR é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m8q2')"><span class="option-letter">A</span>35%</div><div class="option" onclick="ans(this,'wrong','m8q2')"><span class="option-letter">B</span>25%</div><div class="option" onclick="ans(this,'wrong','m8q2')"><span class="option-letter">C</span>15%</div><div class="option" onclick="ans(this,'correct','m8q2')"><span class="option-letter">D</span>10%</div></div><div class="explanation" id="exp-m8q2"><strong>✅ D.</strong> Tabela regressiva: começa em 35% (até 2 anos) e cai até 10% (acima de 10 anos).</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">Na portabilidade de previdência, há incidência de IR?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m8q3')"><span class="option-letter">A</span>Sim, sempre que houver rendimentos</div><div class="option" onclick="ans(this,'wrong','m8q3')"><span class="option-letter">B</span>Sim, apenas sobre o principal</div><div class="option" onclick="ans(this,'correct','m8q3')"><span class="option-letter">C</span>Não, portabilidade não é fato gerador de IR</div><div class="option" onclick="ans(this,'wrong','m8q3')"><span class="option-letter">D</span>Apenas se o saldo superar R$ 300.000</div></div><div class="explanation" id="exp-m8q3"><strong>✅ C.</strong> Portabilidade é transferência sem resgate, portanto sem IR. O imposto só é devido no resgate efetivo.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">No VGBL, o IR no resgate incide sobre:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m8q4')"><span class="option-letter">A</span>O valor total (principal + rendimentos)</div><div class="option" onclick="ans(this,'correct','m8q4')"><span class="option-letter">B</span>Apenas sobre os rendimentos</div><div class="option" onclick="ans(this,'wrong','m8q4')"><span class="option-letter">C</span>Apenas sobre o principal</div><div class="option" onclick="ans(this,'wrong','m8q4')"><span class="option-letter">D</span>O VGBL é sempre isento</div></div><div class="explanation" id="exp-m8q4"><strong>✅ B.</strong> VGBL: IR só sobre rendimentos. PGBL: IR sobre tudo (principal + rendimentos).</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Fundos de Pensão (previdência fechada) são fiscalizados por:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m8q5')"><span class="option-letter">A</span>SUSEP</div><div class="option" onclick="ans(this,'wrong','m8q5')"><span class="option-letter">B</span>CVM</div><div class="option" onclick="ans(this,'correct','m8q5')"><span class="option-letter">C</span>PREVIC</div><div class="option" onclick="ans(this,'wrong','m8q5')"><span class="option-letter">D</span>Banco Central</div></div><div class="explanation" id="exp-m8q5"><strong>✅ C.</strong> PREVIC cuida dos fundos de pensão (fechados). SUSEP cuida da previdência aberta (PGBL e VGBL).</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m8',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m8')">Refazer</button></div>
+<div class="score-display" id="score-m8"></div>
+<button class="btn btn-next" onclick="showModule(8)" id="next-7" style="display:none">Próximo: Tributação e IOF →</button>
+</div></div>
+
+<!-- MOD 9 -->
+<div class="module-content" id="mod-8">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 9 · CPA-10 e CPA-20</div><h2 class="module-title">Tributação em Investimentos e IOF</h2><div class="module-meta"><span>⏱ ~80 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Resumo de Tributação por Produto</h2>
+<div class="table-wrap"><table><thead><tr><th>Produto</th><th>IR</th><th>Come-cotas</th><th>IOF</th><th>Isento PF?</th></tr></thead><tbody>
+<tr><td>Tesouro Direto</td><td>Tab. regressiva</td><td>Não</td><td>Até 29 dias</td><td>Não</td></tr>
+<tr><td>CDB</td><td>Tab. regressiva</td><td>Não</td><td>Até 29 dias</td><td>Não</td></tr>
+<tr><td>LCI / LCA</td><td>Isento</td><td>Não</td><td>Não</td><td>✅ Sim</td></tr>
+<tr><td>Debêntures Incent.</td><td>Isento</td><td>Não</td><td>Não</td><td>✅ Sim</td></tr>
+<tr><td>FII (rendimentos)</td><td>Isento*</td><td>Não</td><td>Não</td><td>✅ Sim*</td></tr>
+<tr><td>Fundos RF/DI</td><td>Tab. regressiva</td><td>✅ Mai/Nov</td><td>Até 29 dias</td><td>Não</td></tr>
+<tr><td>Fundos de Ações</td><td>15% no resgate</td><td>Não</td><td>Não</td><td>Não</td></tr>
+<tr><td>Ações (swing)</td><td>15%</td><td>Não</td><td>Não</td><td>✅ Vendas ≤20k/mês</td></tr>
+<tr><td>Ações (day trade)</td><td>20%</td><td>Não</td><td>Não</td><td>Não</td></tr>
+</tbody></table></div>
+<h2>DARF — Renda Variável</h2>
+<p>Investidores em RV com ganhos devem apurar e recolher o IR mensalmente via <strong>DARF</strong>, até o último dia útil do mês seguinte. Responsabilidade do próprio investidor.</p>
+<h2>Compensação de Perdas</h2>
+<ul>
+<li>Perdas em swing trade compensam ganhos em swing trade.</li>
+<li>Perdas em day trade compensam apenas ganhos em day trade.</li>
+<li>Prejuízos podem ser carregados <strong>indefinidamente</strong> para o futuro.</li>
+</ul>
+<div class="success-box"><div class="info-title">✅ Dica de prova</div>Não é possível compensar perdas de renda variável com ganhos em renda fixa, nem misturar day trade com swing trade na compensação.</div>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 9</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m9">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">Investidor em RV com ganhos no mês deve recolher IR:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m9q1')"><span class="option-letter">A</span>Apenas na declaração anual</div><div class="option" onclick="ans(this,'correct','m9q1')"><span class="option-letter">B</span>Via DARF, até o último dia útil do mês seguinte</div><div class="option" onclick="ans(this,'wrong','m9q1')"><span class="option-letter">C</span>A corretora desconta automaticamente</div><div class="option" onclick="ans(this,'wrong','m9q1')"><span class="option-letter">D</span>Trimestralmente, via carnê-leão</div></div><div class="explanation" id="exp-m9q1"><strong>✅ B.</strong> Ganhos em RV: IR via DARF até último dia útil do mês seguinte. Responsabilidade do investidor.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Prejuízo em day trade pode compensar ganho em swing trade?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m9q2')"><span class="option-letter">A</span>Sim, qualquer prejuízo em ações compensa qualquer ganho em ações</div><div class="option" onclick="ans(this,'correct','m9q2')"><span class="option-letter">B</span>Não; perdas em day trade só compensam ganhos em day trade</div><div class="option" onclick="ans(this,'wrong','m9q2')"><span class="option-letter">C</span>Sim, desde que seja na mesma corretora</div><div class="option" onclick="ans(this,'wrong','m9q2')"><span class="option-letter">D</span>Sim, inclusive com renda fixa</div></div><div class="explanation" id="exp-m9q2"><strong>✅ B.</strong> Compensação deve ser dentro da mesma modalidade: day trade com day trade, swing com swing.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">Qual produto NÃO sofre come-cotas?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m9q3')"><span class="option-letter">A</span>Fundo de Renda Fixa</div><div class="option" onclick="ans(this,'correct','m9q3')"><span class="option-letter">B</span>Fundo de Ações</div><div class="option" onclick="ans(this,'wrong','m9q3')"><span class="option-letter">C</span>Fundo DI</div><div class="option" onclick="ans(this,'wrong','m9q3')"><span class="option-letter">D</span>Fundo Multimercado</div></div><div class="explanation" id="exp-m9q3"><strong>✅ B.</strong> Fundos de Ações não têm come-cotas. IR (15%) é cobrado apenas no resgate.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">Prejuízos não compensados em RV podem ser:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m9q4')"><span class="option-letter">A</span>Perdidos após 12 meses</div><div class="option" onclick="ans(this,'wrong','m9q4')"><span class="option-letter">B</span>Compensados com rendimentos de renda fixa</div><div class="option" onclick="ans(this,'correct','m9q4')"><span class="option-letter">C</span>Carregados indefinidamente para ganhos futuros na mesma modalidade</div><div class="option" onclick="ans(this,'wrong','m9q4')"><span class="option-letter">D</span>Deduzidos diretamente na declaração anual</div></div><div class="explanation" id="exp-m9q4"><strong>✅ C.</strong> Prejuízos em RV podem ser carregados por tempo indeterminado, sem prazo de validade.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">LCI e LCA são isentas de IR para PF porque:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m9q5')"><span class="option-letter">A</span>São emitidas pelo governo federal</div><div class="option" onclick="ans(this,'wrong','m9q5')"><span class="option-letter">B</span>Possuem cobertura do FGC</div><div class="option" onclick="ans(this,'correct','m9q5')"><span class="option-letter">C</span>Para fomentar o crédito imobiliário e o agronegócio</div><div class="option" onclick="ans(this,'wrong','m9q5')"><span class="option-letter">D</span>Os bancos pagam IR de 30% no lugar do investidor</div></div><div class="explanation" id="exp-m9q5"><strong>✅ C.</strong> Isenção é política do governo para estimular o financiamento imobiliário e do agronegócio.</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m9',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m9')">Refazer</button></div>
+<div class="score-display" id="score-m9"></div>
+<button class="btn btn-next" onclick="showModule(9)" id="next-8" style="display:none">Próximo: Câmbio e Mercado Internacional →</button>
+</div></div>
+
+<!-- MOD 10 -->
+<div class="module-content" id="mod-9">
+<div class="content-card">
+<div class="module-header"><div class="module-tag">Módulo 10 · CPA-20 (Aprofundado)</div><h2 class="module-title">Câmbio e Mercado Internacional</h2><div class="module-meta"><span>⏱ ~80 min</span><span>📖 Teoria + Exercícios</span></div></div>
+<div class="content-body">
+<h2>Mercado de Câmbio</h2>
+<p>Regulamentado pelo <strong>BCB</strong> e pelo <strong>CMN</strong>. Apenas instituições autorizadas pelo BCB podem operar.</p>
+<ul>
+<li><strong>PTAX:</strong> Média das taxas de câmbio do dólar no mercado interbancário, calculada pelo BCB diariamente. Referência oficial para contratos.</li>
+<li><strong>Câmbio Comercial:</strong> Para operações comerciais e financeiras.</li>
+<li><strong>Câmbio Turismo:</strong> Para PF comprando moeda em espécie.</li>
+</ul>
+<h2>Efeitos da Taxa de Câmbio</h2>
+<div class="table-wrap"><table><thead><tr><th>Cenário</th><th>Beneficia</th><th>Prejudica</th></tr></thead><tbody>
+<tr><td>Dólar sobe (Real cai)</td><td>Exportadores, fundos cambiais</td><td>Importadores, viajantes, devedores em dólar</td></tr>
+<tr><td>Dólar cai (Real sobe)</td><td>Importadores, viajantes ao exterior</td><td>Exportadores</td></tr>
+</tbody></table></div>
+<h2>BDRs — Brazilian Depositary Receipts</h2>
+<p>Certificados emitidos no Brasil representando ações de empresas estrangeiras (Apple, Google, Tesla). Negociados na B3. Dividendos: tributados em 15% (não isento como dividendos BR). Ganho de capital: 15%.</p>
+<h2>Hedge Cambial</h2>
+<p>Operação com derivativos (contratos futuros, opções) para se proteger de variações na taxa de câmbio. Usada por exportadores e importadores.</p>
+<div class="info-box"><div class="info-title">💡 Fundos Cambiais</div>Investem ≥80% em ativos atrelados a moeda estrangeira. Ideal para proteção (hedge) contra desvalorização do Real.</div>
+</div></div>
+<div class="exercise-section">
+<div class="exercise-header"><div class="exercise-icon">✏️</div><div class="exercise-header-text"><h3>Exercícios — Módulo 10</h3><p>5 questões no estilo ANBIMA.</p></div></div>
+<div id="q-m10">
+<div class="question-card"><div class="question-num">Questão 1 de 5</div><div class="question-text">A taxa PTAX é:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m10q1')"><span class="option-letter">A</span>A taxa básica de juros definida pelo COPOM</div><div class="option" onclick="ans(this,'correct','m10q1')"><span class="option-letter">B</span>A média das taxas de câmbio do dólar, calculada pelo BCB</div><div class="option" onclick="ans(this,'wrong','m10q1')"><span class="option-letter">C</span>A taxa de câmbio exclusiva para turismo</div><div class="option" onclick="ans(this,'wrong','m10q1')"><span class="option-letter">D</span>A taxa de IOF sobre remessas</div></div><div class="explanation" id="exp-m10q1"><strong>✅ B.</strong> PTAX é a média das cotações do dólar no mercado interbancário, calculada e divulgada diariamente pelo BCB.</div></div>
+<div class="question-card"><div class="question-num">Questão 2 de 5</div><div class="question-text">Com desvalorização do Real frente ao Dólar, quem tende a se beneficiar?</div><div class="options"><div class="option" onclick="ans(this,'wrong','m10q2')"><span class="option-letter">A</span>Importadores de produtos industrializados</div><div class="option" onclick="ans(this,'wrong','m10q2')"><span class="option-letter">B</span>Brasileiros viajando ao exterior</div><div class="option" onclick="ans(this,'correct','m10q2')"><span class="option-letter">C</span>Empresas exportadoras de commodities</div><div class="option" onclick="ans(this,'wrong','m10q2')"><span class="option-letter">D</span>Empresas com dívidas em dólar</div></div><div class="explanation" id="exp-m10q2"><strong>✅ C.</strong> Exportadores recebem mais reais por cada dólar de receita quando o dólar sobe.</div></div>
+<div class="question-card"><div class="question-num">Questão 3 de 5</div><div class="question-text">BDRs permitem ao investidor brasileiro:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m10q3')"><span class="option-letter">A</span>Investir no Tesouro americano diretamente</div><div class="option" onclick="ans(this,'wrong','m10q3')"><span class="option-letter">B</span>Comprar imóveis no exterior via B3</div><div class="option" onclick="ans(this,'correct','m10q3')"><span class="option-letter">C</span>Ter exposição a ações de empresas estrangeiras pela B3</div><div class="option" onclick="ans(this,'wrong','m10q3')"><span class="option-letter">D</span>Receber salário em dólar sem conta no exterior</div></div><div class="explanation" id="exp-m10q3"><strong>✅ C.</strong> BDRs são certificados de ações estrangeiras negociados na B3. Exemplos: Apple, Amazon, Google.</div></div>
+<div class="question-card"><div class="question-num">Questão 4 de 5</div><div class="question-text">Uma exportadora que usa contratos futuros de câmbio para se proteger de oscilações do dólar está realizando:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m10q4')"><span class="option-letter">A</span>Especulação cambial</div><div class="option" onclick="ans(this,'wrong','m10q4')"><span class="option-letter">B</span>Arbitragem cambial</div><div class="option" onclick="ans(this,'correct','m10q4')"><span class="option-letter">C</span>Hedge cambial</div><div class="option" onclick="ans(this,'wrong','m10q4')"><span class="option-letter">D</span>Front running cambial</div></div><div class="explanation" id="exp-m10q4"><strong>✅ C.</strong> Hedge é a operação para proteção contra risco de variação cambial, travando a taxa de conversão.</div></div>
+<div class="question-card"><div class="question-num">Questão 5 de 5</div><div class="question-text">Dividendos recebidos de BDRs por PF são tributados em:</div><div class="options"><div class="option" onclick="ans(this,'wrong','m10q5')"><span class="option-letter">A</span>0% (isentos como dividendos de ações BR)</div><div class="option" onclick="ans(this,'correct','m10q5')"><span class="option-letter">B</span>15% na fonte</div><div class="option" onclick="ans(this,'wrong','m10q5')"><span class="option-letter">C</span>20% (day trade)</div><div class="option" onclick="ans(this,'wrong','m10q5')"><span class="option-letter">D</span>22,5% pela tabela regressiva</div></div><div class="explanation" id="exp-m10q5"><strong>✅ B.</strong> BDRs: dividendos tributados em 15% na fonte (diferente das ações BR, que são isentos).</div></div>
+</div>
+<div class="exercise-actions"><button class="btn btn-primary" onclick="checkMod('m10',5)">Verificar Respostas</button><button class="btn btn-outline" onclick="resetMod('m10')">Refazer</button></div>
+<div class="score-display" id="score-m10"></div>
+<button class="btn btn-next" onclick="showModule(10)" id="next-9" style="display:none">🏆 Ir para a Prova Final →</button>
+</div></div>
+
+<!-- PROVA FINAL -->
+<div class="module-content" id="mod-10">
+<div class="exam-hero">
+  <div class="hero-tag" style="display:inline-block;margin-bottom:1rem;">🏆 Prova de Proficiência</div>
+  <h2>Prova Final — CPA-10 e CPA-20</h2>
+  <p>30 questões no estilo ANBIMA. Mínimo de 70% para aprovação (21 acertos).</p>
+  <div class="exam-info">
+    <div class="exam-info-item"><div class="val">30</div><div class="lbl">Questões</div></div>
+    <div class="exam-info-item"><div class="val">70%</div><div class="lbl">Aprovação</div></div>
+    <div class="exam-info-item"><div class="val">60min</div><div class="lbl">Estimado</div></div>
+  </div>
+</div>
+<div class="content-card">
+  <div id="exam-q"></div>
+  <div class="exercise-actions" style="margin-top:1.5rem;">
+    <button class="btn btn-primary" onclick="submitExam()" id="submitBtn">Enviar Prova e Ver Resultado</button>
+    <button class="btn btn-outline" onclick="resetExam()">Reiniciar Prova</button>
+  </div>
+  <div class="score-display" id="score-exam"></div>
+</div>
+<div class="certificate" id="certificate">
+  <div class="certificate-icon">🏅</div>
+  <h2>Parabéns! Você foi aprovado!</h2>
+  <p style="margin-bottom:.5rem;">Você concluiu o Preparatório CPA-10/CPA-20 da Academia Growfy com sucesso!</p>
+  <p style="color:var(--muted);font-size:.85rem;">Compartilhe sua conquista e inspire outros profissionais!</p>
+  <button class="share-btn" onclick="shareLinkedIn()">🔗 Compartilhar no LinkedIn</button>
+</div>
+</div>
+
+</main>
+</div>
+
+<div class="disclaimer">
+  <strong>⚠️ Aviso Legal:</strong> Este curso é educacional e preparatório. Não constitui recomendação de investimentos. Baseado no programa CPA-10/CPA-20 da ANBIMA. Consulte sempre o edital oficial antes do exame. A Growfy não tem vínculo com a ANBIMA.
+</div>
+
+<script>
+var completed = new Set();
+var TOTAL = 10;
+
+function showModule(idx){
+  document.querySelectorAll('.module-content').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.module-item').forEach(function(el){el.classList.remove('active');});
+  var mod = document.getElementById('mod-'+idx);
+  if(mod) mod.classList.add('active');
+  var nav = document.getElementById('nav-'+idx);
+  if(nav) nav.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function ans(el, result, qid){
+  var container = el.parentElement;
+  if(container.dataset.answered) return;
+  container.dataset.answered = '1';
+  el.classList.add(result);
+  container.querySelectorAll('.option').forEach(function(opt){
+    if(opt !== el) opt.style.opacity = '0.5';
+  });
+  var exp = document.getElementById('exp-'+qid);
+  if(exp) exp.classList.add('show');
+}
+
+function checkMod(mid, total){
+  var questions = document.querySelectorAll('#q-'+mid+' .question-card');
+  var correct = 0;
+  questions.forEach(function(q){
+    if(q.querySelector('.option.correct')) correct++;
+  });
+  var scoreEl = document.getElementById('score-'+mid);
+  var pct = Math.round(correct/total*100);
+  scoreEl.innerHTML = '<div class="score-num">'+correct+'/'+total+'</div><div class="score-label">'+pct+'% de acertos neste módulo</div>';
+  scoreEl.classList.add('show');
+  var modNum = parseInt(mid.replace('m',''))-1;
+  var nextBtn = document.getElementById('next-'+modNum);
+  if(nextBtn) nextBtn.style.display = 'flex';
+  completed.add(modNum);
+  updateProgress();
+  var navItem = document.getElementById('nav-'+modNum);
+  if(navItem) navItem.classList.add('completed');
+}
+
+function resetMod(mid){
+  document.querySelectorAll('#q-'+mid+' .question-card').forEach(function(q){
+    var opts = q.querySelector('.options');
+    if(opts) delete opts.dataset.answered;
+    q.querySelectorAll('.option').forEach(function(o){
+      o.classList.remove('correct','wrong','selected');
+      o.style.opacity = '';
+    });
+    q.querySelectorAll('.explanation').forEach(function(e){e.classList.remove('show');});
+  });
+  var scoreEl = document.getElementById('score-'+mid);
+  if(scoreEl) scoreEl.classList.remove('show');
+  var modNum = parseInt(mid.replace('m',''))-1;
+  var nextBtn = document.getElementById('next-'+modNum);
+  if(nextBtn) nextBtn.style.display = 'none';
+}
+
+function updateProgress(){
+  var pct = Math.round(completed.size/TOTAL*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = completed.size+' de '+TOTAL+' módulos';
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+
+var examData = [
+  {q:'Qual é o órgão máximo do Sistema Financeiro Nacional?',opts:['Banco Central','Conselho Monetário Nacional (CMN)','CVM','ANBIMA'],c:1,e:'O CMN é o órgão máximo do SFN, definindo diretrizes da política monetária, cambial e de crédito.'},
+  {q:'A CVM regula e fiscaliza:',opts:['Seguros de vida','Operações de câmbio','Ações, debêntures e fundos','Emissão de papel-moeda'],c:2,e:'A CVM regula o mercado de capitais: ações, debêntures e fundos.'},
+  {q:'O processo de suitability tem como objetivo principal:',opts:['Maximizar receitas da instituição','Adequar o produto ao perfil do investidor','Calcular rentabilidade da carteira','Verificar situação fiscal do cliente'],c:1,e:'Suitability: verificar adequação do produto ao perfil, objetivos e horizonte do investidor.'},
+  {q:'Na lavagem de dinheiro, a fase de integração refere-se a:',opts:['Inserção do dinheiro no sistema financeiro','Fragmentação de depósitos','Retorno dos recursos com aparência legal','Abertura de contas laranjas'],c:2,e:'Integração (3ª fase): recursos voltam à economia com aparência legal.'},
+  {q:'A elevação da taxa Selic pelo BCB tende a:',opts:['Aumentar consumo e inflação','Estimular investimentos produtivos','Reduzir o crédito e controlar a inflação','Desvalorizar o Real imediatamente'],c:2,e:'Política contracionista: eleva Selic → encarece crédito → reduz consumo → controla inflação.'},
+  {q:'O IPCA é calculado pelo:',opts:['Banco Central','FGV','IBGE','Ministério da Fazenda'],c:2,e:'IPCA é calculado pelo IBGE. O IGP-M é calculado pela FGV.'},
+  {q:'A reserva de emergência deve estar em produto com:',opts:['Alta rentabilidade e longa carência','Alta liquidez e baixo risco','Isenção de IR e prazo acima de 2 anos','Máxima exposição ao câmbio'],c:1,e:'Liquidez e segurança são prioritários para a reserva de emergência.'},
+  {q:'Em juros compostos o montante cresce de forma:',opts:['Linear','Aritmética','Exponencial','Constante'],c:2,e:'Juros compostos: crescimento exponencial (juros sobre juros acumulados).'},
+  {q:'O FGC garante depósitos até:',opts:['R$ 100.000 por CPF','R$ 250.000 por CPF por instituição','R$ 500.000 por CPF no total','Valores ilimitados'],c:1,e:'FGC: R$ 250.000 por CPF por conglomerado, teto de R$ 1 milhão por CPF em 4 anos.'},
+  {q:'Qual produto de renda fixa também é isento de IR para PF?',opts:['CDB prefixado','Tesouro IPCA+','Debêntures Incentivadas (Lei 12.431)','Fundo DI'],c:2,e:'Debêntures Incentivadas (infraestrutura) são isentas de IR para PF, assim como LCI, LCA, CRI e CRA.'},
+  {q:'Investidor resgata CDB após 400 dias. Alíquota de IR:',opts:['22,5%','20%','17,5%','15%'],c:2,e:'Entre 361 e 720 dias: alíquota de 17,5% pela tabela regressiva.'},
+  {q:'Ações Ordinárias (ON) conferem ao acionista:',opts:['Prioridade nos dividendos','Direito de voto nas assembleias','Maior proteção em falência','Dois dividendos para cada PN'],c:1,e:'ON: direito a voto nas assembleias. PN: prioridade nos dividendos.'},
+  {q:'PF vendeu R$ 18.000 em ações no mês com lucro de R$ 3.000. IR devido:',opts:['R$ 450','R$ 600','R$ 0 (isento)','R$ 3.000'],c:2,e:'Vendas ≤ R$ 20.000/mês: isenção total de IR para PF, independente do lucro.'},
+  {q:'Dividendos de ações brasileiras para PF são:',opts:['Tributados em 15%','Tributados em 20%','Isentos de IR','Tributados pela tabela progressiva'],c:2,e:'Dividendos de empresas brasileiras são isentos de IR para PF. JCP é tributado em 15% na fonte.'},
+  {q:'O come-cotas ocorre em fundos abertos:',opts:['Mensalmente para todos','Semestralmente (mai/nov), exceto fundos de ações','Apenas no resgate','Anualmente em dezembro'],c:1,e:'Come-cotas: semestralmente em maio e novembro. Fundos de ações são exceção.'},
+  {q:'Para ser Fundo de Ações, deve ter no mínimo em RV:',opts:['50%','67%','80%','95%'],c:1,e:'Fundos de ações: pelo menos 67% da carteira em ações ou ativos de renda variável.'},
+  {q:'O PGBL é mais vantajoso para quem:',opts:['É isento de IR','Usa declaração simplificada','Usa declaração completa e deduz até 12% da renda bruta','Prefere IR só sobre rendimentos'],c:2,e:'PGBL: deduz até 12% da renda bruta no IR completo. No resgate, IR sobre tudo.'},
+  {q:'Na tabela regressiva de previdência, após 10 anos a alíquota é:',opts:['35%','25%','15%','10%'],c:3,e:'Tabela regressiva: começa em 35% e cai até 10% após 10 anos acumulados.'},
+  {q:'No VGBL, o IR no resgate incide sobre:',opts:['Valor total (principal + rendimentos)','Apenas os rendimentos','Apenas o principal','VGBL é sempre isento'],c:1,e:'VGBL: IR apenas sobre rendimentos. PGBL: IR sobre tudo (principal + rendimentos).'},
+  {q:'Perdas em day trade em ações compensam:',opts:['Ganhos em swing trade','Ganhos em renda fixa','Ganhos em day trade','Qualquer ganho em RV'],c:2,e:'Day trade compensa apenas day trade. Swing/posição compensa swing/posição.'},
+  {q:'Investidor em RV com ganhos deve recolher IR:',opts:['Apenas na declaração anual','Via DARF até último dia útil do mês seguinte','A corretora recolhe automaticamente','Trimestralmente via carnê-leão'],c:1,e:'RV: apuração mensal, DARF até último dia útil do mês seguinte. Responsabilidade do investidor.'},
+  {q:'A taxa PTAX é:',opts:['Taxa básica de juros do mercado','Média da taxa de câmbio do dólar, calculada pelo BCB','Taxa de IOF sobre remessas','Taxa exclusiva para turismo'],c:1,e:'PTAX: média das cotações do dólar no mercado interbancário, calculada e divulgada pelo BCB.'},
+  {q:'Com desvalorização do Real, quem se beneficia?',opts:['Importadores','Viajantes ao exterior','Exportadores de commodities','Empresas com dívida em dólar'],c:2,e:'Exportadores recebem mais reais por dólar quando o dólar sobe.'},
+  {q:'BDRs permitem ao investidor brasileiro:',opts:['Investir no Tesouro americano','Comprar imóveis no exterior via B3','Ter exposição a ações estrangeiras pela B3','Receber salário em dólar'],c:2,e:'BDRs são certificados de ações estrangeiras (Apple, Amazon) negociados na B3.'},
+  {q:'A função do Gestor em um fundo é:',opts:['Guardar os ativos','Elaborar o regulamento','Tomar decisões de compra e venda da carteira','Distribuir cotas para novos investidores'],c:2,e:'Gestor: decide a estratégia de investimentos. Administrador: aspectos legais. Custodiante: guarda ativos.'},
+  {q:'O COAF tem como função:',opts:['Fiscalizar corretoras','Definir a Selic','Receber e analisar reportes de operações suspeitas de LD','Emitir certificações financeiras'],c:2,e:'COAF: unidade de inteligência financeira, identifica e reporta suspeitas de lavagem de dinheiro.'},
+  {q:'Rendimentos de FIIs para PF são isentos de IR quando:',opts:['Fundo tem ≥50 cotistas e investidor tem <10% das cotas','Sempre, sem condições','Investidor mantém cotas por mais de 2 anos','Fundo negocia acima do valor patrimonial'],c:0,e:'FII isenção: fundo com ≥50 cotistas e investidor com menos de 10% das cotas.'},
+  {q:'Insider trading ocorre quando:',opts:['Gestor executa ordens antes do cliente','Investidor usa informação privilegiada para negociar valores mobiliários','Empresa paga dividendos acima do lucro','Fundo compra ativos fora da política'],c:1,e:'Insider trading: uso de informações não públicas para negociar. Crime na Lei 6.385/76.'},
+  {q:'O subsistema NORMATIVO do SFN inclui:',opts:['Bancos múltiplos e corretoras','CMN, BCB e CVM','Cooperativas e distribuidoras','Fundos e bancos de investimento'],c:1,e:'Subsistema normativo: CMN (máximo), BCB (executor), CVM (mercado de capitais).'},
+  {q:'Para a CPA-20, derivativos e câmbio são exigidos:',opts:['Não caem na prova','Com maior profundidade que na CPA-10','Com o mesmo nível da CPA-10','Apenas para quem trabalha em banco de investimento'],c:1,e:'CPA-20 exige maior profundidade, incluindo produtos complexos como derivativos, câmbio e mercado internacional.'}
+];
+
+function buildExam(){
+  var container = document.getElementById('exam-q');
+  container.innerHTML = '';
+  var letters = ['A','B','C','D'];
+  examData.forEach(function(item, idx){
+    var optsHtml = item.opts.map(function(opt,oi){
+      return '<div class="option" onclick="examSel('+idx+','+oi+','+item.c+')" id="eopt-'+idx+'-'+oi+'"><span class="option-letter">'+letters[oi]+'</span>'+opt+'</div>';
+    }).join('');
+    var card = document.createElement('div');
+    card.className = 'question-card';
+    card.innerHTML = '<div class="question-num">Questão '+(idx+1)+' de 30</div><div class="question-text">'+item.q+'</div><div class="options" id="eopts-'+idx+'">'+optsHtml+'</div><div class="explanation" id="eexp-'+idx+'"><strong>✅ '+letters[item.c]+'.</strong> '+item.e+'</div>';
+    container.appendChild(card);
+  });
+}
+
+function examSel(qIdx, optIdx, correctIdx){
+  var opts = document.getElementById('eopts-'+qIdx);
+  if(opts.dataset.answered) return;
+  opts.dataset.answered = '1';
+  var chosen = document.getElementById('eopt-'+qIdx+'-'+optIdx);
+  chosen.classList.add(optIdx === correctIdx ? 'correct' : 'wrong');
+  if(optIdx !== correctIdx){
+    var corr = document.getElementById('eopt-'+qIdx+'-'+correctIdx);
+    if(corr) corr.classList.add('correct');
+  }
+  opts.querySelectorAll('.option').forEach(function(o){
+    if(!o.classList.contains('correct') && !o.classList.contains('wrong')) o.style.opacity='0.5';
+  });
+  var exp = document.getElementById('eexp-'+qIdx);
+  if(exp) exp.classList.add('show');
+}
+
+function submitExam(){
+  var correct = 0;
+  examData.forEach(function(item, idx){
+    var opts = document.getElementById('eopts-'+idx);
+    if(opts && !opts.dataset.answered){
+      var corr = document.getElementById('eopt-'+idx+'-'+item.c);
+      if(corr) corr.classList.add('correct');
+      var exp = document.getElementById('eexp-'+idx);
+      if(exp) exp.classList.add('show');
+    }
+    if(document.getElementById('eopt-'+idx+'-'+item.c) && document.getElementById('eopt-'+idx+'-'+item.c).classList.contains('correct')){
+      correct++;
+    }
+  });
+  var pct = Math.round(correct/30*100);
+  var approved = correct >= 21;
+  var scoreEl = document.getElementById('score-exam');
+  scoreEl.innerHTML = '<div class="score-num">'+correct+'/30 ('+pct+'%)</div><div class="score-label" style="color:'+(approved?'var(--success)':'var(--danger)')+';font-weight:700;font-size:1rem;margin-top:.5rem;">'+(approved?'🏆 APROVADO! Parabéns!':'📚 Não aprovado — mínimo 70% (21 acertos). Continue estudando!')+'</div>';
+  scoreEl.classList.add('show');
+  if(approved) document.getElementById('certificate').classList.add('show');
+  document.getElementById('submitBtn').disabled = true;
+  scoreEl.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetExam(){
+  buildExam();
+  var s = document.getElementById('score-exam');
+  s.classList.remove('show');
+  s.innerHTML = '';
+  document.getElementById('certificate').classList.remove('show');
+  document.getElementById('submitBtn').disabled = false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function shareLinkedIn(){
+  var text = encodeURIComponent('Acabei de concluir o Preparatório CPA-10/CPA-20 na Academia Growfy! 🏅 Um passo a mais na minha jornada no mercado financeiro. Acesse gratuitamente! #CPA10 #CPA20 #ANBIMA #MercadoFinanceiro #Growfy');
+  window.open('https://www.linkedin.com/shareArticle?mini=true&summary='+text,'_blank');
+}
+
+buildExam();
+</script>
+</body>
+</html>
